@@ -1,0 +1,22 @@
+#ifndef _CAF_WINDOW_INCLUDE_
+#define _CAF_WINDOW_INCLUDE_
+
+#include <QtCore/QMutex>
+#include <QtGui/QMainWindow>
+#include <boost/scoped_ptr.hpp>
+
+class CMainWindowPrivate;
+
+class CMainWindow : public QMainWindow
+{
+	Q_OBJECT
+public:
+	CMainWindow();
+	~CMainWindow();
+protected:
+	void closeEvent(QCloseEvent *);
+	QString strippedName(const QString &fullFileName);
+protected:
+	boost::scoped_ptr<CMainWindowPrivate> m_ptrPriv;
+};
+#endif //_CAF_WINDOW_INCLUDE_ 
