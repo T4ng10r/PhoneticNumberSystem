@@ -1,3 +1,4 @@
+#include <GUI/MainWindow.h>
 #include <GUI/MainWindow_p.h>
 #include <GUI/Settings/SubstituteValuesConfigurationDlg.h>
 #include <Data/CDataThread.h>
@@ -27,6 +28,8 @@ void CMainWindowPrivate::setupUI()
 	m_ptVLayout = new QVBoxLayout;
 	delete m_ptCentralWidget->layout();
 	m_ptCentralWidget->setLayout(m_ptVLayout);
+
+	m_ptrSubstituteConfiguration.reset(new CSubstituteValuesConfigurationDlg);
 
 /*	//m_ptToolBar = new QToolBar(this);
 	//m_ptToolBar->setObjectName("m_ptToolBar");
@@ -60,23 +63,25 @@ void CMainWindowPrivate::setupUI()
 }
 void CMainWindowPrivate::setConnections()
 {
+	bool bResult = false;
+	bResult = QObject::connect(m_actionConfiguration, SIGNAL(triggered(bool)), 
+		m_ptrPublic, SLOT(onActionTrigger(bool)));
+	logConnection("CMainWindowPrivate::setConnections",
+		"'CMainWindowPrivate::triggered' with 'CMainWindow::onActionTrigger'", 
+		bResult);
 /*	bool bResult = false;
 	m_ptrStatusBarSignalMapper = new QSignalMapper;
 	m_ptrStatusBarSignalMapper->setMapping(m_actionNewConf,QString("New configuration"));
 	m_ptrStatusBarSignalMapper->setMapping(m_actionOpenConf,QString("Opening configuration from file"));
 	m_ptrStatusBarSignalMapper->setMapping(m_actionSaveConf,QString("Saving configuration to file"));
-	m_ptrStatusBarSignalMapper->setMapping(m_actionRefreshConf,QString("Refreshing configuration"));
 	bResult = connect(m_actionNewConf, SIGNAL(triggered(bool)) , m_ptrStatusBarSignalMapper, SLOT(map()));
 	bResult = connect(m_actionOpenConf, SIGNAL(triggered(bool)) , m_ptrStatusBarSignalMapper, SLOT(map()));
 	bResult = connect(m_actionSaveConf, SIGNAL(triggered(bool)) , m_ptrStatusBarSignalMapper, SLOT(map()));
-	bResult = connect(m_actionRefreshConf, SIGNAL(triggered(bool)) , m_ptrStatusBarSignalMapper, SLOT(map()));
 	bResult = connect(m_ptrStatusBarSignalMapper, SIGNAL(mapped(const QString &)), this, SLOT(onStatusBarMsgChange(const QString &)));
 
 
 	bResult = connect(m_actionNewConf, SIGNAL(triggered(bool)), CDataThread::getInstance(), SLOT(onNewConf()));
 	logConnection("MainWindow::setConnections","'m_actionNewConf::triggered' with 'CDataThread::onNewConf'", bResult);
-	bResult = connect(m_actionRefreshConf, SIGNAL(triggered(bool)) ,this, SLOT(onRefreshConf()));
-	logConnection("MainWindow::setConnections","'m_actionRefreshConf::triggered' with 'this::onRefreshConf'", bResult);
 	bResult = connect(CDataThread::getInstance(), SIGNAL(refreshingFinished()), this, SLOT(onRefreshingFinished()));
 	logConnection("MainWindow::setConnections","'CDataThread::getInstance::refreshingFinished' with 'this::onRefreshingFinished'", bResult);
 	/////
@@ -148,11 +153,6 @@ void CMainWindowPrivate::setupActions()
 	m_actionSaveAsConf->setToolTip("");
 	////////////////////////////////////////////////////////////////////////////
 	m_ptrPublic->menuBar()->addSeparator();
-	m_actionRefreshConf = m_ptrPublic->menuBar()->addAction("Refresh");
-	m_actionRefreshConf->setShortcut(QKeySequence::Refresh);
-	m_actionRefreshConf->setToolTip("");
-	////////////////////////////////////////////////////////////////////////////
-	m_ptrPublic->menuBar()->addSeparator();
-	m_actionProxySettings= m_ptrPublic->menuBar()->addAction("Proxy");
-	m_actionProxySettings->setToolTip("");
+	m_actionConfiguration= m_ptrPublic->menuBar()->addAction("Configuration");
+	m_actionConfiguration->setToolTip("");
 }

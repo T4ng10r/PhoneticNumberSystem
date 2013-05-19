@@ -12,6 +12,9 @@ class CSubstituteValuesConfigurationDlg : public QWidget
 public:
 	CSubstituteValuesConfigurationDlg(QWidget * parent = NULL);
 	~CSubstituteValuesConfigurationDlg(void);
+public slots:
+	void onPushButton1ActionTriggered(QAction *);
+	void onPushButton2ActionTriggered(QAction *);
 protected:
 	boost::scoped_ptr<CSubstituteValuesConfigurationDlgPrivate> m_ptrPriv;
 };

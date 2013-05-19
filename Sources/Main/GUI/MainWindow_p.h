@@ -1,7 +1,6 @@
 #ifndef _CAF_WINDOW_PRIVATE_INCLUDE_
 #define _CAF_WINDOW_PRIVATE_INCLUDE_
 
-#include <GUI/MainWindow.h>
 #include <QtGui/QBoxLayout>
 #include <QtGui/QAction>
 #include <QtGui/QToolBar>
@@ -16,6 +15,7 @@
 
 enum { MaxRecentFiles = 5 };
 
+class CMainWindow;
 class CSubstituteValuesConfigurationDlg;
 
 class CMainWindowPrivate
@@ -23,11 +23,11 @@ class CMainWindowPrivate
 public:
 	CMainWindowPrivate(CMainWindow * ptrPublic);
 	~CMainWindowPrivate();
-protected:
+public:
 	void setupUI();
 	void setupActions();
 	void setConnections();
-protected:
+public:
 	QWidget *					m_ptCentralWidget;
 	QVBoxLayout *				m_ptVLayout;
 	QToolBar *					m_ptToolBar;
@@ -38,8 +38,7 @@ protected:
 	QAction *					m_actionOpenConf;
 	QAction *					m_actionSaveConf;
 	QAction *					m_actionSaveAsConf;
-	QAction *					m_actionRefreshConf;
-	QAction *					m_actionProxySettings;
+	QAction *					m_actionConfiguration;
 	//////////////////////////////////////////////////////////////////////////
 	QMenu *						m_recentFilesMenu;
 	QAction *					m_separatorAct;

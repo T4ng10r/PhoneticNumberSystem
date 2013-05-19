@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 
 project(log4qt)
 
-SET( INCLUDE_DIR ${CyfrowyAlfabetFonetyczny_PROJECT_SOURCE_DIR}/include)
+SET( INCLUDE_DIR ${PhoneticNumberSystem_PROJECT_SOURCE_DIR}/include)
 
 #dodajemy dane dotyczace QT - sciezki, biblioteki
 find_package(Qt4 COMPONENTS QtCore REQUIRED )

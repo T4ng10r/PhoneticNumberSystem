@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-project(CyfrowyAlfabetFonetyczny_Sources)
+project(PhoneticNumberSystem_Sources)
 
 add_subdirectory(Main)
 add_subdirectory(tools)

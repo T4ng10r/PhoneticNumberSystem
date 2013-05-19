@@ -13,6 +13,8 @@ class CMainWindow : public QMainWindow
 public:
 	CMainWindow();
 	~CMainWindow();
+public slots:
+	void onActionTrigger(bool);
 protected:
 	void closeEvent(QCloseEvent *);
 	QString strippedName(const QString &fullFileName);

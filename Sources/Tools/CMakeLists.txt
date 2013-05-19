@@ -4,13 +4,13 @@ project(Tools)
 include(${QT_USE_FILE})
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-include_directories(${CyfrowyAlfabetFonetyczny_PROJECT_SOURCE_DIR}/include)
+include_directories(${PhoneticNumberSystem_PROJECT_SOURCE_DIR}/include)
 
 SET ( TOOLS_SRC
 qtTools.cpp
-${CyfrowyAlfabetFonetyczny_PROJECT_SOURCE_DIR}/include/Tools/qtTools.h 
+${PhoneticNumberSystem_PROJECT_SOURCE_DIR}/include/Tools/qtTools.h 
 loggers.cpp
-${CyfrowyAlfabetFonetyczny_PROJECT_SOURCE_DIR}/include/Tools/loggers.h 
+${PhoneticNumberSystem_PROJECT_SOURCE_DIR}/include/Tools/loggers.h 
 )
 
 IF (WIN32)

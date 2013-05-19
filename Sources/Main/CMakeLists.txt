@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 
-project(CyfrowyAlfabetFonetyczny)
+project(PhoneticNumberSystem)
 
 #dodajemy dane dotyczace QT - sciezki, biblioteki
 find_package(Qt4 REQUIRED QtNetwork QtGui QtCore QtXml QtTest)
@@ -9,23 +9,26 @@ include(${QT_USE_FILE})
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
 ADD_DEFINITIONS( "-DHAS_BOOST" )
 
-	include_directories(${CyfrowyAlfabetFonetyczny_PROJECT_SOURCE_DIR}/include)
+	include_directories(${PhoneticNumberSystem_PROJECT_SOURCE_DIR}/include)
 	include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 	include_directories(${log4qt_SOURCE_DIR})
 
     SET ( SOURCES_TOOLS
-		${CyfrowyAlfabetFonetyczny_PROJECT_SOURCE_DIR}/include/Tools/loggers.h 	
-		${CyfrowyAlfabetFonetyczny_PROJECT_SOURCE_DIR}/include/Tools/qtTools.h 	
+		${PhoneticNumberSystem_PROJECT_SOURCE_DIR}/include/Tools/loggers.h 	
+		${PhoneticNumberSystem_PROJECT_SOURCE_DIR}/include/Tools/qtTools.h 	
 		)
     SET ( SOURCES_OTHER
         main.cpp
 		loggers.cpp
+		PhoneticNumberSystem.xml
         ${SOURCES_TOOLS}
 		  )
 		  
     SET ( SOURCES_DATA
 		Data/CDataThread.cpp         
 		Data/CDataThread.h
+    Data/CAppSettings.cpp
+    Data/CAppSettings.h 
 		  )
     
     SET ( SOURCES_GUI
@@ -45,9 +48,9 @@ ADD_DEFINITIONS( "-DHAS_BOOST" )
 		${CMAKE_CURRENT_SOURCE_DIR}/GUI/Settings/SubstituteValuesConfigurationDlg.h
         )
         
-    #qt4_wrap_cpp(CyfrowyAlfabetFonetyczny SOURCES_MOC ${SOURCES_MOC_HEADERS})
+    #qt4_wrap_cpp(PhoneticNumberSystem SOURCES_MOC ${SOURCES_MOC_HEADERS})
     qt4_wrap_cpp(SOURCES_MOC ${SOURCES_MOC_HEADERS})
-    QT4_ADD_RESOURCES( SOURCES_RCC CyfrowyAlfabetFonetyczny.qrc )
+    QT4_ADD_RESOURCES( SOURCES_RCC PhoneticNumberSystem.qrc )
     
 IF (WIN32)
     SOURCE_GROUP(Data FILES ${SOURCES_DATA})
@@ -58,19 +61,25 @@ IF (WIN32)
 ENDIF (WIN32)
     
 IF (WIN32)
-    add_executable(CyfrowyAlfabetFonetyczny ${SOURCES_DATA} ${SOURCES_MOC} 
+    add_executable(PhoneticNumberSystem ${SOURCES_DATA} ${SOURCES_MOC} 
         ${SOURCES_GUI} ${SOURCES_OTHER} ${SOURCES_RCC} 
         ${SOURCES_GUI_SETTINGS} main.cpp TODO.txt )
 ELSE (WIN32)
-    add_executable(CyfrowyAlfabetFonetyczny ${SOURCES_DATA} ${SOURCES_MOC} 
+    add_executable(PhoneticNumberSystem ${SOURCES_DATA} ${SOURCES_MOC} 
         ${SOURCES_GUI} ${SOURCES_OTHER} ${SOURCES_RCC} 
         ${SOURCES_GUI_SETTINGS} main.cpp TODO.txt )
 ENDIF (WIN32)
 
-    add_library(CyfrowyAlfabetFonetyczny_lib STATIC ${SOURCES_DATA} ${SOURCES_MOC} 
+    add_library(PhoneticNumberSystem_lib STATIC ${SOURCES_DATA} ${SOURCES_MOC} 
         ${SOURCES_GUI} ${SOURCES_OTHER} 
         main.cpp ${SOURCES_RCC})
         
 	SET(LIBRARIES_LIST ${QT_LIBRARIES} ${Boost_LIBRARIES}) #Tools_Lib 
-  	addLoggerLibrariesDependencies(CyfrowyAlfabetFonetyczny LIBRARIES_LIST)
-	addLoggerLibrariesDependencies(CyfrowyAlfabetFonetyczny_lib LIBRARIES_LIST)
+  	addLoggerLibrariesDependencies(PhoneticNumberSystem LIBRARIES_LIST)
+	addLoggerLibrariesDependencies(PhoneticNumberSystem_lib LIBRARIES_LIST)
+	
+	add_custom_command(TARGET PhoneticNumberSystem POST_BUILD 
+		 COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/PhoneticNumberSystem.xml ${CMAKE_CURRENT_BINARY_DIR}/PhoneticNumberSystem.xml)
+
+	
+

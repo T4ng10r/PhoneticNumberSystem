@@ -1,7 +1,7 @@
 #include <Data/CDataThread.h>
-#include <Data/ComputerConfModel.h>
 #include <GUI/MainWindow.h>
 #include <GUI/MainWindow_p.h>
+#include <GUI/Settings/SubstituteValuesConfigurationDlg.h>
 #include <QtCore/QFileInfo>
 #include <QtGui/QStatusBar>
 #include <QtGui/QMenuBar>
@@ -13,6 +13,7 @@ const QSize ciSize(700,450);
 CMainWindow::CMainWindow() : QMainWindow(),
 m_ptrPriv(new CMainWindowPrivate(this))
 {
+	resize(ciSize);
 }
 CMainWindow::~CMainWindow(){}
 void CMainWindow::closeEvent(QCloseEvent *)
@@ -24,4 +25,8 @@ void CMainWindow::closeEvent(QCloseEvent *)
 	//	this, SLOT(onWaitingForDataThreadTermination()));
 	//ptrDataThread = CDataThread::getInstance();
 	CDataThread::getInstance()->quit();
+}
+void CMainWindow::onActionTrigger(bool)
+{
+	m_ptrPriv->m_ptrSubstituteConfiguration->show();
 }
