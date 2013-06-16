@@ -7,6 +7,7 @@
 #include <QtCore/QFileInfo>
 #include <Tools/loggers.h>
 #include <Tools/qtTools.h>
+#include <Data/CAppSettings.h>
 
 const QSize ciSize(700,450);
 
@@ -28,8 +29,8 @@ void CMainWindowPrivate::setupUI()
 	m_ptVLayout = new QVBoxLayout;
 	delete m_ptCentralWidget->layout();
 	m_ptCentralWidget->setLayout(m_ptVLayout);
-
-	m_ptrSubstituteConfiguration.reset(new CSubstituteValuesConfigurationDlg);
+	CSubstituteValuesConfiguration  stSubstituteValuesConfiguration;
+	m_ptrSubstituteConfiguration.reset(new CSubstituteValuesConfigurationDlg(stSubstituteValuesConfiguration));
 
 /*	//m_ptToolBar = new QToolBar(this);
 	//m_ptToolBar->setObjectName("m_ptToolBar");

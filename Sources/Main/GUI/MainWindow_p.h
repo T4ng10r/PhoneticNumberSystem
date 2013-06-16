@@ -12,6 +12,7 @@
 #include <QtGui/QTreeView>
 #include <QtCore/QSignalMapper>
 #include <boost/scoped_ptr.hpp>
+#include <wallaroo/catalog.h>
 
 enum { MaxRecentFiles = 5 };
 
@@ -24,10 +25,12 @@ public:
 	CMainWindowPrivate(CMainWindow * ptrPublic);
 	~CMainWindowPrivate();
 public:
+	void createConnectionsCatalog();
 	void setupUI();
 	void setupActions();
 	void setConnections();
 public:
+	wallaroo::Catalog			m_catalog;
 	QWidget *					m_ptCentralWidget;
 	QVBoxLayout *				m_ptVLayout;
 	QToolBar *					m_ptToolBar;
@@ -47,6 +50,6 @@ public:
 	QMutex						m_DataThreadTerminatedMutex;
 	void *						ptrDataThread;
 	CMainWindow *				m_ptrPublic;
-	boost::scoped_ptr<CSubstituteValuesConfigurationDlg>	m_ptrSubstituteConfiguration;
+	boost::shared_ptr<CSubstituteValuesConfigurationDlg>	m_ptrSubstituteConfiguration;
 };
 #endif //_CAF_WINDOW_PRIVATE_INCLUDE_ 

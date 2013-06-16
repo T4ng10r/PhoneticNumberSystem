@@ -8,8 +8,10 @@ include(${QT_USE_FILE})
 
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
 ADD_DEFINITIONS( "-DHAS_BOOST" )
+ADD_DEFINITIONS(-DWALLAROO_FORCE_USE_BOOST)
 
 	include_directories(${PhoneticNumberSystem_PROJECT_SOURCE_DIR}/include)
+	include_directories(${PhoneticNumberSystem_PROJECT_SOURCE_DIR}/include/CppInject)
 	include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 	include_directories(${log4qt_SOURCE_DIR})
 
@@ -18,7 +20,8 @@ ADD_DEFINITIONS( "-DHAS_BOOST" )
 		${PhoneticNumberSystem_PROJECT_SOURCE_DIR}/include/Tools/qtTools.h 	
 		)
     SET ( SOURCES_OTHER
-        main.cpp
+        Requirements.txt 
+        TODO.txt
 		loggers.cpp
 		PhoneticNumberSystem.xml
         ${SOURCES_TOOLS}
@@ -49,7 +52,7 @@ ADD_DEFINITIONS( "-DHAS_BOOST" )
         )
         
     #qt4_wrap_cpp(PhoneticNumberSystem SOURCES_MOC ${SOURCES_MOC_HEADERS})
-    qt4_wrap_cpp(SOURCES_MOC ${SOURCES_MOC_HEADERS})
+    qt4_wrap_cpp(SOURCES_MOC ${SOURCES_MOC_HEADERS} OPTIONS -DBOOST_TT_HAS_OPERATOR_HPP_INCLUDED)
     QT4_ADD_RESOURCES( SOURCES_RCC PhoneticNumberSystem.qrc )
     
 IF (WIN32)
@@ -63,18 +66,18 @@ ENDIF (WIN32)
 IF (WIN32)
     add_executable(PhoneticNumberSystem ${SOURCES_DATA} ${SOURCES_MOC} 
         ${SOURCES_GUI} ${SOURCES_OTHER} ${SOURCES_RCC} 
-        ${SOURCES_GUI_SETTINGS} main.cpp TODO.txt )
+        ${SOURCES_GUI_SETTINGS} main.cpp  )
 ELSE (WIN32)
     add_executable(PhoneticNumberSystem ${SOURCES_DATA} ${SOURCES_MOC} 
         ${SOURCES_GUI} ${SOURCES_OTHER} ${SOURCES_RCC} 
-        ${SOURCES_GUI_SETTINGS} main.cpp TODO.txt )
+        ${SOURCES_GUI_SETTINGS} main.cpp )
 ENDIF (WIN32)
 
     add_library(PhoneticNumberSystem_lib STATIC ${SOURCES_DATA} ${SOURCES_MOC} 
         ${SOURCES_GUI} ${SOURCES_OTHER} 
-        main.cpp ${SOURCES_RCC})
+        ${SOURCES_GUI_SETTINGS} ${SOURCES_RCC})
         
-	SET(LIBRARIES_LIST ${QT_LIBRARIES} ${Boost_LIBRARIES}) #Tools_Lib 
+	SET(LIBRARIES_LIST ${QT_LIBRARIES} ${Boost_LIBRARIES} ) #Tools_Lib 
   	addLoggerLibrariesDependencies(PhoneticNumberSystem LIBRARIES_LIST)
 	addLoggerLibrariesDependencies(PhoneticNumberSystem_lib LIBRARIES_LIST)
 	
