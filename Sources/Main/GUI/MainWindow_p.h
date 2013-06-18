@@ -12,7 +12,8 @@
 #include <QtGui/QTreeView>
 #include <QtCore/QSignalMapper>
 #include <boost/scoped_ptr.hpp>
-#include <wallaroo/catalog.h>
+#include <boost/shared_ptr.hpp>
+//#include <wallaroo/catalog.h>
 
 enum { MaxRecentFiles = 5 };
 
@@ -30,7 +31,7 @@ public:
 	void setupActions();
 	void setConnections();
 public:
-	wallaroo::Catalog			m_catalog;
+	//wallaroo::Catalog			m_catalog;
 	QWidget *					m_ptCentralWidget;
 	QVBoxLayout *				m_ptVLayout;
 	QToolBar *					m_ptToolBar;

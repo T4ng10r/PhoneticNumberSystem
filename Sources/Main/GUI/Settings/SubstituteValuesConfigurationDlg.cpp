@@ -49,10 +49,6 @@ public:
 CSubstituteValuesConfigurationDlgPrivate::CSubstituteValuesConfigurationDlgPrivate(CSubstituteValuesConfigurationDlg * ptrPublic):
 m_ptrPublic(ptrPublic)
 {
-	setupUI();
-
-	setupActions();
-	setConnections();
 }
 CSubstituteValuesConfigurationDlgPrivate::~CSubstituteValuesConfigurationDlgPrivate(){}
 void CSubstituteValuesConfigurationDlgPrivate::setupUI()
@@ -111,9 +107,14 @@ QHBoxLayout * CSubstituteValuesConfigurationDlgPrivate::setupUI_line(int iIndex)
 }
 void CSubstituteValuesConfigurationDlgPrivate::setupActions()
 {
-	//int iConsonantsCount(stAppSettings.get<int>("settings.consonants.count"));
-	int iConsonantsCount(m_stProperties.get<int>("settings.consonants.count"));
 	using boost::property_tree::ptree;
+	//int iConsonantsCount(stAppSettings.get<int>("settings.consonants.count"));
+	m_stProperties.size();
+	ptree::iterator iter1 = m_stProperties.begin();
+	iter1->first.data();
+	iter1->second.data();
+	m_stProperties.get_child("count");
+	int iConsonantsCount(m_stProperties.get_child("count").get_value<int>());
 	bool bResult = false;
 
 	BOOST_FOREACH(EntryLine & stEntry, m_ptrDigitsEntries)
@@ -142,7 +143,7 @@ void CSubstituteValuesConfigurationDlgPrivate::setupActions()
 			"'ptrConsonantEmptyAction2::triggered' with 'm_ptrPublic::onActionToggled'", 
 			bResult);
 	}
-	BOOST_FOREACH(const ptree::value_type &singleEntry, m_stProperties.get_child("settings.consonants"))
+	BOOST_FOREACH(const ptree::value_type &singleEntry, m_stProperties/*.get_child("")*/)
 	{
 		if (singleEntry.first!="consonant")
 			continue;
@@ -182,6 +183,9 @@ CSubstituteValuesConfigurationDlg::CSubstituteValuesConfigurationDlg(const boost
 :QWidget(NULL), m_ptrPriv(new CSubstituteValuesConfigurationDlgPrivate(this))
 {
 	m_ptrPriv->m_stProperties=stProperties;
+	m_ptrPriv->setupUI();
+	m_ptrPriv->setupActions();
+	m_ptrPriv->setConnections();
 }
 CSubstituteValuesConfigurationDlg::~CSubstituteValuesConfigurationDlg(void){}
 void CSubstituteValuesConfigurationDlg::onMenuTriggered(QAction * pAction )

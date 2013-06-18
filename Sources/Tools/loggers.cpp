@@ -1,7 +1,6 @@
-#include <QtCore/QString>
+#include <Tools/loggers.h>
 #include <QtCore/QFile>
 #include <QtCore/QDir>
-#include <Tools/loggers.h>
 #ifdef USE_LOG4QT
 
 #include <log4qt/logmanager.h>
@@ -12,14 +11,26 @@
 #include <log4qt/patternlayout.h>
 using namespace Log4Qt;
 
+#else if USE_LOG4CPP
+#include	<log4cpp/Category.hh>
+#include	<log4cpp/FileAppender.hh>
+#include	<log4cpp/Win32DebugAppender.hh>
+#include	<log4cpp/PatternLayout.hh>
+
+using namespace log4cpp;
+
+#endif
+
 #define DEBUG_LOGGER		"debug"
 #define SLOTS_LOGGER		"slots"
 #define NETWORK_LOGGER		"network"
+#define GUI_LOGGER			"gui"
 #define LOG_DIR				"logs"
 #define LOG_FILE(X)		QString("%1%2%3.log").arg(LOG_DIR).arg(QDir::separator()).arg(X)
 
 void createLoggers(const QString &strPluginLogName /*= QString()*/)
 {
+#ifdef USE_LOG4QT
 	PatternLayout *		p_PatternLayout(NULL);
 	p_PatternLayout = new PatternLayout;
 	//need timestamp, Level, potential Network/debug/slots
@@ -52,42 +63,108 @@ void createLoggers(const QString &strPluginLogName /*= QString()*/)
 		//////////////////////////////////////////////////////////////////////////
 		LogManager::logger(DEBUG_LOGGER)->addAppender(p_FileNetworkAppender);
 	}
+#else if USE_LOG4CPP
+	log4cpp::PatternLayout* layout1 = new log4cpp::PatternLayout();
+	layout1->setConversionPattern("%d %p %c %x: %m%n");
+
+	log4cpp::Appender* debugAppender = new log4cpp::FileAppender("DebugAppender", LOG_FILE(DEBUG_LOGGER).toStdString(),false);
+	debugAppender->setLayout(layout1);
+
+	log4cpp::Category &debugCategory = log4cpp::Category::getInstance(DEBUG_LOGGER);
+	debugCategory.setAdditivity(false);
+	debugCategory.setAppender(debugAppender);
+	debugCategory.setPriority(log4cpp::Priority::INFO);
+
+	//////////////////////////////////////////////////////////////////////////
+	//log4cpp::PatternLayout* layout = new log4cpp::PatternLayout();
+	//layout->setConversionPattern("%d %p %c %x: %m%n");
+	log4cpp::Appender* GUICreationAppender = new log4cpp::FileAppender("GUICreationAppender", LOG_FILE(GUI_LOGGER).toStdString(),false);
+	GUICreationAppender->setLayout(layout1);
+	log4cpp::Category &GUICreationCategory = log4cpp::Category::getInstance(GUI_LOGGER);
+	GUICreationCategory.setAdditivity(false);
+	GUICreationCategory.setAppender(GUICreationAppender);
+	GUICreationCategory.setPriority(log4cpp::Priority::INFO);
+
+	//////////////////////////////////////////////////////////////////////////
+	log4cpp::Appender* slotsConnectionAppender = new log4cpp::FileAppender(SLOTS_LOGGER, LOG_FILE(SLOTS_LOGGER).toStdString(),false);
+	slotsConnectionAppender->setLayout(layout1);
+
+	log4cpp::Category &slotsConnectionCategory = log4cpp::Category::getInstance(SLOTS_LOGGER);
+	slotsConnectionCategory.setAdditivity(false);
+	slotsConnectionCategory.setAppender(slotsConnectionAppender);
+	slotsConnectionCategory.setPriority(log4cpp::Priority::INFO);
+#endif
 }
 
 void destroyLoggers()
 {
+#ifdef USE_LOG4QT
 	QList<Appender*> lApplist = LogManager::logger(DEBUG_LOGGER)->appenders();
 	LogManager::logger("debug")->removeAllAppenders();
 
 	lApplist = LogManager::logger(SLOTS_LOGGER)->appenders();
 	LogManager::logger("slotsConnection")->removeAllAppenders();
+#elif defined(USE_LOG4CPP)
+#endif
 }
 
 void printLog(eLogLevel debugLevel, eLoggerType loggerType, const QString &strMsg)
 {
+#ifdef USE_LOG4QT
+	Log4Qt::Logger * ptrLogger(NULL);
 	Log4Qt::Logger * ptrLogger(NULL);
 	Log4Qt::LogError  stLogError(strMsg);
+#elif defined(USE_LOG4CPP)
+	log4cpp::Category * ptrCategory(NULL);
+#endif
 	switch(loggerType)
 	{
-		case eDebug:	ptrLogger = Log4Qt::LogManager::logger("debug");			break;
-		case eSlots:	ptrLogger = Log4Qt::LogManager::logger("slotsConnection");	break;
-		case eNetwork:	
-			stLogError.setContext("Network");
-			ptrLogger = Log4Qt::LogManager::logger("debug");			break;
+		case eDebug:	
+#ifdef USE_LOG4QT
+			ptrLogger = Log4Qt::LogManager::logger(DEBUG_LOGGER);			break;
+#elif defined(USE_LOG4CPP)
+			ptrCategory = log4cpp::Category::exists(DEBUG_LOGGER);
+#endif
+		case eSlots:	
+#ifdef USE_LOG4QT
+			ptrLogger = Log4Qt::LogManager::logger(SLOTS_LOGGER);	break;
+#elif defined(USE_LOG4CPP)
+			ptrCategory = log4cpp::Category::exists(SLOTS_LOGGER);
+#endif
 		default: return;
 	}
 	switch(debugLevel)
 	{
-		case eInfoLogLevel:		ptrLogger->info(stLogError); 	break;
-		case eWarningLogLevel:	ptrLogger->warn(stLogError);	break;
-		case eDebugLogLevel:	ptrLogger->debug(stLogError);	break;
-		case eErrorLogLevel:	ptrLogger->error(stLogError);	break;
+		case eInfoLogLevel:
+#ifdef USE_LOG4QT
+			ptrLogger->info(stLogError); 	break;
+#elif defined(USE_LOG4CPP)
+			ptrCategory->info(strMsg.toStdString());
+#endif
+		case eWarningLogLevel:	
+#ifdef USE_LOG4QT
+			ptrLogger->warn(stLogError);	break;
+#elif defined(USE_LOG4CPP)
+			ptrCategory->warn(strMsg.toStdString());
+#endif
+		case eDebugLogLevel:	
+#ifdef USE_LOG4QT
+			ptrLogger->debug(stLogError);	break;
+#elif defined(USE_LOG4CPP)
+			ptrCategory->debug(strMsg.toStdString());
+#endif
+		case eErrorLogLevel:
+#ifdef USE_LOG4QT
+			ptrLogger->error(stLogError);	break;
+#elif defined(USE_LOG4CPP)
+			ptrCategory->error(strMsg.toStdString());
+#endif
 	}
 }
-#else
-void createLoggers(const QString &strPluginLogName){};
-void destroyLoggers(){};
-void printLog(eLogLevel, eLoggerType, const QString &strMsg){};
-#endif
+//#else
+//void createLoggers(const QString &strPluginLogName){};
+//void destroyLoggers(){};
+//void printLog(eLogLevel, eLoggerType, const QString &strMsg){};
+//#endif
 
 //////////////////////////////////////////////////////////////////////////

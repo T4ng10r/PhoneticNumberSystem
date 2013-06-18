@@ -1,13 +1,14 @@
 #include "CSubstituteValuesConfigurationDlgTest.h" 
-#include <QMetaType>
+//#include <QMetaType>
 #include <string>
 #include <Main/GUI/Settings/SubstituteValuesConfigurationDlg.h>
 
 const unsigned int ciSingleTimeout(1000); //in s
 const unsigned int ciTimeoutsCount(5); //in s
-Q_DECLARE_METATYPE(Qt::Orientation)
-Q_DECLARE_METATYPE(QModelIndex)
+//Q_DECLARE_METATYPE(Qt::Orientation)
+//Q_DECLARE_METATYPE(QModelIndex)
 
+CSubstituteValuesConfigurationDlgTest::CSubstituteValuesConfigurationDlgTest(){}
 void CSubstituteValuesConfigurationDlgTest::init()
 {
 	//m_ptrDialog=m_catalog[ "SubstituteValuesConfigurationDlg" ];

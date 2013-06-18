@@ -10,15 +10,14 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
 ADD_DEFINITIONS( "-DHAS_BOOST" )
 ADD_DEFINITIONS(-DWALLAROO_FORCE_USE_BOOST)
 
-	include_directories(${PhoneticNumberSystem_PROJECT_SOURCE_DIR}/include)
-	include_directories(${PhoneticNumberSystem_PROJECT_SOURCE_DIR}/include/CppInject)
+	include_directories(${CMAKE_SOURCE_DIR}/include)
 	include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 	include_directories(${log4qt_SOURCE_DIR})
 
     SET ( SOURCES_TOOLS
-		${PhoneticNumberSystem_PROJECT_SOURCE_DIR}/include/Tools/loggers.h 	
-		${PhoneticNumberSystem_PROJECT_SOURCE_DIR}/include/Tools/qtTools.h 	
-		)
+		${CMAKE_SOURCE_DIR}/include/Tools/loggers.h 	
+		${CMAKE_SOURCE_DIR}/include/Tools/qtTools.h 	 )
+		
     SET ( SOURCES_OTHER
         Requirements.txt 
         TODO.txt
@@ -30,8 +29,8 @@ ADD_DEFINITIONS(-DWALLAROO_FORCE_USE_BOOST)
     SET ( SOURCES_DATA
 		Data/CDataThread.cpp         
 		Data/CDataThread.h
-    Data/CAppSettings.cpp
-    Data/CAppSettings.h 
+		Data/CAppSettings.cpp
+		Data/CAppSettings.h 
 		  )
     
     SET ( SOURCES_GUI
@@ -51,7 +50,6 @@ ADD_DEFINITIONS(-DWALLAROO_FORCE_USE_BOOST)
 		${CMAKE_CURRENT_SOURCE_DIR}/GUI/Settings/SubstituteValuesConfigurationDlg.h
         )
         
-    #qt4_wrap_cpp(PhoneticNumberSystem SOURCES_MOC ${SOURCES_MOC_HEADERS})
     qt4_wrap_cpp(SOURCES_MOC ${SOURCES_MOC_HEADERS} OPTIONS -DBOOST_TT_HAS_OPERATOR_HPP_INCLUDED)
     QT4_ADD_RESOURCES( SOURCES_RCC PhoneticNumberSystem.qrc )
     

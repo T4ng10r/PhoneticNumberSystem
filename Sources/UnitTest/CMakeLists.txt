@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 2.6)
 project(UnitTest)
 
 #dodajemy dane dotyczace QT - sciezki, biblioteki
+find_package(Qt4 REQUIRED QtNetwork QtGui QtCore QtXml QtTest)
 include(${QT_USE_FILE})
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
 
@@ -27,7 +28,8 @@ SET ( SOURCES_MAIN
     )
 
 SET ( SOURCES_TEST_MOC 
-  CSubstituteValuesConfigurationDlgTest.h
+	CSubstituteValuesConfigurationDlgTest.h
+    CAppSettingsTest.h
     )
 
 QT4_WRAP_CPP(SOURCES_MOC ${SOURCES_TEST_MOC} OPTIONS -DBOOST_TT_HAS_OPERATOR_HPP_INCLUDED)

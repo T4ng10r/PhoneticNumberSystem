@@ -31,14 +31,7 @@ void CAppSettingsPrivate::loadSettings()
 	using boost::property_tree::ptree;
 	read_xml(CONFIGURATION_FILE, *(static_cast<boost::property_tree::ptree*>(m_ptrPublic)));
 	m_ptrSubstValConf = m_ptrPublic->get_child("settings.consonants");
-	ptree::iterator iter1 = m_ptrSubstValConf.begin();
-	iter1->first.data();
-	iter1->second.data();
-	//BOOST_FOREACH(const ptree::value_type &v, m_ptrPublic)
-	//{
-	//	std::string st = v.second.data();
-	//	int a=1;
-	//}
+	printLog(eDebugLogLevel, eDebug, "AppSettings: settiings loaded from file");
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
@@ -49,6 +42,7 @@ CAppSettings::CAppSettings(void):m_ptrPriv(new CAppSettingsPrivate(this))
 CAppSettings::~CAppSettings(void){}
 const boost::property_tree::ptree &CAppSettings::getSubstituteValuesConfiguration()
 {
+	printLog(eDebugLogLevel, eDebug, "SubstituteValuesConfiguration provided");
 	return m_ptrPriv->m_ptrSubstValConf;
 }
 //////////////////////////////////////////////////////////////////////////
