@@ -1,5 +1,6 @@
 #include <Data/CAppSettings.h>
 #include <tools/loggers.h>
+#include <Data/CSystemDigitsConfiguration.h>
 #include <boost/property_tree/xml_parser.hpp>
 //#include <boost/foreach.hpp>
 
@@ -15,16 +16,19 @@ public:
 	~CAppSettingsPrivate();
 	void loadSettings();
 	void defaultValues();
+	void getDigitsConfiguration();
 public:
 	//Catalog catalog; // this is the container of your objects
 	//boost::shared_ptr<CSubstituteValuesConfiguration>	m_ptrSubstValConf;
 	CAppSettings *							m_ptrPublic;
 	boost::property_tree::ptree				m_ptrSubstValConf;
+	std::vector<CSystemDigitsConfiguration>	m_vDigitsConfiguration;
 };
 //////////////////////////////////////////////////////////////////////////
 CAppSettingsPrivate::CAppSettingsPrivate(CAppSettings * ptrPublic):m_ptrPublic(ptrPublic)
 {
 	loadSettings();
+	getDigitsConfiguration();
 }
 CAppSettingsPrivate::~CAppSettingsPrivate(){}
 void CAppSettingsPrivate::loadSettings()
@@ -33,6 +37,15 @@ void CAppSettingsPrivate::loadSettings()
 	read_xml(CONFIGURATION_FILE, *(static_cast<boost::property_tree::ptree*>(m_ptrPublic)));
 	m_ptrSubstValConf = m_ptrPublic->get_child("settings.consonants");
 	printLog(eDebugLogLevel, eDebug, "AppSettings: settiings loaded from file");
+}
+void CAppSettingsPrivate::getDigitsConfiguration()
+{
+	CSystemDigitsConfiguration  stSystemDigitsConfiguration;
+	//BOOST_FOREACH(const ptree::value_type &singleEntry, m_ptrSubstValConf)
+	//{
+	//	if (singleEntry.first!="digits_configuration")
+	//		continue;
+
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////

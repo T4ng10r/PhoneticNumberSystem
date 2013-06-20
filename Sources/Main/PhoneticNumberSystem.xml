@@ -21,5 +21,53 @@
     <consonant>X</consonant>
     <consonant>Z</consonant>
     <consonant>W</consonant>
+    <digits_configuration>
+      <name>basic</name>
+      <digit>
+        <value>0</value>
+        <substitue>Z</substitue>
+        <substitue>S</substitue>
+      </digit>
+      <digit>
+        <value>1</value>
+        <substitue>T</substitue>
+        <substitue>D</substitue>
+      </digit>
+      <digit>
+        <value>2</value>
+        <substitue>N</substitue>
+      </digit>
+      <digit>
+        <value>3</value>
+        <substitue>M</substitue>
+      </digit>
+      <digit>
+        <value>4</value>
+        <substitue>R</substitue>
+      </digit>
+      <digit>
+        <value>5</value>
+        <substitue>L</substitue>
+      </digit>
+      <digit>
+        <value>6</value>
+        <substitue>J</substitue>
+      </digit>
+      <digit>
+        <value>7</value>
+        <substitue>K</substitue>
+        <substitue>G</substitue>
+      </digit>
+      <digit>
+        <value>8</value>
+        <substitue>F</substitue>
+        <substitue>w</substitue>
+      </digit>
+      <digit>
+        <value>9</value>
+        <substitue>P</substitue>
+        <substitue>B</substitue>
+      </digit>
+    </digits_configuration>
   </consonants>
 </settings>

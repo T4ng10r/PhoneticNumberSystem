@@ -40,6 +40,7 @@ ADD_DEFINITIONS(-DWALLAROO_FORCE_USE_BOOST)
 		Data/CDataThread.h
 		Data/CAppSettings.cpp
 		Data/CAppSettings.h 
+		Data/CSystemDigitsConfiguration.h 
 		  )
     
     SET ( SOURCES_GUI
