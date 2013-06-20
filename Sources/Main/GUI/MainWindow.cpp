@@ -2,9 +2,9 @@
 #include <GUI/MainWindow.h>
 #include <GUI/MainWindow_p.h>
 #include <GUI/Settings/SubstituteValuesConfigurationDlg.h>
-#include <QtCore/QFileInfo>
-#include <QtGui/QStatusBar>
-#include <QtGui/QMenuBar>
+#include <QFileInfo>
+#include <QStatusBar>
+#include <QMenuBar>
 #include <Tools/loggers.h>
 #include <Tools/qtTools.h>
 

@@ -1,6 +1,6 @@
 #include <Data/CDataThread.h>
-#include <QtCore/QString>
-#include <QtGui/QApplication>
+#include <QString>
+#include <QApplication>
 
 #include <list>
 #include <tools/loggers.h>

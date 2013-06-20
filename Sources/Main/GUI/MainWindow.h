@@ -1,8 +1,8 @@
 #ifndef _CAF_WINDOW_INCLUDE_
 #define _CAF_WINDOW_INCLUDE_
 
-#include <QtCore/QMutex>
-#include <QtGui/QMainWindow>
+#include <QMutex>
+#include <QMainWindow>
 #include <boost/scoped_ptr.hpp>
 
 class CMainWindowPrivate;

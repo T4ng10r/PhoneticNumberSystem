@@ -1,10 +1,10 @@
 #include <GUI/Settings/SubstituteValuesConfigurationDlg.h>
-#include <QtCore/QString>
-#include <QtGui/QMenu>
-#include <QtGui/QAction>
-#include <QtGui/QLabel>
-#include <QtGui/QPushButton>
-#include <QtGui/QBoxLayout>
+#include <QString>
+#include <QMenu>
+#include <QAction>
+#include <QLabel>
+#include <QPushButton>
+#include <QBoxLayout>
 #include <tools/loggers.h>
 #include <Tools/qtTools.h>
 #include <Data/CAppSettings.h>
@@ -195,7 +195,7 @@ void CSubstituteValuesConfigurationDlg::onMenuTriggered(QAction * pAction )
 	int iIndex;
 	char cConsonant;
 	iIndex = pAction->text().length()>1?1:0;
-	cConsonant = pAction->text().at(iIndex).toAscii();
+	cConsonant = pAction->text().at(iIndex).toLatin1();
 
 	BOOST_FOREACH(EntryLine & stEntry, m_ptrPriv->m_ptrDigitsEntries)
 		if (stEntry.m_ptrConsonantsMenu1==ptrMenu)
@@ -216,7 +216,7 @@ void CSubstituteValuesConfigurationDlg::onActionToggled(bool bState)
 	int iIndex;
 	char cConsonant;
 	iIndex = pAction->text().length()>1?1:0;
-	cConsonant = pAction->text().at(iIndex).toAscii();
+	cConsonant = pAction->text().at(iIndex).toLatin1();
 	BOOST_FOREACH(QAction * pConsonantAction, m_ptrPriv->m_mActionsList[cConsonant])
 		if (pConsonantAction!=pAction && cConsonant!=' ')
 		{

@@ -14,7 +14,6 @@
 #include <string>
 #include <map>
 #include <set>
-#include <memory>
 #include <stdarg.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -134,7 +133,7 @@ namespace log4cpp {
         private:
         typedef std::map<std::string, Appender*> AppenderMap;
         
-        static std::auto_ptr<AppenderMap> _allAppenders;
+        static AppenderMap* _allAppenders;
         static threading::Mutex _appenderMapMutex;
 
         static AppenderMap& _getAllAppenders();

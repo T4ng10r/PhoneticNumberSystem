@@ -11,16 +11,14 @@
 #include <log4cpp/Appender.hh>
 
 namespace log4cpp {
-	std::auto_ptr<Appender::AppenderMap> Appender::_allAppenders(static_cast<Appender::AppenderMap*>(0));
-
+    Appender::AppenderMap* Appender::_allAppenders = 0;
     threading::Mutex Appender::_appenderMapMutex;
 
     /* assume _appenderMapMutex locked */
     Appender::AppenderMap& Appender::_getAllAppenders() {
-        //if (!_allAppenders) 
-        //    _allAppenders = new Appender::AppenderMap();
-        if (_allAppenders.get() == 0) 
-            _allAppenders.reset( new Appender::AppenderMap());
+        if (!_allAppenders) 
+            _allAppenders = new Appender::AppenderMap();
+
         return *_allAppenders;
     }
 
@@ -40,6 +38,9 @@ namespace log4cpp {
     void Appender::_removeAppender(Appender* appender) {
         threading::ScopedLock lock(_appenderMapMutex);
         _getAllAppenders().erase(appender->getName());
+        if(_getAllAppenders().size() == 0) {
+	    delete _allAppenders; _allAppenders = 0;	// fix for #2940452 
+        }
     }
     
     bool Appender::reopenAll() {

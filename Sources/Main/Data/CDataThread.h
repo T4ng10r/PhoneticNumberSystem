@@ -1,6 +1,6 @@
 #ifndef _CAF_DATA_THREAD_INCLUDE_
 #define _CAF_DATA_THREAD_INCLUDE_
-#include <QtCore/QThread>
+#include <QThread>
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 

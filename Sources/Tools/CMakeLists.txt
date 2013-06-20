@@ -1,7 +1,11 @@
 cmake_minimum_required(VERSION 2.8)
 
 project(Tools)
-include(${QT_USE_FILE})
+if (USE_Qt5)
+    include_directories($ENV{QTDIR})
+else ()    
+    include(${QT_USE_FILE})
+endif()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/include)

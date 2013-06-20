@@ -1,4 +1,4 @@
-#include <QtGui/QApplication>
+#include <QApplication>
 #include <Tools/loggers.h>
 #include <GUI/MainWindow.h>
 #include <boost/scoped_ptr.hpp>

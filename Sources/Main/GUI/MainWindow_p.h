@@ -1,16 +1,16 @@
 #ifndef _CAF_WINDOW_PRIVATE_INCLUDE_
 #define _CAF_WINDOW_PRIVATE_INCLUDE_
 
-#include <QtGui/QBoxLayout>
-#include <QtGui/QAction>
-#include <QtGui/QToolBar>
-#include <QtGui/QMenuBar>
-#include <QtGui/QLabel>
-#include <QtGui/QTableView>
-#include <QtGui/QPushButton>
-#include <QtGui/QTabWidget>
-#include <QtGui/QTreeView>
-#include <QtCore/QSignalMapper>
+#include <QBoxLayout>
+#include <QAction>
+#include <QToolBar>
+#include <QMenuBar>
+#include <QLabel>
+#include <QTableView>
+#include <QPushButton>
+#include <QTabWidget>
+#include <QTreeView>
+#include <QSignalMapper>
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 //#include <wallaroo/catalog.h>

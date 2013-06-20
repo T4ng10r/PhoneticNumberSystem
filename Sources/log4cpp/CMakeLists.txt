@@ -9,8 +9,9 @@
 # (4) To install either "make install" or "make install DESTDIR=<your directory>"
 # (5) Need to include changes in include/log4cpp/Portability.hh for OSX to build
 
-#PROJECT ( LOG4CPP )
+PROJECT ( LOG4CPP )
 
+INCLUDE_DIRECTORIES ( ${CMAKE_SOURCE_DIR}/include )
 INCLUDE_DIRECTORIES ( include )
 INCLUDE_DIRECTORIES ( . )
 
@@ -24,11 +25,11 @@ ELSE (WIN32)
   ENDIF (APPLE)
 ENDIF (WIN32)
 
-#IF ( CMAKE_BUILD_TYPE MATCHES "Debug" )
-#  SET ( LOG4CPP_LIBRARY_NAME "log4cppD" )
-#ELSE ( CMAKE_BUILD_TYPE MATCHES "Debug" )
-#  SET ( LOG4CPP_LIBRARY_NAME "log4cpp" )
-#ENDIF ( CMAKE_BUILD_TYPE MATCHES "Debug" )
+IF ( CMAKE_BUILD_TYPE MATCHES "Debug" )
+  SET ( LOG4CPP_LIBRARY_NAME "log4cppD" )
+ELSE ( CMAKE_BUILD_TYPE MATCHES "Debug" )
+  SET ( LOG4CPP_LIBRARY_NAME "log4cpp" )
+ENDIF ( CMAKE_BUILD_TYPE MATCHES "Debug" )
 
 ADD_LIBRARY ( ${LOG4CPP_LIBRARY_NAME}
   src/Appender.cpp

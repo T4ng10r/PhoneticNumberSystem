@@ -1,6 +1,6 @@
 #ifndef _SUBSTITUTEVALUESCONFIGURATIONDLG_INCLUDE_
 #define _SUBSTITUTEVALUESCONFIGURATIONDLG_INCLUDE_
-#include <QtGui/QWidget>
+#include <QWidget>
 #include <boost/scoped_ptr.hpp>
 #include <boost/property_tree/ptree.hpp>
 
