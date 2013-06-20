@@ -31,6 +31,10 @@ bool bLoggersCreated(false);
 
 void createLoggers(const QString &strPluginLogName /*= QString()*/)
 {
+	//be sure that DIR is created
+	QDir stDir;
+	stDir.mkdir(LOG_DIR);
+
 #ifdef USE_LOG4QT
 	PatternLayout *		p_PatternLayout(NULL);
 	p_PatternLayout = new PatternLayout;
@@ -74,7 +78,7 @@ void createLoggers(const QString &strPluginLogName /*= QString()*/)
 	log4cpp::Category &debugCategory = log4cpp::Category::getInstance(DEBUG_LOGGER);
 	debugCategory.setAdditivity(false);
 	debugCategory.setAppender(debugAppender);
-	debugCategory.setPriority(log4cpp::Priority::INFO);
+	debugCategory.setPriority(log4cpp::Priority::DEBUG);
 
 	//////////////////////////////////////////////////////////////////////////
 	//log4cpp::PatternLayout* layout = new log4cpp::PatternLayout();
@@ -128,13 +132,13 @@ void printLog(eLogLevel debugLevel, eLoggerType loggerType, const QString &strMs
 #ifdef USE_LOG4QT
 			ptrLogger = Log4Qt::LogManager::logger(DEBUG_LOGGER);			break;
 #elif defined(USE_LOG4CPP)
-			ptrCategory = log4cpp::Category::exists(DEBUG_LOGGER);
+			ptrCategory = log4cpp::Category::exists(DEBUG_LOGGER);			break;
 #endif
 		case eSlots:	
 #ifdef USE_LOG4QT
 			ptrLogger = Log4Qt::LogManager::logger(SLOTS_LOGGER);	break;
 #elif defined(USE_LOG4CPP)
-			ptrCategory = log4cpp::Category::exists(SLOTS_LOGGER);
+			ptrCategory = log4cpp::Category::exists(SLOTS_LOGGER);	break;
 #endif
 		default: return;
 	}
@@ -144,25 +148,25 @@ void printLog(eLogLevel debugLevel, eLoggerType loggerType, const QString &strMs
 #ifdef USE_LOG4QT
 			ptrLogger->info(stLogError); 	break;
 #elif defined(USE_LOG4CPP)
-			ptrCategory->info(strMsg.toStdString());
+			ptrCategory->info(strMsg.toStdString());	break;
 #endif
 		case eWarningLogLevel:	
 #ifdef USE_LOG4QT
 			ptrLogger->warn(stLogError);	break;
 #elif defined(USE_LOG4CPP)
-			ptrCategory->warn(strMsg.toStdString());
+			ptrCategory->warn(strMsg.toStdString());	break;
 #endif
 		case eDebugLogLevel:	
 #ifdef USE_LOG4QT
 			ptrLogger->debug(stLogError);	break;
 #elif defined(USE_LOG4CPP)
-			ptrCategory->debug(strMsg.toStdString());
+			ptrCategory->debug(strMsg.toStdString());	break;
 #endif
 		case eErrorLogLevel:
 #ifdef USE_LOG4QT
 			ptrLogger->error(stLogError);	break;
 #elif defined(USE_LOG4CPP)
-			ptrCategory->error(strMsg.toStdString());
+			ptrCategory->error(strMsg.toStdString());	break;
 #endif
 	}
 }

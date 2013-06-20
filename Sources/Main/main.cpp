@@ -4,10 +4,8 @@
 #include <boost/scoped_ptr.hpp>
 #include <Data/CAppSettings.h>
 
-
 int main(int argc, char *argv[])
 {
-      //Q_INIT_RESOURCE(application);
       QApplication app(argc, argv);
 	  app.setApplicationName("PhoneticNumberSystem");
 	  app.setOrganizationName("T4ng10r");
