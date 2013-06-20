@@ -5,7 +5,8 @@
 
 #define CONFIGURATION_FILE std::string("PhoneticNumberSystem.xml")
 const std::string strConfigurationFileName("PhoneticNumberSystem.xml");
-extern CAppSettings	stAppSettings;
+
+CAppSettings* CAppSettings::pInstance_=0;
 
 class CAppSettingsPrivate
 {
@@ -35,19 +36,31 @@ void CAppSettingsPrivate::loadSettings()
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
-CAppSettings::CAppSettings(void):m_ptrPriv(new CAppSettingsPrivate(this))
+CAppSettings::CAppSettings():m_ptrPriv(new CAppSettingsPrivate(this))
 {
 	printLog(eDebugLogLevel, eDebug, "AppSettings created");
 }
-CAppSettings::~CAppSettings(void){}
+CAppSettings::~CAppSettings(){}
 const boost::property_tree::ptree &CAppSettings::getSubstituteValuesConfiguration()
 {
 	printLog(eDebugLogLevel, eDebug, "SubstituteValuesConfiguration provided");
 	return m_ptrPriv->m_ptrSubstValConf;
 }
+CAppSettings* CAppSettings::getInstance()
+{
+	if(!pInstance_)
+	{
+		if(!pInstance_)
+		{
+			CAppSettings * p = new CAppSettings();
+			pInstance_ = p;
+		}
+	}
+	return pInstance_;
+}
 //////////////////////////////////////////////////////////////////////////
 CSubstituteValuesConfiguration::CSubstituteValuesConfiguration():
-boost::property_tree::ptree(stAppSettings.getSubstituteValuesConfiguration())
+boost::property_tree::ptree(gAppSettings->getSubstituteValuesConfiguration())
 {
 	//boost::property_tree::ptree
 	//this = stAppSettings.getSubstituteValuesConfiguration().get();

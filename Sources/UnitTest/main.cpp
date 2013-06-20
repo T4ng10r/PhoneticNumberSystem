@@ -2,8 +2,6 @@
 #include "CAppSettingsTest.h"
 #include <Data/CAppSettings.h>
 
-CAppSettings	stAppSettings;
-
 int main(int argc, char *argv[]) 
 { 
 	QApplication app(argc, argv);

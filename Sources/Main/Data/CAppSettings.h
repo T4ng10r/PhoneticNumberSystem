@@ -19,11 +19,14 @@ class CAppSettings : public boost::property_tree::ptree //QObject
 	//Q_OBJECT
 	friend class CAppSettingsPrivate;
 public:
-	CAppSettings(void);
-	~CAppSettings(void);
+	static CAppSettings* getInstance();
+	~CAppSettings();
 	const boost::property_tree::ptree & getSubstituteValuesConfiguration();
 protected:
+	CAppSettings();
 	boost::scoped_ptr<CAppSettingsPrivate> m_ptrPriv;
+	static CAppSettings* pInstance_;
 };
+#define gAppSettings CAppSettings::getInstance() 
 #endif //_CAPPSETTINGS_INCLUDE_
 

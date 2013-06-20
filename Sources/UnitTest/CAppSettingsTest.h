@@ -7,7 +7,7 @@ class CAppSettingsTest : public QObject
 {
     Q_OBJECT
 public:
-	boost::shared_ptr<CAppSettings>	m_ptrAppSettings;
+	CAppSettings * m_ptrAppSettings;
 private slots:
 	void init();
 	void cleanup();

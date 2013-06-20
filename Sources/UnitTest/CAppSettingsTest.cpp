@@ -5,11 +5,11 @@
 
 void CAppSettingsTest::init()
 {
-	m_ptrAppSettings.reset(new CAppSettings);
+	m_ptrAppSettings = gAppSettings;
 }
 void CAppSettingsTest::cleanup()
 {
-	m_ptrAppSettings.reset();
+	//m_ptrAppSettings.reset();
 }
 void CAppSettingsTest::test_SubstituteValuesConfiguration()
 {

@@ -20,6 +20,7 @@ using namespace Log4Qt;
 using namespace log4cpp;
 
 #endif
+bool bLoggersCreated(false);
 
 #define DEBUG_LOGGER		"debug"
 #define SLOTS_LOGGER		"slots"
@@ -94,6 +95,7 @@ void createLoggers(const QString &strPluginLogName /*= QString()*/)
 	slotsConnectionCategory.setAppender(slotsConnectionAppender);
 	slotsConnectionCategory.setPriority(log4cpp::Priority::INFO);
 #endif
+	bLoggersCreated=true;
 }
 
 void destroyLoggers()
@@ -110,6 +112,9 @@ void destroyLoggers()
 
 void printLog(eLogLevel debugLevel, eLoggerType loggerType, const QString &strMsg)
 {
+	if (false==bLoggersCreated)
+		createLoggers();
+
 #ifdef USE_LOG4QT
 	Log4Qt::Logger * ptrLogger(NULL);
 	Log4Qt::Logger * ptrLogger(NULL);

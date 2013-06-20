@@ -4,7 +4,6 @@
 #include <boost/scoped_ptr.hpp>
 #include <Data/CAppSettings.h>
 
-CAppSettings	stAppSettings;
 
 int main(int argc, char *argv[])
 {
