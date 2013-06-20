@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 	if (QTest::qExec(&cAppSettingsTest, argc, argv)!=0)
 		return -1;  
 	
-	//CSubstituteValuesConfigurationDlgTest cSubstituteValuesConfigurationDlgTest;
-	//if (QTest::qExec(&cSubstituteValuesConfigurationDlgTest, argc, argv)!=0)
-	//	return -1;  
+	CSubstituteValuesConfigurationDlgTest cSubstituteValuesConfigurationDlgTest;
+	if (QTest::qExec(&cSubstituteValuesConfigurationDlgTest, argc, argv)!=0)
+		return -1;  
 }

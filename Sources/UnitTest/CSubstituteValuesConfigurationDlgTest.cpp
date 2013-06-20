@@ -1,63 +1,79 @@
 #include "CSubstituteValuesConfigurationDlgTest.h" 
+#include <GUI\Settings\SubstituteValuesConfigurationDlg.h> 
+#include <GUI\Settings\SubstituteValuesConfigurationDlg.cpp> 
 //#include <QMetaType>
 #include <string>
-#include <Main/GUI/Settings/SubstituteValuesConfigurationDlg.h>
 
 const unsigned int ciSingleTimeout(1000); //in s
 const unsigned int ciTimeoutsCount(5); //in s
 //Q_DECLARE_METATYPE(Qt::Orientation)
 //Q_DECLARE_METATYPE(QModelIndex)
 
-CSubstituteValuesConfigurationDlgTest::CSubstituteValuesConfigurationDlgTest(){}
+class CSubstituteValuesConfigurationDlgTemp : public CSubstituteValuesConfigurationDlg
+{
+	friend class CSubstituteValuesConfigurationDlgTest;
+public:
+	CSubstituteValuesConfigurationDlgTemp(const boost::property_tree::ptree &stProperties)
+		: CSubstituteValuesConfigurationDlg(stProperties){}
+};
+
+
+CSubstituteValuesConfigurationDlgTest::CSubstituteValuesConfigurationDlgTest()
+{
+	char tabConsonants[] = {'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 
+		'S', 'T', 'V', 'X', 'Z', 'W'};
+	int iCount(sizeof(tabConsonants)/sizeof(char));
+	m_stConfiguration.put("count",iCount);
+	for(int i=0;i<iCount;i++)
+	{
+		m_stConfiguration.add("consonant",tabConsonants[i]);
+	}
+}
 void CSubstituteValuesConfigurationDlgTest::init()
 {
-	//m_ptrDialog=m_catalog[ "SubstituteValuesConfigurationDlg" ];
+	m_ptrDialog.reset(new CSubstituteValuesConfigurationDlgTemp(m_stConfiguration));
 }
 void CSubstituteValuesConfigurationDlgTest::cleanup()
 {
 	m_ptrDialog.reset();  
 }
-void CSubstituteValuesConfigurationDlgTest::test_1()
+void CSubstituteValuesConfigurationDlgTest::test_OtherMenusEntriesDisabled()
 {
-	//QTableView ptrTableView;
-	//CShopHeaderView * shopHeaderView = new CShopHeaderView();
-	//ptrTableView.setHorizontalHeader(shopHeaderView);
+	unsigned int iDigitEntry(1);
+	unsigned int iConsonantEntry(2);
+	//choose one of consonants for digit '1' 
+	EntryLine & entry = m_ptrDialog->m_ptrPriv->m_ptrDigitsEntries[iDigitEntry];
+	//choose C (3rd after None and B
+	entry.m_ptrConsonantsActions1[iConsonantEntry]->trigger();
+	//wait till all signal/slots are triggered
 
-	////QStandardItemModel stModel;
-
-	////QStandardItemModel * m_ptrModel = &stModel;
-	//ptrTableView.setModel(m_ptrModel);
-	//ptrTableView.show();
-	//m_ptrModel->insertColumns(0,5);
-	//m_ptrModel->insertRows(0,5);
-	//QCOMPARE(m_ptrModel->rowCount(),6);
-	//QCOMPARE(m_ptrModel->columnCount(),6);
-	////////////////////////////////////////////////////////////////////////////
-	//int iCount =0;
-	//qRegisterMetaType<QModelIndex>("QModelIndex");
-	//qRegisterMetaType<Qt::Orientation>("Qt::Orientation");
-	//QSignalSpy spy(&ptrTableView, SIGNAL(quit()));
-	//m_ptrModel->removeRow(3);
-	//m_ptrModel->removeRows(0,m_ptrModel->rowCount());
-	//m_ptrModel->insertRow(0);
-	//m_ptrModel->insertRow(0);
-	//m_ptrModel->insertRow(0);
-	//m_ptrModel->removeRows(0,m_ptrModel->rowCount());
-	//m_ptrModel->insertRow(m_ptrModel->rowCount());
-	//while (spy.count() == 0)
-	//{
-	//	QTest::qWait(5000);
-	//	++iCount;
-	//	if (iCount>20)
-	//	{
-	//		QVERIFY2(false,"Timeout waiting for rowsRemoved signal");
-	//		break;
-	//	}
-	//}
-	//QCOMPARE(m_ptrModel->rowCount(),4);
-	//QList<QVariant> firstSignal = spy.takeFirst();
-	//QCOMPARE(firstSignal.at(1).toInt(), 0);
-	//QCOMPARE(firstSignal.at(2).toInt(), 0);
-	//////////////////////////////////////////////////////////////////////////
-	//QTest::qWait(5000);
+	//check if in others digits this Action is deactivated
+	for(unsigned int index=0;index<m_ptrDialog->m_ptrPriv->m_ptrDigitsEntries.size();index++)
+	{
+		if (index==iDigitEntry)
+			continue;
+		EntryLine & entry = m_ptrDialog->m_ptrPriv->m_ptrDigitsEntries[index];
+		QCOMPARE(entry.m_ptrConsonantsActions1[iConsonantEntry]->isEnabled(),false);
+		QCOMPARE(entry.m_ptrConsonantsActions2[iConsonantEntry]->isEnabled(),false);
+	}
+}
+void CSubstituteValuesConfigurationDlgTest::test_SecondMenusDisabled()
+{
+	//check if in all FIRST Menus None is selected
+	for(unsigned int index=0;index<m_ptrDialog->m_ptrPriv->m_ptrDigitsEntries.size();index++)
+	{
+		EntryLine & entry = m_ptrDialog->m_ptrPriv->m_ptrDigitsEntries[index];
+		QCOMPARE(entry.m_ptrConsonantsActions1[0]->isChecked(),true);
+		QCOMPARE(entry.m_ptrConsonantButton1->isEnabled(),true);
+		QCOMPARE(entry.m_ptrConsonantButton2->isEnabled(),false);
+	}
+	unsigned int iDigitEntry(1);
+	unsigned int iConsonantEntry(2);
+	//choose one of consonants for digit '1' 
+	EntryLine & entry = m_ptrDialog->m_ptrPriv->m_ptrDigitsEntries[iDigitEntry];
+	//choose C (3rd after None and B
+	entry.m_ptrConsonantsActions1[iConsonantEntry]->trigger();
+	QCOMPARE(entry.m_ptrConsonantButton2->isEnabled(),true);
+	entry.m_ptrConsonantsActions1[0]->trigger();
+	QCOMPARE(entry.m_ptrConsonantButton2->isEnabled(),false);
 }
