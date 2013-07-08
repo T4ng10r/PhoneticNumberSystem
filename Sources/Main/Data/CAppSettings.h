@@ -2,6 +2,8 @@
 #define _CAPPSETTINGS_INCLUDE_
 
 //#include <QtCore/QObject>
+#include <Data/CSystemDigitsConfiguration.h>
+#include <vector>
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/property_tree/ptree.hpp>
@@ -22,6 +24,7 @@ public:
 	static CAppSettings* getInstance();
 	~CAppSettings();
 	const boost::property_tree::ptree & getSubstituteValuesConfiguration();
+	const std::vector<CSystemDigitsConfiguration> & getDigitsConfiguraions();
 protected:
 	CAppSettings();
 	boost::scoped_ptr<CAppSettingsPrivate> m_ptrPriv;

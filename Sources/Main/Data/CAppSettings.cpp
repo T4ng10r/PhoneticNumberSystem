@@ -1,8 +1,7 @@
 #include <Data/CAppSettings.h>
 #include <tools/loggers.h>
-#include <Data/CSystemDigitsConfiguration.h>
 #include <boost/property_tree/xml_parser.hpp>
-//#include <boost/foreach.hpp>
+#include <boost/foreach.hpp>
 
 #define CONFIGURATION_FILE std::string("PhoneticNumberSystem.xml")
 const std::string strConfigurationFileName("PhoneticNumberSystem.xml");
@@ -40,12 +39,48 @@ void CAppSettingsPrivate::loadSettings()
 }
 void CAppSettingsPrivate::getDigitsConfiguration()
 {
+	using boost::property_tree::ptree;
 	CSystemDigitsConfiguration  stSystemDigitsConfiguration;
-	//BOOST_FOREACH(const ptree::value_type &singleEntry, m_ptrSubstValConf)
-	//{
-	//	if (singleEntry.first!="digits_configuration")
-	//		continue;
-
+	BOOST_FOREACH(const ptree::value_type &digitsConf, m_ptrSubstValConf)
+	{
+		if (digitsConf.first!="digits_configuration")
+			continue;
+		stSystemDigitsConfiguration.reset();
+		BOOST_FOREACH(const ptree::value_type &digitsConfEntry, digitsConf.second)
+		{
+			if (digitsConfEntry.first=="name")
+			{
+				stSystemDigitsConfiguration.strName=digitsConfEntry.second.data();
+				continue;
+			}
+			if (digitsConfEntry.first=="digit")
+			{
+				int iDigit(-1);
+				std::pair<char,char>	stPair(' ',' ');
+				BOOST_FOREACH(const ptree::value_type &digitsEntry, digitsConfEntry.second)
+				{
+					if (digitsEntry.first=="value")
+					{
+						iDigit=digitsEntry.second.get_value<int>();
+					}
+					if (digitsEntry.first=="substitue")
+					{
+						if (stPair.first==' ')
+						{
+							stPair.first = digitsEntry.second.data().at(0);
+						}
+						else if (stPair.second==' ')
+						{
+							stPair.second = digitsEntry.second.data().at(0);
+						}
+					}
+				}
+				stSystemDigitsConfiguration.mSystem[iDigit]=stPair;
+				continue;
+			}
+		}
+		m_vDigitsConfiguration.push_back(stSystemDigitsConfiguration);
+	}
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
@@ -70,6 +105,10 @@ CAppSettings* CAppSettings::getInstance()
 		}
 	}
 	return pInstance_;
+}
+const std::vector<CSystemDigitsConfiguration> & CAppSettings::getDigitsConfiguraions()
+{
+	return m_ptrPriv->m_vDigitsConfiguration;
 }
 //////////////////////////////////////////////////////////////////////////
 CSubstituteValuesConfiguration::CSubstituteValuesConfiguration():

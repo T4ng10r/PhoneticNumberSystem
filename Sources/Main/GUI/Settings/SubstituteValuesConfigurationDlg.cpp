@@ -5,6 +5,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QBoxLayout>
+#include <QComboBox>
 #include <tools/loggers.h>
 #include <Tools/qtTools.h>
 #include <boost/lexical_cast.hpp>
@@ -43,6 +44,8 @@ public:
 	CSubstituteValuesConfigurationDlg *		m_ptrPublic;
 	std::vector<EntryLine>					m_ptrDigitsEntries;
 	std::map<char, std::vector<QAction *> > m_mActionsList;
+	QComboBox *		m_ptrSystemsCombo;
+	QLabel *		m_ptrSystemsLabel;
 };
 
 CSubstituteValuesConfigurationDlgPrivate::CSubstituteValuesConfigurationDlgPrivate(CSubstituteValuesConfigurationDlg * ptrPublic):
@@ -55,6 +58,14 @@ void CSubstituteValuesConfigurationDlgPrivate::setupUI()
 	QVBoxLayout * ptrMainLayout = new QVBoxLayout;
 	delete m_ptrPublic->layout();
 	m_ptrPublic->setLayout(ptrMainLayout);
+
+	QHBoxLayout *	m_ptrComboLayout = new QHBoxLayout;
+	m_ptrSystemsCombo = new QComboBox;
+	m_ptrSystemsLabel = new QLabel;
+	m_ptrSystemsLabel->setText("System configuration");
+	m_ptrComboLayout->addWidget(m_ptrSystemsLabel);
+	m_ptrComboLayout->addWidget(m_ptrSystemsCombo);
+	ptrMainLayout->addLayout(m_ptrComboLayout);
 
 	m_ptrDigitsEntries.resize(DigitsCount);
 
