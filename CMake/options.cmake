@@ -24,7 +24,6 @@ set_property(CACHE Logger PROPERTY STRINGS ${LoggersNames})
 SET ( LOG4QT_LIBRARY_NAME "log4qt" )
 SET ( LOG4CPP_LIBRARY_NAME "log4cpp" )
 
-
 IF (Logger STREQUAL "log4Qt")
   add_definitions(-DUSE_LOG4QT)
   SET(LOGGER_LIBRARY ${LOG4QT_LIBRARY_NAME})
@@ -34,6 +33,13 @@ ELSEIF (Logger STREQUAL "log4cpp")
 ELSE (Logger STREQUAL "log4Qt")
   SET(LOGGER_LIBRARY "")
 ENDIF (Logger STREQUAL "log4Qt")
+
+
+if (MSVC)
+    set ( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /MP")
+    #SET(CMAKE_CXX_FLAGS "/WL /MP /GR /EHsc" )
+    message(STATUS "Added parallel build arguments to CMAKE_CXX_FLAGS: ${CMAKE_CXX_FLAGS}")
+endif(MSVC)
 
 function(GetLogingLibrary )
 

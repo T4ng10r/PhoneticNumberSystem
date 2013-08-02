@@ -20,7 +20,7 @@ void CAppSettingsTest::test_SubstituteValuesConfiguration()
 	CSubstituteValuesConfiguration	stConfSubst;
 
 	boost::property_tree::ptree stConf = stConfSubst;
-	QCOMPARE(stConf.size(),ptree::size_type(21));
+	QCOMPARE(stConf.size(),ptree::size_type(22));
 	QCOMPARE(stConf.get_child("count").get_value<int>(),20);
 	QCOMPARE(sConsonants.size(),std::size_t(20));
 	BOOST_FOREACH(ptree::value_type &val, stConf)

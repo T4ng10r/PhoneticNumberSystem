@@ -14,8 +14,8 @@ public:
 	CSubstituteValuesConfigurationDlg(const boost::property_tree::ptree &stProperties);
 	~CSubstituteValuesConfigurationDlg(void);
 public slots:
-	void onMenuTriggered(QAction * action );
-	void onActionToggled(bool );
+	void onMenuTriggered_SetButtonTextWithSelectedConsonant(QAction * action );
+	void onActionToggled_DeactivateThisConsonantInOtherMenus(bool );
 protected:
 	boost::scoped_ptr<CSubstituteValuesConfigurationDlgPrivate> m_ptrPriv;
 };

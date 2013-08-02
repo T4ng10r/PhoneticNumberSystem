@@ -38,7 +38,14 @@ public:
 	void setupUI();
 	QHBoxLayout * setupUI_line(int iIndex);
 	void setupActions();
+	void setConfigurations();
+
+	QAction *  createConsonantAction(char consonant, bool bChecked);
+	void createAndAddConsonantActionOnBothSides( EntryLine &stEntry, char consonant, bool initialiyChecked );
+	void setConnectionForConsonantAction( QAction * emptyAction );
 	void setConnections();
+	void addCreatedConsonantAction(EntryLine &stEntry, QAction * emptyAction, bool bAddToFirstGroup);
+
 public:
 	boost::property_tree::ptree				m_stProperties;
 	CSubstituteValuesConfigurationDlg *		m_ptrPublic;
@@ -73,6 +80,15 @@ void CSubstituteValuesConfigurationDlgPrivate::setupUI()
 	{
 		ptrMainLayout->addLayout(setupUI_line(i));
 	}
+	setupActions();
+	setConnections();
+	setConfigurations();
+
+}
+void CSubstituteValuesConfigurationDlgPrivate::setConfigurations()
+{
+	m_ptrSystemsCombo->addItem("");
+	//int iConsonantsCount(m_stProperties.get_child("count").get_value<int>());
 }
 QHBoxLayout * CSubstituteValuesConfigurationDlgPrivate::setupUI_line(int iIndex)
 {
@@ -104,12 +120,12 @@ QHBoxLayout * CSubstituteValuesConfigurationDlgPrivate::setupUI_line(int iIndex)
 	ptrHLayout->addWidget(stEntryLine.m_ptrConsonantButton2);
 
 	bResult = QObject::connect(stEntryLine.m_ptrConsonantsMenu1, SIGNAL(triggered ( QAction * )), 
-		m_ptrPublic, SLOT(onMenuTriggered(QAction *)));
+		m_ptrPublic, SLOT(onMenuTriggered_SetButtonTextWithSelectedConsonant(QAction *)));
 	logConnection("CSubstituteValuesConfigurationDlgPrivate::setupUI_line",
 		"'m_ptrConsonantsMenu1::triggered' with 'm_ptrPublic::onMenuTriggered'", 
 		bResult);
 	bResult = QObject::connect(stEntryLine.m_ptrConsonantsMenu2, SIGNAL(triggered ( QAction * )), 
-		m_ptrPublic, SLOT(onMenuTriggered(QAction *)));
+		m_ptrPublic, SLOT(onMenuTriggered_SetButtonTextWithSelectedConsonant(QAction *)));
 	logConnection("CSubstituteValuesConfigurationDlgPrivate::setupUI_line",
 		"'m_ptrConsonantsMenu2::triggered' with 'm_ptrPublic::onMenuTriggered'", 
 		bResult);
@@ -119,74 +135,65 @@ QHBoxLayout * CSubstituteValuesConfigurationDlgPrivate::setupUI_line(int iIndex)
 void CSubstituteValuesConfigurationDlgPrivate::setupActions()
 {
 	using boost::property_tree::ptree;
-	//int iConsonantsCount(stAppSettings.get<int>("settings.consonants.count"));
-	m_stProperties.get_child("count");
 	int iConsonantsCount(m_stProperties.get_child("count").get_value<int>());
 	bool bResult = false;
 
 	BOOST_FOREACH(EntryLine & stEntry, m_ptrDigitsEntries)
+		createAndAddConsonantActionOnBothSides(stEntry, ' ', true);
+	BOOST_FOREACH(const ptree::value_type &singleDigitsEntry, m_stProperties)
 	{
-		QAction * ptrConsonantEmptyAction1 = new QAction(QString(" "), NULL);
-		m_mActionsList[' '].push_back(ptrConsonantEmptyAction1);
-		stEntry.m_ptrConsonantsMenu1->addAction(ptrConsonantEmptyAction1);
-		ptrConsonantEmptyAction1->setCheckable(true);
-		ptrConsonantEmptyAction1->setChecked(true);
-		stEntry.m_ptrActionGroup1->addAction(ptrConsonantEmptyAction1);
-		stEntry.m_ptrConsonantsActions1.push_back(ptrConsonantEmptyAction1);
-		bResult = QObject::connect(ptrConsonantEmptyAction1, SIGNAL(toggled ( bool )), 
-			m_ptrPublic, SLOT(onActionToggled(bool)));
-		logConnection("CSubstituteValuesConfigurationDlgPrivate::setupActions",
-			"'ptrConsonantEmptyAction1::triggered' with 'm_ptrPublic::onActionToggled'", 
-			bResult);
-
-		QAction * ptrConsonantEmptyAction2 = new QAction(QString(" "), NULL);
-		m_mActionsList[' '].push_back(ptrConsonantEmptyAction2);
-		stEntry.m_ptrConsonantsMenu2->addAction(ptrConsonantEmptyAction2);
-		ptrConsonantEmptyAction2->setCheckable(true);
-		ptrConsonantEmptyAction2->setChecked(true);
-		stEntry.m_ptrActionGroup2->addAction(ptrConsonantEmptyAction2);
-		stEntry.m_ptrConsonantsActions2.push_back(ptrConsonantEmptyAction2);
-		bResult = QObject::connect(ptrConsonantEmptyAction2, SIGNAL(toggled ( bool )), 
-			m_ptrPublic, SLOT(onActionToggled(bool)));
-		logConnection("CSubstituteValuesConfigurationDlgPrivate::setupActions",
-			"'ptrConsonantEmptyAction2::triggered' with 'm_ptrPublic::onActionToggled'", 
-			bResult);
-	}
-	BOOST_FOREACH(const ptree::value_type &singleEntry, m_stProperties/*.get_child("")*/)
-	{
-		if (singleEntry.first!="consonant")
+		if (singleDigitsEntry.first!="consonant")
 			continue;
-		char cConsonant(singleEntry.second.data().at(0));
+		char consonant(singleDigitsEntry.second.data().at(0));
 		BOOST_FOREACH(EntryLine & stEntry, m_ptrDigitsEntries)
-		{
-			QAction * ptrConsonantAction1 = new QAction(QString("&%1").arg(cConsonant), NULL);
-			m_mActionsList[cConsonant].push_back(ptrConsonantAction1);
-			stEntry.m_ptrConsonantsMenu1->addAction(ptrConsonantAction1);
-			ptrConsonantAction1->setCheckable(true);
-			stEntry.m_ptrActionGroup1->addAction(ptrConsonantAction1);
-			stEntry.m_ptrConsonantsActions1.push_back(ptrConsonantAction1);
-			bResult = QObject::connect(ptrConsonantAction1, SIGNAL(toggled ( bool )), 
-				m_ptrPublic, SLOT(onActionToggled(bool)));
-			logConnection("CSubstituteValuesConfigurationDlgPrivate::setupActions",
-				"'ptrConsonantAction1::triggered' with 'm_ptrPublic::onActionToggled'", 
-				bResult);
-
-			QAction * ptrConsonantAction2 = new QAction(QString("&%1").arg(cConsonant), NULL);
-			m_mActionsList[cConsonant].push_back(ptrConsonantAction2);
-			stEntry.m_ptrConsonantsMenu2->addAction(ptrConsonantAction2);
-			ptrConsonantAction2->setCheckable(true);
-			stEntry.m_ptrActionGroup2->addAction(ptrConsonantAction2);
-			stEntry.m_ptrConsonantsActions2.push_back(ptrConsonantAction2);
-			bResult = QObject::connect(ptrConsonantAction2, SIGNAL(toggled ( bool )), 
-				m_ptrPublic, SLOT(onActionToggled(bool)));
-			logConnection("CSubstituteValuesConfigurationDlgPrivate::setupActions",
-				"'ptrConsonantAction2::triggered' with 'm_ptrPublic::onActionToggled'", 
-				bResult);
-		}
+			createAndAddConsonantActionOnBothSides(stEntry, consonant, false);
 	}
 }
 void CSubstituteValuesConfigurationDlgPrivate::setConnections()
 {
+}
+QAction *  CSubstituteValuesConfigurationDlgPrivate::createConsonantAction(char consonant, bool bChecked) 
+{
+	QString actionName(consonant);
+	if (' '!=consonant)
+		actionName.push_front('&');
+	QAction * action = new QAction(actionName, NULL);
+	m_mActionsList[consonant].push_back(action);
+
+	action->setCheckable(true);
+	action->setChecked(bChecked);
+	setConnectionForConsonantAction(action);
+	return action;
+}
+void CSubstituteValuesConfigurationDlgPrivate::createAndAddConsonantActionOnBothSides( EntryLine &stEntry, char consonant, bool initialiyChecked )
+{
+	QAction * emptyAction = createConsonantAction(consonant, initialiyChecked);
+	addCreatedConsonantAction(stEntry, emptyAction, true);
+	emptyAction = createConsonantAction(consonant, initialiyChecked);
+	addCreatedConsonantAction(stEntry, emptyAction, false);
+}
+void CSubstituteValuesConfigurationDlgPrivate::addCreatedConsonantAction( EntryLine &stEntry, QAction * emptyAction, bool bAddToFirstGroup )
+{
+	if (bAddToFirstGroup)
+	{
+		stEntry.m_ptrConsonantsMenu1->addAction(emptyAction);
+		stEntry.m_ptrActionGroup1->addAction(emptyAction);
+		stEntry.m_ptrConsonantsActions1.push_back(emptyAction);
+	}
+	else
+	{
+		stEntry.m_ptrConsonantsMenu2->addAction(emptyAction);
+		stEntry.m_ptrActionGroup2->addAction(emptyAction);
+		stEntry.m_ptrConsonantsActions2.push_back(emptyAction);
+	}
+}
+void CSubstituteValuesConfigurationDlgPrivate::setConnectionForConsonantAction( QAction * emptyAction ) 
+{
+	bool bResult = QObject::connect(emptyAction, SIGNAL(toggled ( bool )), 
+		m_ptrPublic, SLOT(onActionToggled_DeactivateThisConsonantInOtherMenus(bool)));
+	logConnection("CSubstituteValuesConfigurationDlgPrivate::setupActions",
+		"'emptyAction::triggered' with 'm_ptrPublic::onActionToggled'", 
+		bResult);
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
@@ -195,33 +202,30 @@ CSubstituteValuesConfigurationDlg::CSubstituteValuesConfigurationDlg(const boost
 {
 	m_ptrPriv->m_stProperties=stProperties;
 	m_ptrPriv->setupUI();
-	m_ptrPriv->setupActions();
-	m_ptrPriv->setConnections();
 }
 CSubstituteValuesConfigurationDlg::~CSubstituteValuesConfigurationDlg(void){}
-void CSubstituteValuesConfigurationDlg::onMenuTriggered(QAction * pAction )
+void CSubstituteValuesConfigurationDlg::onMenuTriggered_SetButtonTextWithSelectedConsonant(QAction * pAction )
 {
 	QObject * pObject = sender();
 	QMenu * ptrMenu = static_cast<QMenu*>(sender());
-	int iIndex;
-	char cConsonant;
-	iIndex = pAction->text().length()>1?1:0;
-	cConsonant = pAction->text().at(iIndex).toLatin1();
+	int iIndex(pAction->text().length()>1?1:0);
+	char cConsonant(pAction->text().at(iIndex).toLatin1());
 
+	//check to which Digit Entry belongs this action
 	BOOST_FOREACH(EntryLine & stEntry, m_ptrPriv->m_ptrDigitsEntries)
 		if (stEntry.m_ptrConsonantsMenu1==ptrMenu)
 		{
 			stEntry.m_ptrConsonantButton1->setText(QString(cConsonant));
 			stEntry.m_ptrConsonantButton2->setEnabled(cConsonant!=' ');
-			break;
+			return;
 		}
 		else if (stEntry.m_ptrConsonantsMenu2==ptrMenu)
 		{
 			stEntry.m_ptrConsonantButton2->setText(QString(cConsonant));
-			break;
+			return;
 		}
 }
-void CSubstituteValuesConfigurationDlg::onActionToggled(bool bState)
+void CSubstituteValuesConfigurationDlg::onActionToggled_DeactivateThisConsonantInOtherMenus(bool bState)
 {
 	QAction * pAction = static_cast<QAction*>(sender());
 	QMenu * ptrMenu = pAction->menu();
