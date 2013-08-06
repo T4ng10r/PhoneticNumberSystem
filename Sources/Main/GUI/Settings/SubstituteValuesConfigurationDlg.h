@@ -16,6 +16,7 @@ public:
 public slots:
 	void onMenuTriggered_SetButtonTextWithSelectedConsonant(QAction * action );
 	void onActionToggled_DeactivateThisConsonantInOtherMenus(bool );
+	void onSystemsActvivated_changeCurrentDigitsSystem(const QString&);
 protected:
 	boost::scoped_ptr<CSubstituteValuesConfigurationDlgPrivate> m_ptrPriv;
 };

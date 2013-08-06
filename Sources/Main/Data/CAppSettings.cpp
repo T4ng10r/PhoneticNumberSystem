@@ -21,7 +21,7 @@ public:
 	//boost::shared_ptr<CSubstituteValuesConfiguration>	m_ptrSubstValConf;
 	CAppSettings *							m_ptrPublic;
 	boost::property_tree::ptree				m_ptrSubstValConf;
-	std::vector<CSystemDigitsConfiguration>	m_vDigitsConfiguration;
+	std::vector<CSingleSubstituteDigitsConfiguration>	m_vDigitsConfiguration;
 };
 //////////////////////////////////////////////////////////////////////////
 CAppSettingsPrivate::CAppSettingsPrivate(CAppSettings * ptrPublic):m_ptrPublic(ptrPublic)
@@ -40,7 +40,7 @@ void CAppSettingsPrivate::loadSettings()
 void CAppSettingsPrivate::getDigitsConfiguration()
 {
 	using boost::property_tree::ptree;
-	CSystemDigitsConfiguration  stSystemDigitsConfiguration;
+	CSingleSubstituteDigitsConfiguration  stSystemDigitsConfiguration;
 	BOOST_FOREACH(const ptree::value_type &digitsConf, m_ptrSubstValConf)
 	{
 		if (digitsConf.first!="digits_configuration")
@@ -106,7 +106,7 @@ CAppSettings* CAppSettings::getInstance()
 	}
 	return pInstance_;
 }
-const std::vector<CSystemDigitsConfiguration> & CAppSettings::getDigitsConfiguraions()
+const std::vector<CSingleSubstituteDigitsConfiguration> & CAppSettings::getDigitsConfiguraions()
 {
 	return m_ptrPriv->m_vDigitsConfiguration;
 }
@@ -114,6 +114,4 @@ const std::vector<CSystemDigitsConfiguration> & CAppSettings::getDigitsConfigura
 CSubstituteValuesConfiguration::CSubstituteValuesConfiguration():
 boost::property_tree::ptree(gAppSettings->getSubstituteValuesConfiguration())
 {
-	//boost::property_tree::ptree
-	//this = stAppSettings.getSubstituteValuesConfiguration().get();
 }

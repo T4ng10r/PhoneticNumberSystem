@@ -10,6 +10,12 @@
 
 class CAppSettingsPrivate;
 
+class CSubstituteDigitsConfiguration
+{
+	CSubstituteDigitsConfiguration();
+	std::map<std::string, CSingleSubstituteDigitsConfiguration>	substitutes;
+};
+
 class CSubstituteValuesConfiguration : public boost::property_tree::ptree
 {
 public:
@@ -24,7 +30,7 @@ public:
 	static CAppSettings* getInstance();
 	~CAppSettings();
 	const boost::property_tree::ptree & getSubstituteValuesConfiguration();
-	const std::vector<CSystemDigitsConfiguration> & getDigitsConfiguraions();
+	const std::vector<CSingleSubstituteDigitsConfiguration> & getDigitsConfiguraions();
 protected:
 	CAppSettings();
 	boost::scoped_ptr<CAppSettingsPrivate> m_ptrPriv;

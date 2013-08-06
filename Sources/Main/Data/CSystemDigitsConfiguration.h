@@ -4,7 +4,7 @@
 
 typedef std::map<int, std::pair<char,char> > SystemMap;
 
-struct CSystemDigitsConfiguration
+struct CSingleSubstituteDigitsConfiguration
 {
 	void reset()
 	{

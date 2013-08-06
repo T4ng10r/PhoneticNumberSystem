@@ -1,4 +1,5 @@
 #include <GUI/Settings/SubstituteValuesConfigurationDlg.h>
+#include <Data/CAppSettings.h>
 #include <QString>
 #include <QMenu>
 #include <QAction>
@@ -14,6 +15,7 @@
 
 enum { DigitsCount = 10 };
 const unsigned int cPushButtonWidth(50);
+#define ACTION_QUICK_SELECTOR '&'
 //each push button should have list of available consonants
 //already selected consonants (in other buttons) shall be hidenn or inactive
 
@@ -45,6 +47,8 @@ public:
 	void setConnectionForConsonantAction( QAction * emptyAction );
 	void setConnections();
 	void addCreatedConsonantAction(EntryLine &stEntry, QAction * emptyAction, bool bAddToFirstGroup);
+	void fillGUIWithDigitsSystem(const CSingleSubstituteDigitsConfiguration & digitsSystem);
+	void selectConsonantActionByGivenConsonant( std::vector<QAction *>& actionsList, const char consonant);
 
 public:
 	boost::property_tree::ptree				m_stProperties;
@@ -88,7 +92,9 @@ void CSubstituteValuesConfigurationDlgPrivate::setupUI()
 void CSubstituteValuesConfigurationDlgPrivate::setConfigurations()
 {
 	m_ptrSystemsCombo->addItem("");
-	//int iConsonantsCount(m_stProperties.get_child("count").get_value<int>());
+	const std::vector<CSingleSubstituteDigitsConfiguration> & vDigitsConf = gAppSettings->getDigitsConfiguraions();
+	BOOST_FOREACH(const CSingleSubstituteDigitsConfiguration & digitsConf, vDigitsConf)
+		m_ptrSystemsCombo->addItem(digitsConf.strName.c_str());
 }
 QHBoxLayout * CSubstituteValuesConfigurationDlgPrivate::setupUI_line(int iIndex)
 {
@@ -151,12 +157,18 @@ void CSubstituteValuesConfigurationDlgPrivate::setupActions()
 }
 void CSubstituteValuesConfigurationDlgPrivate::setConnections()
 {
+	bool bResult = QObject::connect(m_ptrSystemsCombo, SIGNAL(activated  ( const QString )), 
+		m_ptrPublic, SLOT(onSystemsActvivated_changeCurrentDigitsSystem(const QString&)));
+	logConnection("CSubstituteValuesConfigurationDlgPrivate::setupActions",
+		"'emptyAction::triggered' with 'm_ptrPublic::onActionToggled'", 
+		bResult);
+	;
 }
 QAction *  CSubstituteValuesConfigurationDlgPrivate::createConsonantAction(char consonant, bool bChecked) 
 {
 	QString actionName(consonant);
 	if (' '!=consonant)
-		actionName.push_front('&');
+		actionName.push_front(ACTION_QUICK_SELECTOR);
 	QAction * action = new QAction(actionName, NULL);
 	m_mActionsList[consonant].push_back(action);
 
@@ -195,6 +207,29 @@ void CSubstituteValuesConfigurationDlgPrivate::setConnectionForConsonantAction( 
 		"'emptyAction::triggered' with 'm_ptrPublic::onActionToggled'", 
 		bResult);
 }
+void CSubstituteValuesConfigurationDlgPrivate::fillGUIWithDigitsSystem(const CSingleSubstituteDigitsConfiguration & digitsSystem)
+{
+	for(SystemMap::const_iterator iter = digitsSystem.mSystem.begin();iter!=digitsSystem.mSystem.end();iter++)
+	{
+		EntryLine & entry = m_ptrDigitsEntries[iter->first];
+		selectConsonantActionByGivenConsonant(entry.m_ptrConsonantsActions1, iter->second.first);
+		selectConsonantActionByGivenConsonant(entry.m_ptrConsonantsActions2, iter->second.second);
+	}
+}
+void CSubstituteValuesConfigurationDlgPrivate::selectConsonantActionByGivenConsonant( std::vector<QAction *>& actionsList, const char consonant) 
+{
+	for(size_t i=0;i<actionsList.size();i++)
+	{
+		QString actionText = actionsList[i]->text();
+		actionText = actionText.remove(ACTION_QUICK_SELECTOR);
+		if (consonant == actionText.at(0).toLatin1())
+		{
+			actionsList[i]->trigger();
+			break;
+		}
+	}
+}
+
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 CSubstituteValuesConfigurationDlg::CSubstituteValuesConfigurationDlg(const boost::property_tree::ptree &stProperties)
@@ -237,5 +272,15 @@ void CSubstituteValuesConfigurationDlg::onActionToggled_DeactivateThisConsonantI
 		if (pConsonantAction!=pAction && cConsonant!=' ')
 		{
 			pConsonantAction->setDisabled(bState);
+		}
+}
+void CSubstituteValuesConfigurationDlg::onSystemsActvivated_changeCurrentDigitsSystem(const QString& selectedSystemName)
+{
+	const std::vector<CSingleSubstituteDigitsConfiguration> & vDigitsConf = gAppSettings->getDigitsConfiguraions();
+	BOOST_FOREACH(const CSingleSubstituteDigitsConfiguration & digitsConf, vDigitsConf)
+		if (digitsConf.strName.c_str()==selectedSystemName)
+		{
+			m_ptrPriv->fillGUIWithDigitsSystem(digitsConf);
+			break;
 		}
 }
