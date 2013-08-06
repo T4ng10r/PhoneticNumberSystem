@@ -16,6 +16,7 @@ public:
 	void loadSettings();
 	void defaultValues();
 	void getDigitsConfiguration();
+	void saveSettings();
 public:
 	//Catalog catalog; // this is the container of your objects
 	//boost::shared_ptr<CSubstituteValuesConfiguration>	m_ptrSubstValConf;
@@ -31,12 +32,23 @@ CAppSettingsPrivate::CAppSettingsPrivate(CAppSettings * ptrPublic):m_ptrPublic(p
 }
 CAppSettingsPrivate::~CAppSettingsPrivate()
 {
+	saveSettings();
+}
+void CAppSettingsPrivate::saveSettings()
+{
 	write_xml(CONFIGURATION_FILE, *(static_cast<boost::property_tree::ptree*>(m_ptrPublic)));
 }
 void CAppSettingsPrivate::loadSettings()
 {
 	using boost::property_tree::ptree;
-	read_xml(CONFIGURATION_FILE, *(static_cast<boost::property_tree::ptree*>(m_ptrPublic)));
+	try
+	{
+		read_xml(CONFIGURATION_FILE, *(static_cast<boost::property_tree::ptree*>(m_ptrPublic)));
+	}
+	catch (boost::exception const&  ex)
+	{
+		printLog(eErrorLogLevel, eDebug, "Lack of properties file");
+	}
 	m_ptrSubstValConf = m_ptrPublic->get_child("settings.consonants");
 	printLog(eDebugLogLevel, eDebug, "AppSettings: settings loaded from file");
 }
@@ -108,6 +120,10 @@ CAppSettings* CAppSettings::getInstance()
 		}
 	}
 	return pInstance_;
+}
+void CAppSettings::saveSettings()
+{
+	m_ptrPriv->saveSettings();
 }
 const std::vector<CSingleSubstituteDigitsConfiguration> & CAppSettings::getDigitsConfiguraions()
 {

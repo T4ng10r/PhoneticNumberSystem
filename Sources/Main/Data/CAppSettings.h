@@ -30,6 +30,7 @@ class CAppSettings : public boost::property_tree::ptree //QObject
 public:
 	static CAppSettings* getInstance();
 	~CAppSettings();
+	void saveSettings();
 	const boost::property_tree::ptree & getSubstituteValuesConfiguration();
 	const std::vector<CSingleSubstituteDigitsConfiguration> & getDigitsConfiguraions();
 protected:

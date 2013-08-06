@@ -79,6 +79,7 @@ void createLoggers(const QString &strPluginLogName /*= QString()*/)
 	debugCategory.setAdditivity(false);
 	debugCategory.setAppender(debugAppender);
 	debugCategory.setPriority(log4cpp::Priority::DEBUG);
+	debugCategory.debug("Category created");
 
 	//////////////////////////////////////////////////////////////////////////
 	//log4cpp::PatternLayout* layout = new log4cpp::PatternLayout();
@@ -89,6 +90,7 @@ void createLoggers(const QString &strPluginLogName /*= QString()*/)
 	GUICreationCategory.setAdditivity(false);
 	GUICreationCategory.setAppender(GUICreationAppender);
 	GUICreationCategory.setPriority(log4cpp::Priority::INFO);
+	GUICreationCategory.debug("Category created");
 
 	//////////////////////////////////////////////////////////////////////////
 	log4cpp::Appender* slotsConnectionAppender = new log4cpp::FileAppender(SLOTS_LOGGER, LOG_FILE(SLOTS_LOGGER).toStdString(),false);
@@ -98,6 +100,7 @@ void createLoggers(const QString &strPluginLogName /*= QString()*/)
 	slotsConnectionCategory.setAdditivity(false);
 	slotsConnectionCategory.setAppender(slotsConnectionAppender);
 	slotsConnectionCategory.setPriority(log4cpp::Priority::INFO);
+	slotsConnectionCategory.debug("Category created");
 #endif
 	bLoggersCreated=true;
 }
