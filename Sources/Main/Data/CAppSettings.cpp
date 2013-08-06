@@ -29,13 +29,16 @@ CAppSettingsPrivate::CAppSettingsPrivate(CAppSettings * ptrPublic):m_ptrPublic(p
 	loadSettings();
 	getDigitsConfiguration();
 }
-CAppSettingsPrivate::~CAppSettingsPrivate(){}
+CAppSettingsPrivate::~CAppSettingsPrivate()
+{
+	write_xml(CONFIGURATION_FILE, *(static_cast<boost::property_tree::ptree*>(m_ptrPublic)));
+}
 void CAppSettingsPrivate::loadSettings()
 {
 	using boost::property_tree::ptree;
 	read_xml(CONFIGURATION_FILE, *(static_cast<boost::property_tree::ptree*>(m_ptrPublic)));
 	m_ptrSubstValConf = m_ptrPublic->get_child("settings.consonants");
-	printLog(eDebugLogLevel, eDebug, "AppSettings: settiings loaded from file");
+	printLog(eDebugLogLevel, eDebug, "AppSettings: settings loaded from file");
 }
 void CAppSettingsPrivate::getDigitsConfiguration()
 {

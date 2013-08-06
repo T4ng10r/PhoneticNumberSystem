@@ -7,6 +7,7 @@
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/property_tree/ptree.hpp>
+#define SELECTED_CONSONANTS_SYSTEM "settings.selected_consonants_system"
 
 class CAppSettingsPrivate;
 

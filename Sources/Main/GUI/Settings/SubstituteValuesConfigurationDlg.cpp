@@ -237,6 +237,7 @@ CSubstituteValuesConfigurationDlg::CSubstituteValuesConfigurationDlg(const boost
 {
 	m_ptrPriv->m_stProperties=stProperties;
 	m_ptrPriv->setupUI();
+	onSystemsActvivated_changeCurrentDigitsSystem(gAppSettings->get<std::string>(SELECTED_CONSONANTS_SYSTEM,"").c_str());
 }
 CSubstituteValuesConfigurationDlg::~CSubstituteValuesConfigurationDlg(void){}
 void CSubstituteValuesConfigurationDlg::onMenuTriggered_SetButtonTextWithSelectedConsonant(QAction * pAction )
@@ -281,6 +282,8 @@ void CSubstituteValuesConfigurationDlg::onSystemsActvivated_changeCurrentDigitsS
 		if (digitsConf.strName.c_str()==selectedSystemName)
 		{
 			m_ptrPriv->fillGUIWithDigitsSystem(digitsConf);
-			break;
+			gAppSettings->put(SELECTED_CONSONANTS_SYSTEM , selectedSystemName.toStdString());
+			return;
 		}
+	printLog(eErrorLogLevel, eDebug, QString("Couldn find '%1' consonants configuration in SelectionList").arg(selectedSystemName));
 }
