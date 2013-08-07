@@ -23,7 +23,6 @@ CDataThreadPrivate::CDataThreadPrivate(CDataThread * ptrPublic):m_ptrPublic(ptrP
 }
 CDataThreadPrivate::~CDataThreadPrivate()
 {
-	printLog(eDebugLogLevel,eDebug,QString("Enter %1").arg(__FUNCTION__));
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
@@ -46,9 +45,6 @@ boost::shared_ptr<CDataThread> CDataThread::getInstance()
 }
 CDataThread::~CDataThread(void)
 {
-	printLog(eDebugLogLevel,eDebug,QString("Enter %1").arg(__FUNCTION__));
-	//pInstance_.reset();
-	printLog(eDebugLogLevel,eDebug,QString("Leave %1").arg(__FUNCTION__));
 }
 void CDataThread::run()
 {

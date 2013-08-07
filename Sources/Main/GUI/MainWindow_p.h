@@ -13,7 +13,7 @@
 #include <QSignalMapper>
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
-//#include <wallaroo/catalog.h>
+#include <GUI/SearchPhoneticRepresentationsDlg.h>
 
 enum { MaxRecentFiles = 5 };
 
@@ -33,7 +33,7 @@ public:
 public:
 	//wallaroo::Catalog			m_catalog;
 	QWidget *					m_ptCentralWidget;
-	QVBoxLayout *				m_ptVLayout;
+	QVBoxLayout *				mainLayout;
 	QToolBar *					m_ptToolBar;
 
 	//////////////////////////////////////////////////////////////////////////
@@ -52,5 +52,6 @@ public:
 	void *						ptrDataThread;
 	CMainWindow *				m_ptrPublic;
 	boost::shared_ptr<CSubstituteValuesConfigurationDlg>	m_ptrSubstituteConfiguration;
+	boost::shared_ptr<CSearchPhoneticRepresentationsDlg>	searchPhoneticRepresentations;
 };
 #endif //_CAF_WINDOW_PRIVATE_INCLUDE_ 

@@ -48,6 +48,8 @@ ADD_DEFINITIONS(-DWALLAROO_FORCE_USE_BOOST)
 		GUI/MainWindow.h
 		GUI/MainWindow_p.cpp
 		GUI/MainWindow_p.h
+		GUI/SearchPhoneticRepresentationsDlg.cpp 
+		GUI/SearchPhoneticRepresentationsDlg.h
     )
     SET ( SOURCES_GUI_SETTINGS
         GUI/Settings/SubstituteValuesConfigurationDlg.cpp 
@@ -58,6 +60,7 @@ ADD_DEFINITIONS(-DWALLAROO_FORCE_USE_BOOST)
 		${CMAKE_CURRENT_SOURCE_DIR}/Data/CDataThread.h
 		${CMAKE_CURRENT_SOURCE_DIR}/GUI/MainWindow.h
 		${CMAKE_CURRENT_SOURCE_DIR}/GUI/Settings/SubstituteValuesConfigurationDlg.h
+		${CMAKE_CURRENT_SOURCE_DIR}/GUI/SearchPhoneticRepresentationsDlg.h
         )
         
 if (NOT USE_Qt5)

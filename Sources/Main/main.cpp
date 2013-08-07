@@ -16,6 +16,6 @@ int main(int argc, char *argv[])
 
 	  //////////////////////////////////////////////////////////////////////////
 	  int iReturn = app.exec();
-	  destroyLoggers();
+	  //destroyLoggers();
 	  return iReturn;
 }

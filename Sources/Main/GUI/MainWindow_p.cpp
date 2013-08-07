@@ -26,12 +26,14 @@ void CMainWindowPrivate::setupUI()
 	m_ptCentralWidget = new QWidget;
 	m_ptrPublic->setCentralWidget(m_ptCentralWidget);
 
-	m_ptVLayout = new QVBoxLayout;
+	mainLayout = new QVBoxLayout;
 	delete m_ptCentralWidget->layout();
-	m_ptCentralWidget->setLayout(m_ptVLayout);
+	m_ptCentralWidget->setLayout(mainLayout);
 	CSubstituteValuesConfiguration  stSubstituteValuesConfiguration;
 	m_ptrSubstituteConfiguration.reset(new CSubstituteValuesConfigurationDlg(stSubstituteValuesConfiguration));
 
+	searchPhoneticRepresentations.reset(new CSearchPhoneticRepresentationsDlg);
+	mainLayout->addWidget(searchPhoneticRepresentations.get());
 /*	//m_ptToolBar = new QToolBar(this);
 	//m_ptToolBar->setObjectName("m_ptToolBar");
 	//m_ptToolBar->setMaximumHeight(25);
