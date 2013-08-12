@@ -1,9 +1,11 @@
 #include <Data/CDataThread.h>
 #include <QString>
 #include <QApplication>
+#include <Data/CAppSettings.h>
 
 #include <list>
 #include <tools/loggers.h>
+#include <hunspell/hunspell.hxx>
 
 boost::shared_ptr<CDataThread> CDataThread::pInstance_;
 enum { MaxRecentFiles = 5 };
@@ -13,22 +15,28 @@ class CDataThreadPrivate
 public:
 	CDataThreadPrivate(CDataThread * ptrPublic);
 	~CDataThreadPrivate();
+	bool checkCurrentAppDictionary();
 public:
-	CDataThread *	m_ptrPublic;
+	CDataThread *	publicPart;
+	boost::scoped_ptr<Hunspell>		hunspellDictionary;
 };
 
-CDataThreadPrivate::CDataThreadPrivate(CDataThread * ptrPublic):m_ptrPublic(ptrPublic)
+CDataThreadPrivate::CDataThreadPrivate(CDataThread * ptrPublic):publicPart(ptrPublic)
 {
-	//QSettings stSettings("T4ng10r","ComputerConfigurationPriceChecker");
 }
 CDataThreadPrivate::~CDataThreadPrivate()
 {
+}
+bool CDataThreadPrivate::checkCurrentAppDictionary()
+{
+	std::string currentAppDictPath = gAppSettings->getCurrentDictPath();
+	return false;
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////// 
 CDataThread::CDataThread(void):
-m_ptrPriv(new CDataThreadPrivate(this))
+privPart(new CDataThreadPrivate(this))
 {
 }
 boost::shared_ptr<CDataThread> CDataThread::getInstance()
@@ -37,7 +45,6 @@ boost::shared_ptr<CDataThread> CDataThread::getInstance()
 	{
 		if(!pInstance_)
 		{
-			//CDataThread * p = ;
 			pInstance_.reset(new CDataThread());
 		}
 	}
@@ -50,5 +57,15 @@ void CDataThread::run()
 {
 	bool bResult = false;
 	exec();
+}
+void CDataThread::loadCurrentAppDictionary()
+{
+	if (false==privPart->checkCurrentAppDictionary())
+	{
+		return;
+	}
+	
+	privPart->hunspellDictionary;
+
 }
 //////////////////////////////////////////////////////////////////////////

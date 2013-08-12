@@ -33,6 +33,7 @@ public:
 	void saveSettings();
 	const boost::property_tree::ptree & getSubstituteValuesConfiguration();
 	const std::vector<CSingleSubstituteDigitsConfiguration> & getDigitsConfiguraions();
+	std::string getCurrentDictPath();
 protected:
 	CAppSettings();
 	boost::scoped_ptr<CAppSettingsPrivate> m_ptrPriv;

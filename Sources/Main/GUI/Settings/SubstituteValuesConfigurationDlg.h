@@ -13,7 +13,7 @@ class CSubstituteValuesConfigurationDlg : public QWidget
 public:
 	CSubstituteValuesConfigurationDlg(const boost::property_tree::ptree &stProperties);
 	~CSubstituteValuesConfigurationDlg(void);
-public slots:
+public Q_SLOTS:
 	void onMenuTriggered_SetButtonTextWithSelectedConsonant(QAction * action );
 	void onActionToggled_DeactivateThisConsonantInOtherMenus(bool );
 	void onSystemsActvivated_changeCurrentDigitsSystem(const QString&);

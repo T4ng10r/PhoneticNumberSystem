@@ -13,7 +13,7 @@ function(addLoggerLibrariesDependencies LibraryName OtherLibraries)
     SET(LOGGER_LIBRARY "")
   ENDIF ()
 
-  message(STATUS "AddLoggersLibs for '" ${LibraryName} "' are :" ${${OtherLibraries}} " aaa " ${LOGGER_LIBRARY}  )
+#  message(STATUS "AddLoggersLibs for '" ${LibraryName} "' are :" ${${OtherLibraries}} " aaa " ${LOGGER_LIBRARY}  )
   target_link_libraries(${LibraryName} ${${OtherLibraries}} ${LOGGER_LIBRARY})
   #add_dependencies(${LibraryName} ${LOGGER_LIBRARY} ${${OtherLibraries}})
 endfunction(addLoggerLibrariesDependencies)

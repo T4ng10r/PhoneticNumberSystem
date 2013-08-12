@@ -45,7 +45,7 @@ void CAppSettingsPrivate::loadSettings()
 	{
 		read_xml(CONFIGURATION_FILE, *(static_cast<boost::property_tree::ptree*>(m_ptrPublic)));
 	}
-	catch (boost::exception const&  ex)
+	catch (boost::exception const&  /*ex*/)
 	{
 		printLog(eErrorLogLevel, eDebug, "Lack of properties file");
 	}
@@ -128,6 +128,11 @@ void CAppSettings::saveSettings()
 const std::vector<CSingleSubstituteDigitsConfiguration> & CAppSettings::getDigitsConfiguraions()
 {
 	return m_ptrPriv->m_vDigitsConfiguration;
+}
+std::string CAppSettings::getCurrentDictPath()
+{
+	std::string strPath;
+	return strPath;
 }
 //////////////////////////////////////////////////////////////////////////
 CSubstituteValuesConfiguration::CSubstituteValuesConfiguration():

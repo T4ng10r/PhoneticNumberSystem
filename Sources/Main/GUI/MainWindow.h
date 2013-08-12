@@ -13,7 +13,7 @@ class CMainWindow : public QMainWindow
 public:
 	CMainWindow();
 	~CMainWindow();
-public slots:
+public Q_SLOTS:
 	void onActionTrigger(bool);
 protected:
 	void closeEvent(QCloseEvent *);

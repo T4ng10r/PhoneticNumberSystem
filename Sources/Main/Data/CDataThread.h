@@ -16,8 +16,9 @@ public:
 	~CDataThread(void);
 	static boost::shared_ptr<CDataThread> getInstance();
 	void run();
-public slots:
+	void loadCurrentAppDictionary();
+public Q_SLOTS:
 protected:
-	boost::scoped_ptr<CDataThreadPrivate> m_ptrPriv;
+	boost::scoped_ptr<CDataThreadPrivate> privPart;
 };
 #endif //_CAF_DATA_THREAD_INCLUDE_

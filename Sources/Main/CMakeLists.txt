@@ -17,11 +17,12 @@ endif (USE_Qt5)
 
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
 ADD_DEFINITIONS( "-DHAS_BOOST" )
-ADD_DEFINITIONS(-DWALLAROO_FORCE_USE_BOOST)
+ADD_DEFINITIONS( "-DQT_NO_KEYWORDS -DHUNSPELL_STATIC" )
 
 	include_directories(${CMAKE_SOURCE_DIR}/include)
 	include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 	include_directories(${log4qt_SOURCE_DIR})
+	include_directories(${hunspell_SOURCE_DIR}/src)
 
     SET ( SOURCES_TOOLS
 		${CMAKE_SOURCE_DIR}/include/Tools/loggers.h 	
@@ -95,8 +96,8 @@ endif()
         ${SOURCES_GUI} ${SOURCES_OTHER} 
         ${SOURCES_GUI_SETTINGS} ${SOURCES_RCC})
         
-	SET(LIBRARIES_LIST ${QT_LIBRARIES} ${Boost_LIBRARIES} Tools_Lib ) #Tools_Lib 
-  addLoggerLibrariesDependencies(PhoneticNumberSystem LIBRARIES_LIST)
+	SET(LIBRARIES_LIST ${QT_LIBRARIES} ${Boost_LIBRARIES} Tools_Lib hunspell-static ) #Tools_Lib 
+	addLoggerLibrariesDependencies(PhoneticNumberSystem LIBRARIES_LIST)
 	addLoggerLibrariesDependencies(PhoneticNumberSystem_lib LIBRARIES_LIST)
 	
 	add_custom_command(TARGET PhoneticNumberSystem POST_BUILD 
