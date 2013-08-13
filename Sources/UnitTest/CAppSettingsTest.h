@@ -8,7 +8,7 @@ class CAppSettingsTest : public QObject
     Q_OBJECT
 public:
 	CAppSettings * m_ptrAppSettings;
-private slots:
+private Q_SLOTS:
 	void init();
 	void cleanup();
 	void test_SubstituteValuesConfiguration();

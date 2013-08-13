@@ -12,7 +12,7 @@ public:
 public:
 	boost::shared_ptr<CSubstituteValuesConfigurationDlgTemp>  m_ptrDialog;
 	boost::property_tree::ptree  m_stConfiguration;
-private slots:
+private Q_SLOTS:
 	void init();
 	void cleanup();
 	void test_OtherMenusEntriesDisabled();

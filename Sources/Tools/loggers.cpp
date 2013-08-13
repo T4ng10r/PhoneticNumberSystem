@@ -38,7 +38,7 @@ void createLoggers(const QString &strPluginLogName /*= QString()*/)
 #ifdef USE_LOG4QT
 	PatternLayout *		p_PatternLayout(NULL);
 	p_PatternLayout = new PatternLayout;
-	//need timestamp, Level, potential Network/debug/slots
+	//need timestamp, Level, potential Network/debug/Q_SLOTS
 	p_PatternLayout->setConversionPattern("%-8r %-5p %c %m%n");
 	p_PatternLayout->activateOptions();
 

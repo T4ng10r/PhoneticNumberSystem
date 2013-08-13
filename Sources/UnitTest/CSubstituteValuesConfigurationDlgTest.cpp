@@ -45,7 +45,7 @@ void CSubstituteValuesConfigurationDlgTest::test_OtherMenusEntriesDisabled()
 	EntryLine & entry = m_ptrDialog->m_ptrPriv->m_ptrDigitsEntries[iDigitEntry];
 	//choose C (3rd after None and B
 	entry.m_ptrConsonantsActions1[iConsonantEntry]->trigger();
-	//wait till all signal/slots are triggered
+	//wait till all signal/Q_SLOTS are triggered
 
 	//check if in others digits this Action is deactivated
 	for(unsigned int index=0;index<m_ptrDialog->m_ptrPriv->m_ptrDigitsEntries.size();index++)

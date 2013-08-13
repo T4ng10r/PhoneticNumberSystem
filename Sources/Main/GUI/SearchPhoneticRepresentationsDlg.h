@@ -13,7 +13,7 @@ class CSearchPhoneticRepresentationsDlg : public QWidget
 public:
      CSearchPhoneticRepresentationsDlg(QWidget * parent = NULL);
      ~CSearchPhoneticRepresentationsDlg(void);
-protected slots:
+protected Q_SLOTS:
 	void onPerformSearch();
 protected:
      boost::scoped_ptr<CSearchPhoneticRepresentationsDlgPrivate> m_ptrPriv;
