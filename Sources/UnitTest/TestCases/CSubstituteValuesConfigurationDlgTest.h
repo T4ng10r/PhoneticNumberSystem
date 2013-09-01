@@ -15,6 +15,7 @@ public:
 private Q_SLOTS:
 	void init();
 	void cleanup();
+	void test_NoneInFirstMenusColumnSelected();
 	void test_OtherMenusEntriesDisabled();
 	void test_SecondMenusDisabled();
 };

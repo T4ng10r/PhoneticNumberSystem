@@ -1,4 +1,5 @@
 #include <Data/CAppSettings.h>
+#include <Data/CAppSettingsKeywords.h>
 #include <tools/loggers.h>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/foreach.hpp>
@@ -6,7 +7,8 @@
 #define CONFIGURATION_FILE std::string("PhoneticNumberSystem.xml")
 const std::string strConfigurationFileName("PhoneticNumberSystem.xml");
 
-CAppSettings* CAppSettings::pInstance_=0;
+//CAppSettings* CAppSettings::pInstance_=0;
+boost::shared_ptr<CAppSettings> CAppSettings::pInstance_;
 
 class CAppSettingsPrivate
 {
@@ -32,25 +34,25 @@ CAppSettingsPrivate::CAppSettingsPrivate(CAppSettings * ptrPublic):m_ptrPublic(p
 }
 CAppSettingsPrivate::~CAppSettingsPrivate()
 {
-	saveSettings();
 }
 void CAppSettingsPrivate::saveSettings()
 {
-	write_xml(CONFIGURATION_FILE, *(static_cast<boost::property_tree::ptree*>(m_ptrPublic)));
+	boost::property_tree::xml_writer_settings<char> settings('\t', 1);
+	write_xml(CONFIGURATION_FILE, *(static_cast<boost::property_tree::ptree*>(m_ptrPublic)),std::locale(), settings);
 }
 void CAppSettingsPrivate::loadSettings()
 {
 	using boost::property_tree::ptree;
 	try
 	{
-		read_xml(CONFIGURATION_FILE, *(static_cast<boost::property_tree::ptree*>(m_ptrPublic)));
+		read_xml(CONFIGURATION_FILE, *(static_cast<boost::property_tree::ptree*>(m_ptrPublic)), boost::property_tree::xml_parser::trim_whitespace);
 	}
 	catch (boost::exception const&  /*ex*/)
 	{
 		printLog(eErrorLogLevel, eDebug, "Lack of properties file");
 	}
-	m_ptrSubstValConf = m_ptrPublic->get_child("settings.consonants");
-	printLog(eDebugLogLevel, eDebug, "AppSettings: settings loaded from file");
+	m_ptrSubstValConf = m_ptrPublic->get_child(CONSONANTS_SETTINGS);
+	printLog(eDebugLogLevel, eDebug, "AppSettings: loading settings from file finished");
 }
 void CAppSettingsPrivate::getDigitsConfiguration()
 {
@@ -83,10 +85,12 @@ void CAppSettingsPrivate::getDigitsConfiguration()
 						if (stPair.first==' ')
 						{
 							stPair.first = digitsEntry.second.data().at(0);
+							stSystemDigitsConfiguration.allConsonants.push_back(stPair.first);
 						}
 						else if (stPair.second==' ')
 						{
 							stPair.second = digitsEntry.second.data().at(0);
+							stSystemDigitsConfiguration.allConsonants.push_back(stPair.second);
 						}
 					}
 				}
@@ -94,6 +98,7 @@ void CAppSettingsPrivate::getDigitsConfiguration()
 				continue;
 			}
 		}
+		stSystemDigitsConfiguration.createConsonantsDigitsMap();
 		m_vDigitsConfiguration.push_back(stSystemDigitsConfiguration);
 	}
 }
@@ -109,14 +114,13 @@ const boost::property_tree::ptree &CAppSettings::getSubstituteValuesConfiguratio
 	printLog(eDebugLogLevel, eDebug, "SubstituteValuesConfiguration provided");
 	return m_ptrPriv->m_ptrSubstValConf;
 }
-CAppSettings* CAppSettings::getInstance()
+boost::shared_ptr<CAppSettings> CAppSettings::getInstance()
 {
 	if(!pInstance_)
 	{
 		if(!pInstance_)
 		{
-			CAppSettings * p = new CAppSettings();
-			pInstance_ = p;
+			pInstance_.reset(new CAppSettings());
 		}
 	}
 	return pInstance_;

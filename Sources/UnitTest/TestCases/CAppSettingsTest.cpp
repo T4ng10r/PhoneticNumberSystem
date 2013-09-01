@@ -1,11 +1,11 @@
-#include <CAppSettingsTest.h>
+#include <TestCases/CAppSettingsTest.h>
 #include <Data/CAppSettings.h>
 #include <set>
 #include <boost/foreach.hpp>
 
 void CAppSettingsTest::init()
 {
-	m_ptrAppSettings = gAppSettings;
+	m_ptrAppSettings = gAppSettings.get();
 }
 void CAppSettingsTest::cleanup()
 {

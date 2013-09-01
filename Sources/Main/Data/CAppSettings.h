@@ -7,7 +7,6 @@
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/property_tree/ptree.hpp>
-#define SELECTED_CONSONANTS_SYSTEM "settings.selected_consonants_system"
 
 class CAppSettingsPrivate;
 
@@ -28,7 +27,7 @@ class CAppSettings : public boost::property_tree::ptree //QObject
 	//Q_OBJECT
 	friend class CAppSettingsPrivate;
 public:
-	static CAppSettings* getInstance();
+	static boost::shared_ptr<CAppSettings> getInstance();
 	~CAppSettings();
 	void saveSettings();
 	const boost::property_tree::ptree & getSubstituteValuesConfiguration();
@@ -37,7 +36,8 @@ public:
 protected:
 	CAppSettings();
 	boost::scoped_ptr<CAppSettingsPrivate> m_ptrPriv;
-	static CAppSettings* pInstance_;
+	//static CAppSettings* pInstance_;
+	static boost::shared_ptr<CAppSettings> pInstance_;
 };
 #define gAppSettings CAppSettings::getInstance() 
 #endif //_CAPPSETTINGS_INCLUDE_

@@ -18,7 +18,7 @@
 enum { MaxRecentFiles = 5 };
 
 class CMainWindow;
-class CSubstituteValuesConfigurationDlg;
+class CAppSettingsDlg;
 
 class CMainWindowPrivate
 {
@@ -51,7 +51,7 @@ public:
 	QMutex						m_DataThreadTerminatedMutex;
 	void *						ptrDataThread;
 	CMainWindow *				m_ptrPublic;
-	boost::shared_ptr<CSubstituteValuesConfigurationDlg>	m_ptrSubstituteConfiguration;
+	boost::shared_ptr<CAppSettingsDlg>	appSettingsDlg;
 	boost::shared_ptr<CSearchPhoneticRepresentationsDlg>	searchPhoneticRepresentations;
 };
 #endif //_CAF_WINDOW_PRIVATE_INCLUDE_ 

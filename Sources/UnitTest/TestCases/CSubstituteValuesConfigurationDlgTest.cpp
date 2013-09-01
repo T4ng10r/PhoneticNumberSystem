@@ -1,4 +1,4 @@
-#include "CSubstituteValuesConfigurationDlgTest.h" 
+#include "TestCases/CSubstituteValuesConfigurationDlgTest.h" 
 #include <GUI\Settings\SubstituteValuesConfigurationDlg.h> 
 #include <GUI\Settings\SubstituteValuesConfigurationDlg.cpp> 
 //#include <QMetaType>
@@ -37,6 +37,19 @@ void CSubstituteValuesConfigurationDlgTest::cleanup()
 {
 	m_ptrDialog.reset();  
 }
+void CSubstituteValuesConfigurationDlgTest::test_NoneInFirstMenusColumnSelected()
+{
+	//check if in all FIRST Menus None is selected
+	for(unsigned int index=0;index<m_ptrDialog->m_ptrPriv->m_ptrDigitsEntries.size();index++)
+	{
+		EntryLine & entry = m_ptrDialog->m_ptrPriv->m_ptrDigitsEntries[index];
+		QVERIFY2(entry.m_ptrConsonantsActions1[0]->isChecked()==true,QString("Entry line for %1 row").arg(index).toAscii());
+		//QCOMPARE(entry.m_ptrConsonantsActions1[0]->isChecked(),true);
+		QVERIFY2(entry.m_ptrConsonantButton1->isEnabled()==true,QString("Entry line for %1 row").arg(index).toAscii());
+		QVERIFY2(entry.m_ptrConsonantButton2->isEnabled()==false,QString("Entry line for %1 row").arg(index).toAscii());
+	}
+
+}
 void CSubstituteValuesConfigurationDlgTest::test_OtherMenusEntriesDisabled()
 {
 	unsigned int iDigitEntry(1);
@@ -59,17 +72,9 @@ void CSubstituteValuesConfigurationDlgTest::test_OtherMenusEntriesDisabled()
 }
 void CSubstituteValuesConfigurationDlgTest::test_SecondMenusDisabled()
 {
-	//check if in all FIRST Menus None is selected
-	for(unsigned int index=0;index<m_ptrDialog->m_ptrPriv->m_ptrDigitsEntries.size();index++)
-	{
-		EntryLine & entry = m_ptrDialog->m_ptrPriv->m_ptrDigitsEntries[index];
-		QCOMPARE(entry.m_ptrConsonantsActions1[0]->isChecked(),true);
-		QCOMPARE(entry.m_ptrConsonantButton1->isEnabled(),true);
-		QCOMPARE(entry.m_ptrConsonantButton2->isEnabled(),false);
-	}
 	unsigned int iDigitEntry(1);
 	unsigned int iConsonantEntry(2);
-	//choose one of consonants for digit '1' 
+	//choose one of consonants for digit '1'
 	EntryLine & entry = m_ptrDialog->m_ptrPriv->m_ptrDigitsEntries[iDigitEntry];
 	//choose C (3rd after None and B
 	entry.m_ptrConsonantsActions1[iConsonantEntry]->trigger();

@@ -1,10 +1,11 @@
 #include <Data/CDataThread.h>
 #include <GUI/MainWindow.h>
 #include <GUI/MainWindow_p.h>
-#include <GUI/Settings/SubstituteValuesConfigurationDlg.h>
+#include <GUI/Settings/AppSettingsDlg.h>
 #include <QFileInfo>
 #include <QStatusBar>
 #include <QMenuBar>
+#include <QtCore/QThread>
 #include <Tools/loggers.h>
 #include <Tools/qtTools.h>
 
@@ -15,18 +16,15 @@ m_ptrPriv(new CMainWindowPrivate(this))
 {
 	resize(ciSize);
 }
-CMainWindow::~CMainWindow(){}
+CMainWindow::~CMainWindow()
+{
+
+}
 void CMainWindow::closeEvent(QCloseEvent *)
 {
-	//m_DataThreadTerminatedMutex.lock();
-	//bool bResult = connect(CDataThread::getInstance(), SIGNAL(terminated()) ,
-	//	this, SLOT(onWaitingForDataThreadTermination()));
-	//bResult = connect(CDataThread::getInstance(), SIGNAL(finished()) ,
-	//	this, SLOT(onWaitingForDataThreadTermination()));
-	//ptrDataThread = CDataThread::getInstance();
-	CDataThread::getInstance()->quit();
+	gDataThread->thread()->quit();
 }
-void CMainWindow::onActionTrigger(bool)
+void CMainWindow::onShowAppSettingsConfigureDialog(bool)
 {
-	m_ptrPriv->m_ptrSubstituteConfiguration->show();
+	m_ptrPriv->appSettingsDlg->show();
 }

@@ -1,5 +1,6 @@
 #include <GUI/Settings/SubstituteValuesConfigurationDlg.h>
 #include <Data/CAppSettings.h>
+#include <Data/CAppSettingsKeywords.h>
 #include <QString>
 #include <QMenu>
 #include <QAction>

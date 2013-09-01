@@ -26,20 +26,17 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
 ####################
 
 ####################
-SET ( SOURCES_TEST_DATA
-    CSubstituteValuesConfigurationDlgTest.cpp
-    CSubstituteValuesConfigurationDlgTest.h
-    CAppSettingsTest.cpp
-    CAppSettingsTest.h
-	  )
+FILE(GLOB SOURCES_TEST_DATA "TestCases/*")
 
 SET ( SOURCES_MAIN
       main.cpp
     )
 
 SET ( SOURCES_TEST_MOC 
-	CSubstituteValuesConfigurationDlgTest.h
-    CAppSettingsTest.h
+	TestCases/CSubstituteValuesConfigurationDlgTest.h
+    TestCases/CAppSettingsTest.h
+    TestCases/CSystemDigitsConfigurationTest.h
+    TestCases/CSubstituteSearchTest.h
     )
 
 if (NOT USE_Qt5)

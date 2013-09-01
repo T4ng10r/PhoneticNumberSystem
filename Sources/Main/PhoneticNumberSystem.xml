@@ -1,74 +1,82 @@
-<settings>
-  <consonants>
-    <count>20</count>
-    <consonant>B</consonant>
-    <consonant>C</consonant>
-    <consonant>D</consonant>
-    <consonant>F</consonant>
-    <consonant>G</consonant>
-    <consonant>H</consonant>
-    <consonant>J</consonant>
-    <consonant>K</consonant>
-    <consonant>L</consonant>
-    <consonant>M</consonant>
-    <consonant>N</consonant>
-    <consonant>P</consonant>
-    <consonant>Q</consonant>
-    <consonant>R</consonant>
-    <consonant>S</consonant>
-    <consonant>T</consonant>
-    <consonant>V</consonant>
-    <consonant>X</consonant>
-    <consonant>Z</consonant>
-    <consonant>W</consonant>
-    <digits_configuration>
-      <name>basic</name>
-      <digit>
-        <value>0</value>
-        <substitue>Z</substitue>
-        <substitue>S</substitue>
-      </digit>
-      <digit>
-        <value>1</value>
-        <substitue>T</substitue>
-        <substitue>D</substitue>
-      </digit>
-      <digit>
-        <value>2</value>
-        <substitue>N</substitue>
-      </digit>
-      <digit>
-        <value>3</value>
-        <substitue>M</substitue>
-      </digit>
-      <digit>
-        <value>4</value>
-        <substitue>R</substitue>
-      </digit>
-      <digit>
-        <value>5</value>
-        <substitue>L</substitue>
-      </digit>
-      <digit>
-        <value>6</value>
-        <substitue>J</substitue>
-      </digit>
-      <digit>
-        <value>7</value>
-        <substitue>K</substitue>
-        <substitue>G</substitue>
-      </digit>
-      <digit>
-        <value>8</value>
-        <substitue>F</substitue>
-        <substitue>W</substitue>
-      </digit>
-      <digit>
-        <value>9</value>
-        <substitue>P</substitue>
-        <substitue>B</substitue>
-      </digit>
-    </digits_configuration>
-  </consonants>
-  <selected_consonants_system>basic</selected_consonants_system>
+<?xml version="1.0" encoding="utf-8"?>
+<settings consonants="" selected_consonants_system="basic" dictionaries="">
+	<consonants count="20" consonant="B" consonant="C" consonant="D" consonant="F" consonant="G" consonant="H" consonant="J" consonant="K" consonant="L" consonant="M" consonant="N" consonant="P" consonant="Q" consonant="R" consonant="S" consonant="T" consonant="V" consonant="X" consonant="Z" consonant="W" digits_configuration="">
+		<count>20</count>
+		<consonant>B</consonant>
+		<consonant>C</consonant>
+		<consonant>D</consonant>
+		<consonant>F</consonant>
+		<consonant>G</consonant>
+		<consonant>H</consonant>
+		<consonant>J</consonant>
+		<consonant>K</consonant>
+		<consonant>L</consonant>
+		<consonant>M</consonant>
+		<consonant>N</consonant>
+		<consonant>P</consonant>
+		<consonant>Q</consonant>
+		<consonant>R</consonant>
+		<consonant>S</consonant>
+		<consonant>T</consonant>
+		<consonant>V</consonant>
+		<consonant>X</consonant>
+		<consonant>Z</consonant>
+		<consonant>W</consonant>
+		<digits_configuration name="basic" digit="" digit="" digit="" digit="" digit="" digit="" digit="" digit="" digit="" digit="">
+			<name>basic</name>
+			<digit value="0" substitue="Z" substitue="S">
+				<value>0</value>
+				<substitue>Z</substitue>
+				<substitue>S</substitue>
+			</digit>
+			<digit value="1" substitue="T" substitue="D">
+				<value>1</value>
+				<substitue>T</substitue>
+				<substitue>D</substitue>
+			</digit>
+			<digit value="2" substitue="N">
+				<value>2</value>
+				<substitue>N</substitue>
+			</digit>
+			<digit value="3" substitue="M">
+				<value>3</value>
+				<substitue>M</substitue>
+			</digit>
+			<digit value="4" substitue="R">
+				<value>4</value>
+				<substitue>R</substitue>
+			</digit>
+			<digit value="5" substitue="L">
+				<value>5</value>
+				<substitue>L</substitue>
+			</digit>
+			<digit value="6" substitue="J">
+				<value>6</value>
+				<substitue>J</substitue>
+			</digit>
+			<digit value="7" substitue="K" substitue="G">
+				<value>7</value>
+				<substitue>K</substitue>
+				<substitue>G</substitue>
+			</digit>
+			<digit value="8" substitue="F" substitue="W">
+				<value>8</value>
+				<substitue>F</substitue>
+				<substitue>W</substitue>
+			</digit>
+			<digit value="9" substitue="P" substitue="B">
+				<value>9</value>
+				<substitue>P</substitue>
+				<substitue>B</substitue>
+			</digit>
+		</digits_configuration>
+	</consonants>
+	<selected_consonants_system>basic</selected_consonants_system>
+	<dictionaries directory="dict" selected="pl_PL" files_list="">
+		<directory>dict</directory>
+		<selected>pl_PL</selected>
+		<files_list file="pl_PL.dic">
+			<file>pl_PL.dic</file>
+		</files_list>
+	</dictionaries>
 </settings>

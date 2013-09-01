@@ -16,6 +16,8 @@ using namespace Log4Qt;
 #include	<log4cpp/FileAppender.hh>
 #include	<log4cpp/Win32DebugAppender.hh>
 #include	<log4cpp/PatternLayout.hh>
+#include	<log4cpp/Category.hh>
+#include	<log4cpp/PropertyConfigurator.hh>
 
 using namespace log4cpp;
 
@@ -24,16 +26,23 @@ bool bLoggersCreated(false);
 
 #define DEBUG_LOGGER		"debug"
 #define SLOTS_LOGGER		"slots"
-#define NETWORK_LOGGER		"network"
 #define GUI_LOGGER			"gui"
 #define LOG_DIR				"logs"
 #define LOG_FILE(X)		QString("%1%2%3.log").arg(LOG_DIR).arg(QDir::separator()).arg(X)
 
-void createLoggers(const QString &strPluginLogName /*= QString()*/)
+void cleanupLogsDir()
 {
 	//be sure that DIR is created
 	QDir stDir;
 	stDir.mkdir(LOG_DIR);
+	//cleanup logs dir content
+	stDir.remove("logs/debug.log");
+	stDir.remove("logs/gui.log");
+	stDir.remove("logs/slots.log");
+}
+void createLoggers(const QString &strPluginLogName /*= QString()*/)
+{
+	cleanupLogsDir();
 
 #ifdef USE_LOG4QT
 	PatternLayout *		p_PatternLayout(NULL);
@@ -69,41 +78,9 @@ void createLoggers(const QString &strPluginLogName /*= QString()*/)
 		LogManager::logger(DEBUG_LOGGER)->addAppender(p_FileNetworkAppender);
 	}
 #else if USE_LOG4CPP
-	log4cpp::PatternLayout* debugLayout = new log4cpp::PatternLayout();
-	debugLayout->setConversionPattern("%d %p %c %x: %m%n");
+	std::string initFileName = "logs/log4cpp.properties";
+	log4cpp::PropertyConfigurator::configure(initFileName);
 
-	log4cpp::Appender* debugAppender = new log4cpp::FileAppender("DebugAppender", LOG_FILE(DEBUG_LOGGER).toStdString(),false);
-	debugAppender->setLayout(debugLayout);
-
-	log4cpp::Category &debugCategory = log4cpp::Category::getInstance(DEBUG_LOGGER);
-	debugCategory.setAdditivity(false);
-	debugCategory.setAppender(debugAppender);
-	debugCategory.setPriority(log4cpp::Priority::DEBUG);
-	debugCategory.debug("Category created");
-
-	//////////////////////////////////////////////////////////////////////////
-	log4cpp::PatternLayout* guiLayout = new log4cpp::PatternLayout();
-	guiLayout->setConversionPattern("%d %p %c %x: %m%n");
-	log4cpp::Appender* GUICreationAppender = new log4cpp::FileAppender("GUICreationAppender", LOG_FILE(GUI_LOGGER).toStdString(),false);
-	GUICreationAppender->setLayout(guiLayout);
-	log4cpp::Category &GUICreationCategory = log4cpp::Category::getInstance(GUI_LOGGER);
-	GUICreationCategory.setAdditivity(false);
-	GUICreationCategory.setAppender(GUICreationAppender);
-	GUICreationCategory.setPriority(log4cpp::Priority::INFO);
-	GUICreationCategory.debug("Category created");
-
-	////////////////////////////////////////////////////////////////////////////
-	log4cpp::PatternLayout* slotsLayout = new log4cpp::PatternLayout();
-	slotsLayout->setConversionPattern("%d %p %c %x: %m%n");
-
-	log4cpp::Appender* slotsConnectionAppender = new log4cpp::FileAppender("SlotsAppender", LOG_FILE(SLOTS_LOGGER).toStdString(),false);
-	slotsConnectionAppender->setLayout(slotsLayout);
-
-	log4cpp::Category &slotsConnectionCategory = log4cpp::Category::getInstance(SLOTS_LOGGER);
-	slotsConnectionCategory.setAdditivity(false);
-	slotsConnectionCategory.setAppender(slotsConnectionAppender);
-	slotsConnectionCategory.setPriority(log4cpp::Priority::INFO);
-	slotsConnectionCategory.debug("Category created");
 #endif
 	bLoggersCreated=true;
 }

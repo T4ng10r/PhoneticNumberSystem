@@ -3,6 +3,8 @@
 #include <GUI/MainWindow.h>
 #include <boost/scoped_ptr.hpp>
 #include <Data/CAppSettings.h>
+#include <Data/CDataThread.h>
+#include <QtCore/QThread>
 
 int main(int argc, char *argv[])
 {

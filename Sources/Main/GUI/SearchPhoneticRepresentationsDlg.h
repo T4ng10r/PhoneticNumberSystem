@@ -13,6 +13,13 @@ class CSearchPhoneticRepresentationsDlg : public QWidget
 public:
      CSearchPhoneticRepresentationsDlg(QWidget * parent = NULL);
      ~CSearchPhoneticRepresentationsDlg(void);
+Q_SIGNALS:
+	 void performSearch(const std::string & );
+public Q_SLOTS:
+	void onSearchProgress(int current, int max);
+	void searchFinished();
+	void disableSearchButton();
+	void enableSearchButton();
 protected Q_SLOTS:
 	void onPerformSearch();
 protected:
