@@ -26,6 +26,7 @@ public:
 	std::string createCurrentDictionaryPath();
 	std::string createCurrentDictionaryAffPath();
 	void setConnections();
+	void prepareDirectories();
 public:
 	CDataThread *	publicPart;
 	boost::scoped_ptr<Hunspell>			hunspellDictionary;
@@ -37,6 +38,7 @@ CDataThreadPrivate::CDataThreadPrivate(CDataThread * ptrPublic):publicPart(ptrPu
 	dictionaryData(new CDictionaryData()), substituteSearch(new CSubstituteSearch())
 {
 	setConnections();
+	prepareDirectories();
 }
 CDataThreadPrivate::~CDataThreadPrivate()
 {
@@ -75,6 +77,16 @@ void CDataThreadPrivate::setConnections()
 		"'substituteSearch::searchFinished' with 'CDataThread::searchFinished'", 
 		bResult);
 
+}
+void CDataThreadPrivate::prepareDirectories()
+{
+	std::string dictionaryDir = gAppSettings->get<std::string>(DICTIONARIES_DIRECTORY,"");
+	//check if DICTIONARIES_DIRECTORY exist in settings
+	QDir dir(dictionaryDir.c_str());
+	if (false==dir.exists())
+	{
+		dir.mkpath(dictionaryDir.c_str());
+	}
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
@@ -119,7 +131,15 @@ void CDataThread::onSearchProgress(int current)
 }
 void CDataThread::onScanDirectoryForDictionaries()
 {
-	QString dirPath = gAppSettings->get<std::string>(DICTIONARIES_DIRECTORY).c_str();
+	QString dirPath;
+	try
+	{
+		dirPath = gAppSettings->get<std::string>(DICTIONARIES_DIRECTORY).c_str();
+	}
+	catch (boost::property_tree::ptree_bad_path &e)
+	{
+		printLog(eWarningLogLevel,eDebug,QString("Error during gathering dictionaryFilesList '%1'").arg(e.what()));	
+	}
 
 	QDir directory(dirPath);
 	
