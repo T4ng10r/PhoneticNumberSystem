@@ -89,8 +89,8 @@ void CSearchPhoneticRepresentationsDlgPrivate::moveSearchResultIntoModel()
 	const WordSearchResult & result = CDataThread::getInstance()->getSearchResult();
 	for(WordSearchResult::const_iterator iter = result.begin();iter!=result.end();iter++)
 	{
-		if (iter->bFullCoverage==false)
-			continue;
+		//if (iter->bFullCoverage==false)
+		//	continue;
 		QStandardItem *item = new QStandardItem(QString("%0").arg(iter->words.front().c_str()));
 		searchResultsModel.appendRow(item);
 	}

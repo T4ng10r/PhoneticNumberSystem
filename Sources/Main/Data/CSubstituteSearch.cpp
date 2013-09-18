@@ -10,6 +10,7 @@ public:
      CSubstituteSearchPrivate(CSubstituteSearch * ptrPublic);
      ~CSubstituteSearchPrivate();
 	 bool testWord(const std::string & ,const CSingleSubstituteDigitsConfiguration & digitConf);
+	 void prepareSearchResults();
 public:
 	CSubstituteSearch *                    m_ptrPublic;
 	boost::shared_ptr<CDictionaryData>		dictionaryWords;
@@ -76,6 +77,18 @@ bool CSubstituteSearchPrivate::testWord(const std::string & wordToTest,const CSi
 	}
 	return false;
 }
+void CSubstituteSearchPrivate::prepareSearchResults()
+{
+	std::size_t searchedNumberLength = number.size();
+	searchResult.clear();
+
+	FittingWordsMap::const_iterator iterMap = searchResultMap.find(MatchingPair(0,searchedNumberLength-1));
+	if (iterMap==searchResultMap.end())
+		return;
+	std::copy_if(iterMap->second.begin(),iterMap->second.end(),
+		std::back_inserter(searchResult),[](SuccessWord word){return word.bFullCoverage==true;}
+		 );
+}
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 CSubstituteSearch::CSubstituteSearch():privPart(new CSubstituteSearchPrivate(this))
@@ -84,7 +97,6 @@ CSubstituteSearch::CSubstituteSearch():privPart(new CSubstituteSearchPrivate(thi
 CSubstituteSearch::~CSubstituteSearch(void){}
 void CSubstituteSearch::setDictionaryWords(boost::shared_ptr<CDictionaryData> dictionaryWords)
 {
-	privPart->searchResult.clear();
 	privPart->searchResultMap.clear();
 	privPart->dictionaryWords = dictionaryWords;
 }
@@ -109,6 +121,7 @@ void CSubstituteSearch::startSearchForNumber(const std::string & number)
 		}
 	}
 	Q_EMIT searchProgress(wordsCount);
+	privPart->prepareSearchResults();
 	Q_EMIT searchFinished();
 	printLog(eInfoLogLevel,eDebug,QString("Searching substitute for number '%1' finished").arg(number.c_str()));
 }
