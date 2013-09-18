@@ -5,7 +5,8 @@
 #include <boost/scoped_ptr.hpp>
 #include <string>
 
-class CDictionaryDataPrivate;
+//class CDictionaryDataPrivate;
+class BaseDictionaryWarhouse;
 
 class CDictionaryData : public QObject
 {
@@ -16,8 +17,9 @@ public:
 	 ~CDictionaryData(void);
 	 void loadDictionary(const std::string & filePath);
 	 unsigned int getWordsCount();
-	 const std::string & getWordByNdex(unsigned int index);
+	 std::string getWordByNdex(unsigned int index);
 protected:
-     boost::scoped_ptr<CDictionaryDataPrivate> privPart;
+	//boost::scoped_ptr<CDictionaryDataPrivate> privPart;
+	boost::scoped_ptr<BaseDictionaryWarhouse> privPart;
 };
 #endif //_CDICTIONARYDATA_INCLUDE_

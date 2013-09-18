@@ -37,6 +37,7 @@ SET ( SOURCES_TEST_MOC
     TestCases/CAppSettingsTest.h
     TestCases/CSystemDigitsConfigurationTest.h
     TestCases/CSubstituteSearchTest.h
+	TestCases/CSearchResultTreeTest.h
     )
 
 if (NOT USE_Qt5)

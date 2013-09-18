@@ -28,14 +28,20 @@ void CSubstituteSearchTest::init()
 void CSubstituteSearchTest::cleanup()
 {
 }
-void CSubstituteSearchTest::test_SubstituteSearch_WholeCorrectWord()
+void CSubstituteSearchTest::test_SubstituteSearch_WholeCorrectWord_01()
 {
 	substituteSearchPrivate->number = "99";
-	QCOMPARE(substituteSearchPrivate->testWord("BABCIA",singleSubstituteDigitsConfiguration), true);
-	QCOMPARE(substituteSearchPrivate->searchResult.front().coveredDigits.c_str(), "99");
-	QCOMPARE(substituteSearchPrivate->searchResult.front().matchingLetters.c_str(), "BB");
-	QCOMPARE(substituteSearchPrivate->searchResult.front().bFullCoverage, true);
-	substituteSearchPrivate->searchResult.clear();
+	QVERIFY(substituteSearchPrivate->testWord("BABCIA",singleSubstituteDigitsConfiguration));
+	QVERIFY(substituteSearchPrivate->searchCandidatesResult.find(MatchingPair(0,1))!=substituteSearchPrivate->searchCandidatesResult.end());
+	SuccessWord fittingWord = substituteSearchPrivate->searchCandidatesResult[MatchingPair(0,1)].front();
+	QCOMPARE(fittingWord.coveragePair, MatchingPair(0,1));
+	QCOMPARE(fittingWord.coveragePairs.front(), MatchingPair(0,1));
+	QCOMPARE(fittingWord.coveredDigits.c_str(), "BB");
+	QCOMPARE(fittingWord.bFullCoverage, true);
+	QCOMPARE(fittingWord.word.c_str(), "BABCIA");
+}
+void CSubstituteSearchTest::test_SubstituteSearch_WholeCorrectWord_02()
+{
 	substituteSearchPrivate->number = "034";
 	QCOMPARE(substituteSearchPrivate->testWord("SMAR",singleSubstituteDigitsConfiguration), true);
 	QCOMPARE(substituteSearchPrivate->searchResult.front().bFullCoverage, true);

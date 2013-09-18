@@ -13,10 +13,11 @@ find_package(Qt4 REQUIRED QtNetwork QtGui QtCore QtXml QtTest)
 endif (USE_Qt5)   
 
 #boost build with bjam threading=multi runtime-link=static
+#bjam link=static,shared threading=single,multi
 SET(Boost_USE_MULTITHREADED ON)
 SET(Boost_USE_STATIC_LIBS ON)
-SET(Boost_USE_STATIC_RUNTIME ON)
-find_package(Boost REQUIRED COMPONENTS ) #thread system date_time chrono)
+#SET(Boost_USE_STATIC_RUNTIME OFF)
+find_package(Boost REQUIRED COMPONENTS date_time) #thread system date_time chrono)
 
 set(Logger "log4cpp" CACHE STRING "Logger where to store logs from program executions")
 set(LoggersNames "None;log4cpp")

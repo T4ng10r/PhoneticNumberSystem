@@ -16,13 +16,15 @@ endif (USE_Qt5)
 
 
 	INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
+	INCLUDE_DIRECTORIES(${Boost_LIBRARY_DIRS})
+	message(STATUS "Boost_LIBRARY_DIRS =" ${Boost_LIBRARY_DIRS})
 	ADD_DEFINITIONS( "-DHAS_BOOST" )
-	ADD_DEFINITIONS( "-DQT_NO_KEYWORDS -DHUNSPELL_STATIC" )
+	#Boost_LIBRARY_DIRS
+	ADD_DEFINITIONS( "-DQT_NO_KEYWORDS" )
 
 	include_directories(${CMAKE_SOURCE_DIR}/include)
 	include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 	include_directories(${log4qt_SOURCE_DIR})
-	include_directories(${hunspell_SOURCE_DIR}/src)
 
     SET ( SOURCES_TOOLS
 		${CMAKE_SOURCE_DIR}/include/Tools/loggers.h 	
@@ -84,7 +86,7 @@ endif()
         ${SOURCES_GUI} ${SOURCES_OTHER} 
         ${SOURCES_GUI_SETTINGS} ${SOURCES_RCC})
         
-	SET(LIBRARIES_LIST ${QT_LIBRARIES} ${Boost_LIBRARIES} Tools_Lib hunspell-static ) #Tools_Lib 
+	SET(LIBRARIES_LIST ${QT_LIBRARIES} ${Boost_LIBRARIES} Tools_Lib )
 	addLoggerLibrariesDependencies(PhoneticNumberSystem LIBRARIES_LIST)
 	addLoggerLibrariesDependencies(PhoneticNumberSystem_lib LIBRARIES_LIST)
 	

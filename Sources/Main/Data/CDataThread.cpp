@@ -11,7 +11,6 @@
 #include <list>
 #include <tools/loggers.h>
 #include <Tools/qtTools.h>
-#include <hunspell/hunspell.hxx>
 #include <boost/foreach.hpp>
 
 boost::shared_ptr<CDataThread> CDataThread::pInstance_;
@@ -28,7 +27,6 @@ public:
 	void setConnections();
 public:
 	CDataThread *	publicPart;
-	boost::scoped_ptr<Hunspell>			hunspellDictionary;
 	boost::shared_ptr<CDictionaryData>	dictionaryData;
 	boost::shared_ptr<CSubstituteSearch>	substituteSearch;
 };

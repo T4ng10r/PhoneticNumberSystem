@@ -1,6 +1,7 @@
 #include "TestCases/CSubstituteValuesConfigurationDlgTest.h"
 #include "TestCases/CAppSettingsTest.h"
 #include "TestCases/CSystemDigitsConfigurationTest.h"
+#include "TestCases/CSearchResultTreeTest.h"
 #include "TestCases/CSubstituteSearchTest.h"
 #include <Data/CAppSettings.h>
 
@@ -18,6 +19,10 @@ int main(int argc, char *argv[])
 
 	CSystemDigitsConfigurationTest cSystemDigitsConfigurationTest;
 	if (QTest::qExec(&cSystemDigitsConfigurationTest, argc, argv)!=0)
+		return -1;  
+
+	CSearchResultTreeTest searchResultTreeTest;
+	if (QTest::qExec(&searchResultTreeTest, argc, argv)!=0)
 		return -1;  
 
 	CSubstituteSearchTest cSubstituteSearchTest;
