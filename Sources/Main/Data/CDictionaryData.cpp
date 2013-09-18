@@ -31,7 +31,7 @@ public:
 #endif
 };
 
-CDictionaryDataPrivate::CDictionaryDataPrivate(CDictionaryData * ptrPublic):m_ptrPublic(ptrPublic)
+CDictionaryDataPrivate::CDictionaryDataPrivate(CDictionaryData * ptrPublic):m_ptrPublic(ptrPublic),wordsCount(0),linenum(0),fileHandle(NULL)
 #ifndef USE_STL_VECTOR
 	,dictionaryWordsArray(0)
 #endif

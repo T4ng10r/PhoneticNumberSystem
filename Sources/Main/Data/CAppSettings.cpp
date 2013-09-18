@@ -7,7 +7,6 @@
 #define CONFIGURATION_FILE std::string("PhoneticNumberSystem.xml")
 const std::string strConfigurationFileName("PhoneticNumberSystem.xml");
 
-//CAppSettings* CAppSettings::pInstance_=0;
 boost::shared_ptr<CAppSettings> CAppSettings::pInstance_;
 
 class CAppSettingsPrivate
@@ -20,7 +19,6 @@ public:
 	void getDigitsConfiguration();
 	void saveSettings();
 public:
-	//Catalog catalog; // this is the container of your objects
 	//boost::shared_ptr<CSubstituteValuesConfiguration>	m_ptrSubstValConf;
 	CAppSettings *							m_ptrPublic;
 	boost::property_tree::ptree				m_ptrSubstValConf;

@@ -11,10 +11,12 @@ public:
      ~CSubstituteSearchPrivate();
 	 bool testWord(const std::string & ,const CSingleSubstituteDigitsConfiguration & digitConf);
 public:
-     CSubstituteSearch *                    m_ptrPublic;
-	 boost::shared_ptr<CDictionaryData>		dictionaryWords;
-	 std::string			number;
-	 WordSearchResult				searchResult;
+	CSubstituteSearch *                    m_ptrPublic;
+	boost::shared_ptr<CDictionaryData>		dictionaryWords;
+	std::string			number;
+	WordSearchResult				searchResult;
+	WordSearchResult				searchCandidates;
+	FittingWordsMap					searchResultMap;
 };
 
 CSubstituteSearchPrivate::CSubstituteSearchPrivate(CSubstituteSearch * ptrPublic):m_ptrPublic(ptrPublic)
@@ -23,7 +25,9 @@ CSubstituteSearchPrivate::~CSubstituteSearchPrivate(){}
 bool CSubstituteSearchPrivate::testWord(const std::string & wordToTest,const CSingleSubstituteDigitsConfiguration & digitConf)
 {
 	SuccessWord	result;
-	size_t startPos(0);
+	MatchingPair matchingPair;
+	std::string  coveredDigits;
+	size_t searchStartPos(0);
 	unsigned int digitIndex(0);
 	std::string word = boost::to_upper_copy(wordToTest);
 	result.bFullCoverage=true;
@@ -32,32 +36,42 @@ bool CSubstituteSearchPrivate::testWord(const std::string & wordToTest,const CSi
 		unsigned int digit = number[digitIndex]-'0';
 		//test 
 		OneDigitConsonantsSet::const_iterator iter = digitConf.digitsConsonantsSetMap.find(digit);
-		size_t acceptPos = word.find_first_of(iter->second.first,startPos);
-		size_t forbPos = word.find_first_of(iter->second.second,startPos);
+		size_t acceptPos = word.find_first_of(iter->second.first,searchStartPos);
+		size_t forbPos = word.find_first_of(iter->second.second,searchStartPos);
 		//if both result are end - we reached end of word or no chars in 
 		if (acceptPos == std::string::npos && forbPos == std::string::npos)
 		{
+			digitIndex--;
 			break;
 		}
 		//if forbidden char is before accept char - we have rejection candidate
 		if (acceptPos>forbPos)
 		{
 			result.matchingLetters.clear();
+			coveredDigits.clear();
 			result.bFullCoverage=false;
+			//
+			matchingPair = MatchingPair();
 		}
 		//ok, expect subst char found
 		if (acceptPos<forbPos)
 		{
+			if (result.matchingLetters.empty())
+				matchingPair.first=digitIndex;
 			result.matchingLetters.push_back(word.at(acceptPos));
-			result.coveredDigits.push_back(number[digitIndex]);
-			startPos = acceptPos+1;
+			coveredDigits.push_back(number[digitIndex]);
+			searchStartPos = acceptPos+1;
 		}
 	}
-	result.bFullCoverage=result.coveredDigits==number;
-	if (word.find_first_of(digitConf.allConsonants,startPos)==std::string::npos)
+	result.bFullCoverage=(coveredDigits==number);
+	if (word.find_first_of(digitConf.allConsonants,searchStartPos)==std::string::npos)
 	{
-		result.word=wordToTest;
-		searchResult.push_back(result);
+		result.words.push_back(wordToTest);
+		if (digitIndex>=number.size())
+			digitIndex=number.size()-1;
+		matchingPair.second=digitIndex;
+		result.coveragePairs.push_back(matchingPair);
+		searchResultMap[matchingPair].push_back(result);
 		return true;
 	}
 	return false;
@@ -71,6 +85,7 @@ CSubstituteSearch::~CSubstituteSearch(void){}
 void CSubstituteSearch::setDictionaryWords(boost::shared_ptr<CDictionaryData> dictionaryWords)
 {
 	privPart->searchResult.clear();
+	privPart->searchResultMap.clear();
 	privPart->dictionaryWords = dictionaryWords;
 }
 void CSubstituteSearch::startSearchForNumber(const std::string & number)
@@ -80,9 +95,9 @@ void CSubstituteSearch::startSearchForNumber(const std::string & number)
 	const std::vector<CSingleSubstituteDigitsConfiguration> & digitConf = gAppSettings->getDigitsConfiguraions();
 
 	unsigned int wordsCount = privPart->dictionaryWords->getWordsCount();
-	Q_EMIT searchProgress(0);
 	unsigned int notifyStepCount = wordsCount/100;
 	unsigned int notifyStep = 0;
+	Q_EMIT searchProgress(0);
 	for(unsigned int index=0;index<wordsCount;index++,notifyStep++)
 	{
 		std::string word = privPart->dictionaryWords->getWordByNdex(index);

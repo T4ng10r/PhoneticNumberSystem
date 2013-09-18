@@ -82,8 +82,8 @@ void CDataThreadPrivate::prepareDirectories()
 {
 	std::string dictionaryDir = gAppSettings->get<std::string>(DICTIONARIES_DIRECTORY,"");
 	//check if DICTIONARIES_DIRECTORY exist in settings
-	QDir dir(dictionaryDir.c_str());
-	if (false==dir.exists())
+	QDir dir;
+	if (false==dir.exists(dictionaryDir.c_str()))
 	{
 		dir.mkpath(dictionaryDir.c_str());
 	}
@@ -147,8 +147,14 @@ void CDataThread::onScanDirectoryForDictionaries()
 	QFileInfoList dictionaryFileList = directory.entryInfoList(fileFilters, QDir::Files | QDir::NoDotAndDotDot, QDir::Name);
 	if (dictionaryFileList.empty())
 		return;
-	//delete current dictionaries file
-	gAppSettings->get_child(DICTIONARY_FILES_LIST).erase("file");
+	try
+	{
+		gAppSettings->get_child(DICTIONARY_FILES_LIST).erase("file");
+	}
+	catch (boost::property_tree::ptree_bad_path &/*e*/)
+	{
+		gAppSettings->put<std::string>(DICTIONARY_FILES_LIST,"");
+	}
 	Q_FOREACH ( const QFileInfo & fileItem, dictionaryFileList )
 	{
 		gAppSettings->add(DICTIONARY_FILE_ITEM, fileItem.fileName().toStdString());

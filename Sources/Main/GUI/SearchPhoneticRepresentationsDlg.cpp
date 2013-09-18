@@ -91,7 +91,7 @@ void CSearchPhoneticRepresentationsDlgPrivate::moveSearchResultIntoModel()
 	{
 		if (iter->bFullCoverage==false)
 			continue;
-		QStandardItem *item = new QStandardItem(QString("%0").arg(iter->word.c_str()));
+		QStandardItem *item = new QStandardItem(QString("%0").arg(iter->words.front().c_str()));
 		searchResultsModel.appendRow(item);
 	}
 }
