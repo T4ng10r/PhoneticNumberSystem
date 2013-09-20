@@ -25,6 +25,7 @@ public:
 	std::string createCurrentDictionaryPath();
 	std::string createCurrentDictionaryAffPath();
 	void setConnections();
+	void prepareDirectories();
 public:
 	CDataThread *	publicPart;
 	boost::shared_ptr<CDictionaryData>	dictionaryData;
@@ -35,6 +36,7 @@ CDataThreadPrivate::CDataThreadPrivate(CDataThread * ptrPublic):publicPart(ptrPu
 	dictionaryData(new CDictionaryData()), substituteSearch(new CSubstituteSearch())
 {
 	setConnections();
+	prepareDirectories();
 }
 CDataThreadPrivate::~CDataThreadPrivate()
 {
@@ -73,6 +75,16 @@ void CDataThreadPrivate::setConnections()
 		"'substituteSearch::searchFinished' with 'CDataThread::searchFinished'", 
 		bResult);
 
+}
+void CDataThreadPrivate::prepareDirectories()
+{
+	std::string dictionaryDir = gAppSettings->get<std::string>(DICTIONARIES_DIRECTORY,"");
+	//check if DICTIONARIES_DIRECTORY exist in settings
+	QDir dir;
+	if (false==dir.exists(dictionaryDir.c_str()))
+	{
+		dir.mkpath(dictionaryDir.c_str());
+	}
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
@@ -117,7 +129,15 @@ void CDataThread::onSearchProgress(int current)
 }
 void CDataThread::onScanDirectoryForDictionaries()
 {
-	QString dirPath = gAppSettings->get<std::string>(DICTIONARIES_DIRECTORY).c_str();
+	QString dirPath;
+	try
+	{
+		dirPath = gAppSettings->get<std::string>(DICTIONARIES_DIRECTORY).c_str();
+	}
+	catch (boost::property_tree::ptree_bad_path &e)
+	{
+		printLog(eWarningLogLevel,eDebug,QString("Error during gathering dictionaryFilesList '%1'").arg(e.what()));	
+	}
 
 	QDir directory(dirPath);
 	
@@ -125,8 +145,14 @@ void CDataThread::onScanDirectoryForDictionaries()
 	QFileInfoList dictionaryFileList = directory.entryInfoList(fileFilters, QDir::Files | QDir::NoDotAndDotDot, QDir::Name);
 	if (dictionaryFileList.empty())
 		return;
-	//delete current dictionaries file
-	gAppSettings->get_child(DICTIONARY_FILES_LIST).erase("file");
+	try
+	{
+		gAppSettings->get_child(DICTIONARY_FILES_LIST).erase("file");
+	}
+	catch (boost::property_tree::ptree_bad_path &/*e*/)
+	{
+		gAppSettings->put<std::string>(DICTIONARY_FILES_LIST,"");
+	}
 	Q_FOREACH ( const QFileInfo & fileItem, dictionaryFileList )
 	{
 		gAppSettings->add(DICTIONARY_FILE_ITEM, fileItem.fileName().toStdString());

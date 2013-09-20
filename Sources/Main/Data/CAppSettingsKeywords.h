@@ -10,5 +10,10 @@
 #define DICTIONARY_FILES_LIST "settings.dictionaries.files_list"
 #define DICTIONARY_FILE_ITEM "settings.dictionaries.files_list.file"
 
+
+//default settings values
+#define DICTIONARIES_DIRECTORY_DEFAULT_VALUE "dict"
+
+
 #endif //_CAPPSETTINGS_KEYWORDS_INCLUDE_
 

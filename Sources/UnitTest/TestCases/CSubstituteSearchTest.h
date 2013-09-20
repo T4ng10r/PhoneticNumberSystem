@@ -18,6 +18,7 @@ private Q_SLOTS:
 		void cleanup();
 		void test_SubstituteSearch_WholeCorrectWord_01();
 		void test_SubstituteSearch_WholeCorrectWord_02();
-		void test_SubstituteSearch_WholeWordCoversPartOfNumber();
+		void test_SubstituteSearch_WholeWordCoversPartOfNumber_01();
+		void test_SubstituteSearch_WholeWordCoversPartOfNumber_02();
 		void test_SubstituteSearch_WholeNumberCoversPartOfWord();
 };

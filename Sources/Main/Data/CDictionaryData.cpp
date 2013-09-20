@@ -197,11 +197,12 @@ public:
 	 std::vector<std::string>	dictionaryWords;
 };
 
-CDictionaryDataPrivate::CDictionaryDataPrivate(CDictionaryData * ptrPublic)
+CDictionaryDataPrivate::CDictionaryDataPrivate(CDictionaryData * ptrPublic):linenum(0),fileHandle(NULL)
 #ifndef USE_STL_VECTOR
 	//,dictionaryWordsArray(0)
 #endif
 {
+	wordsCount = 0;
 	m_ptrPublic = ptrPublic;
 	linenum = 0;
 }

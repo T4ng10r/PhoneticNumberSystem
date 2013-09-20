@@ -166,13 +166,21 @@ void CDictionariesConfigurationDlgPrivate::setupUI_CreateSelectDictionariesFromW
 }
 void CDictionariesConfigurationDlgPrivate::setupUI_RefreshDictionariesFilesMenu() 
 {
-	BOOST_FOREACH(const boost::property_tree::ptree::value_type & dictionaryFileItem, gAppSettings->get_child(DICTIONARY_FILES_LIST))
+	try
 	{
-		QString actionText = dictionaryFileItem.second.data().c_str();
-		actionText = actionText.left(actionText.lastIndexOf('.'));
-		QAction * action = new QAction(actionText,NULL);
-		dicionariesFilesMenu->addAction(action);
-		setDictionaryFilesMenuActionConnection(action);
+		const boost::property_tree::ptree & dictFilesTree = gAppSettings->get_child(DICTIONARY_FILES_LIST);
+		BOOST_FOREACH(const boost::property_tree::ptree::value_type & dictionaryFileItem, dictFilesTree)
+		{
+			QString actionText = dictionaryFileItem.second.data().c_str();
+			actionText = actionText.left(actionText.lastIndexOf('.'));
+			QAction * action = new QAction(actionText,NULL);
+			dicionariesFilesMenu->addAction(action);
+			setDictionaryFilesMenuActionConnection(action);
+		}
+	}
+	catch (boost::property_tree::ptree_bad_path &e)
+	{
+		printLog(eWarningLogLevel,eDebug,QString("Error during gathering dictionaryFilesList '%1'").arg(e.what()));	
 	}
 	setupUI_AddRefreshAction();
 }
@@ -231,7 +239,7 @@ void CDictionariesConfigurationDlgPrivate::setDictionaryFilesMenuActionConnectio
 }
 void CDictionariesConfigurationDlgPrivate::setCurrentlySetDictionaryInMenu()
 {
-	QString dictDir = gAppSettings->get<std::string>(SELECTED_DICTIONARY).c_str();
+	QString dictDir = gAppSettings->get<std::string>(SELECTED_DICTIONARY,"").c_str();
 	if (dictDir.length()==0)
 		return;
 	Q_FOREACH(QAction * const action, dicionariesFilesMenu->actions())

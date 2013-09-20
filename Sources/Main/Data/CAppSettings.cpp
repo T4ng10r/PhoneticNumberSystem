@@ -7,7 +7,6 @@
 #define CONFIGURATION_FILE std::string("PhoneticNumberSystem.xml")
 const std::string strConfigurationFileName("PhoneticNumberSystem.xml");
 
-//CAppSettings* CAppSettings::pInstance_=0;
 boost::shared_ptr<CAppSettings> CAppSettings::pInstance_;
 
 class CAppSettingsPrivate
@@ -20,7 +19,6 @@ public:
 	void getDigitsConfiguration();
 	void saveSettings();
 public:
-	//Catalog catalog; // this is the container of your objects
 	//boost::shared_ptr<CSubstituteValuesConfiguration>	m_ptrSubstValConf;
 	CAppSettings *							m_ptrPublic;
 	boost::property_tree::ptree				m_ptrSubstValConf;
@@ -31,6 +29,7 @@ CAppSettingsPrivate::CAppSettingsPrivate(CAppSettings * ptrPublic):m_ptrPublic(p
 {
 	loadSettings();
 	getDigitsConfiguration();
+	defaultValues();
 }
 CAppSettingsPrivate::~CAppSettingsPrivate()
 {
@@ -47,7 +46,7 @@ void CAppSettingsPrivate::loadSettings()
 	{
 		read_xml(CONFIGURATION_FILE, *(static_cast<boost::property_tree::ptree*>(m_ptrPublic)), boost::property_tree::xml_parser::trim_whitespace);
 	}
-	catch (boost::exception const&  /*ex*/)
+	catch (boost::property_tree::xml_parser::xml_parser_error const&  /*ex*/)
 	{
 		printLog(eErrorLogLevel, eDebug, "Lack of properties file");
 	}
@@ -100,6 +99,18 @@ void CAppSettingsPrivate::getDigitsConfiguration()
 		}
 		stSystemDigitsConfiguration.createConsonantsDigitsMap();
 		m_vDigitsConfiguration.push_back(stSystemDigitsConfiguration);
+	}
+}
+void CAppSettingsPrivate::defaultValues()
+{
+	try
+	{
+		m_ptrPublic->get<std::string>(DICTIONARIES_DIRECTORY);
+	}
+	catch (boost::property_tree::ptree_bad_path &/*e*/)
+	{
+		printLog(eDebugLogLevel, eDebug, QString("Lack of '%1 - adding default value").arg(DICTIONARIES_DIRECTORY));
+		m_ptrPublic->put<std::string>(DICTIONARIES_DIRECTORY,DICTIONARIES_DIRECTORY_DEFAULT_VALUE);
 	}
 }
 //////////////////////////////////////////////////////////////////////////

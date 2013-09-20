@@ -30,15 +30,23 @@ bool bLoggersCreated(false);
 #define LOG_DIR				"logs"
 #define LOG_FILE(X)		QString("%1%2%3.log").arg(LOG_DIR).arg(QDir::separator()).arg(X)
 
+void deleteFileIfExist( const QString & filePath)
+{
+	QDir stDir;
+	QFile file(QDir::currentPath()+QDir::separator()+filePath);
+	if (file.exists())
+		stDir.remove(filePath);
+}
+
 void cleanupLogsDir()
 {
 	//be sure that DIR is created
 	QDir stDir;
 	stDir.mkdir(LOG_DIR);
 	//cleanup logs dir content
-	stDir.remove("logs/debug.log");
-	stDir.remove("logs/gui.log");
-	stDir.remove("logs/slots.log");
+	deleteFileIfExist(LOG_FILE(DEBUG_LOGGER));
+	deleteFileIfExist(LOG_FILE(GUI_LOGGER));
+	deleteFileIfExist(LOG_FILE(SLOTS_LOGGER));
 }
 void createLoggers(const QString &strPluginLogName /*= QString()*/)
 {
@@ -159,6 +167,8 @@ void printLog(eLogLevel debugLevel, eLoggerType loggerType, const QString &strMs
 #endif
 	}
 }
+
+
 //#else
 //void createLoggers(const QString &strPluginLogName){};
 //void destroyLoggers(){};
