@@ -17,11 +17,7 @@ int main(int argc, char *argv[])
 	//if (QTest::qExec(&cSubstituteValuesConfigurationDlgTest, argc, argv)!=0)
 	//	return -1;  
 
-	CSystemDigitsConfigurationTest cSystemDigitsConfigurationTest;
-	if (QTest::qExec(&cSystemDigitsConfigurationTest, argc, argv)!=0)
-		return -1;  
-
-	CSearchResultTreeTest searchResultTreeTest;
+	CSearchResultTreeNodeTest searchResultTreeTest;
 	if (QTest::qExec(&searchResultTreeTest, argc, argv)!=0)
 		return -1;  
 

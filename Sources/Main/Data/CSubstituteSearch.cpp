@@ -3,6 +3,8 @@
 #include <Data/CAppSettings.h>
 #include <tools/loggers.h>
 #include <boost/algorithm/string.hpp>
+#include <boost/foreach.hpp>
+#include <Data/SearchResultTreeNode.h>
 
 class CSubstituteSearchPrivate
 {
@@ -18,7 +20,7 @@ public:
 	WordSearchResult				searchResult;
 	WordSearchResult				searchCandidates;
 	FittingWordsMap					searchResultMap;
-	SearchResultTreeNode			searchResultsTreeRoot;
+	SearchResultTreeNode			searchResultTreeRoot;
 };
 
 CSubstituteSearchPrivate::CSubstituteSearchPrivate(CSubstituteSearch * ptrPublic):m_ptrPublic(ptrPublic)
@@ -82,15 +84,20 @@ void CSubstituteSearchPrivate::prepareSearchResults()
 {
 	std::size_t searchedNumberLength = number.size();
 	searchResult.clear();
-	//build tree result
+	searchResultTreeRoot.clear();
 
-
-	FittingWordsMap::const_iterator iterMap = searchResultMap.find(MatchingPair(0,searchedNumberLength-1));
-	if (iterMap==searchResultMap.end())
-		return;
-	std::copy_if(iterMap->second.begin(),iterMap->second.end(),
-		std::back_inserter(searchResult),[](SuccessWord word){return word.bFullCoverage==true;}
-		 );
+	BOOST_FOREACH(const FittingWordsMap::value_type & resultItem, searchResultMap)
+	{
+		std::list<boost::shared_ptr<SearchResultTreeNode> > foundNodes;
+		searchResultTreeRoot.find_node(resultItem.first.first, foundNodes);
+		for( boost::shared_ptr<SearchResultTreeNode> foundNode : foundNodes)
+		{
+			boost::shared_ptr<SearchResultTreeNode> nodeToAdd(new SearchResultTreeNode);
+			nodeToAdd->iCurrentIndex=resultItem.first.second;
+			nodeToAdd->parent=foundNode;
+			foundNode->children[nodeToAdd->iCurrentIndex.get()]=nodeToAdd;
+		}
+	}
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
