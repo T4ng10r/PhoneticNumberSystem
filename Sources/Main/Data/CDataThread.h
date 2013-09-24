@@ -27,8 +27,8 @@ public Q_SLOTS:
 	void onScanDirectoryForDictionaries();
 	void onSetDictionary();
 	void onNumberSearchStarted(const std::string & number);
-protected Q_SLOTS:
-	void onSearchProgress(int current);
+//protected Q_SLOTS:
+//	void onSearchProgress(int current);
 protected:
 	boost::scoped_ptr<CDataThreadPrivate> privPart;
 };

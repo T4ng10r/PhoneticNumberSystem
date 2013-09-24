@@ -20,7 +20,7 @@ public:
 	 void startSearchForNumber(const std::string & number);
 	 const WordSearchResult & getSearchResult();
 Q_SIGNALS:
-	 void searchProgress(int current);
+	 void searchProgress(int current, int max);
 	 void searchFinished();
 protected:
      boost::scoped_ptr<CSubstituteSearchPrivate> privPart;

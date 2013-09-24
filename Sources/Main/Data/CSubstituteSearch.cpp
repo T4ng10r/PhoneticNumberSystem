@@ -5,6 +5,8 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/foreach.hpp>
 #include <Data/SearchResultTreeNode.h>
+#include <set>
+#include <stack>          // std::stack
 
 class CSubstituteSearchPrivate
 {
@@ -12,6 +14,7 @@ public:
      CSubstituteSearchPrivate(CSubstituteSearch * ptrPublic);
      ~CSubstituteSearchPrivate();
 	 bool testWord(const std::string & ,const CSingleSubstituteDigitsConfiguration & digitConf);
+	 void buildSearchResultsTree();
 	 void prepareSearchResults();
 public:
 	CSubstituteSearch *                    m_ptrPublic;
@@ -80,7 +83,7 @@ bool CSubstituteSearchPrivate::testWord(const std::string & wordToTest,const CSi
 	}
 	return false;
 }
-void CSubstituteSearchPrivate::prepareSearchResults()
+void CSubstituteSearchPrivate::buildSearchResultsTree()
 {
 	std::size_t searchedNumberLength = number.size();
 	searchResult.clear();
@@ -89,15 +92,24 @@ void CSubstituteSearchPrivate::prepareSearchResults()
 	BOOST_FOREACH(const FittingWordsMap::value_type & resultItem, searchResultMap)
 	{
 		std::list<boost::shared_ptr<SearchResultTreeNode> > foundNodes;
-		searchResultTreeRoot.find_node(resultItem.first.first, foundNodes);
-		for( boost::shared_ptr<SearchResultTreeNode> foundNode : foundNodes)
+		BOOST_FOREACH(boost::shared_ptr<SearchResultTreeNode> foundNode,  foundNodes)
 		{
-			boost::shared_ptr<SearchResultTreeNode> nodeToAdd(new SearchResultTreeNode);
-			nodeToAdd->iCurrentIndex=resultItem.first.second;
+			if (resultItem.first.first==resultItem.first.second)
+			{
+				//foundNode->words.push_back(resultItem.second);
+			}
+			
+			boost::shared_ptr<SearchResultTreeNode> nodeToAdd(new SearchResultTreeNode(resultItem.first.second));
+			//nodeToAdd->iCurrentIndex=resultItem.first.second;
 			nodeToAdd->parent=foundNode;
 			foundNode->children[nodeToAdd->iCurrentIndex.get()]=nodeToAdd;
 		}
 	}
+}
+void CSubstituteSearchPrivate::prepareSearchResults()
+{
+	buildSearchResultsTree();
+	searchResult = searchResultTreeRoot.parseDFS();
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
@@ -119,18 +131,20 @@ void CSubstituteSearch::startSearchForNumber(const std::string & number)
 	unsigned int wordsCount = privPart->dictionaryWords->getWordsCount();
 	unsigned int notifyStepCount = wordsCount/100;
 	unsigned int notifyStep = 0;
-	Q_EMIT searchProgress(0);
+	Q_EMIT searchProgress(0, wordsCount);
 	for(unsigned int index=0;index<wordsCount;index++,notifyStep++)
 	{
 		std::string word = privPart->dictionaryWords->getWordByNdex(index);
+		if (word.size()<2)
+			continue;
 		privPart->testWord(word,digitConf[0]);
 		if (notifyStep==notifyStepCount)
 		{
-			Q_EMIT searchProgress(index+1);
+			Q_EMIT searchProgress(index+1,wordsCount);
 			notifyStep=0;
 		}
 	}
-	Q_EMIT searchProgress(wordsCount);
+	Q_EMIT searchProgress(wordsCount,wordsCount);
 	privPart->prepareSearchResults();
 	Q_EMIT searchFinished();
 	printLog(eInfoLogLevel,eDebug,QString("Searching substitute for number '%1' finished").arg(number.c_str()));

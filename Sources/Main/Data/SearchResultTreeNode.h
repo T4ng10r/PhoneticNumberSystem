@@ -4,6 +4,9 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/optional.hpp>
 #include <boost/enable_shared_from_this.hpp>
+#include <Data/CSubstituteSearchTypes.h>
+
+//typedef std::list<std::string> WordsSubstitution;
 
 struct SearchResultTreeNode : public boost::enable_shared_from_this<SearchResultTreeNode>
 {
@@ -14,11 +17,12 @@ public:
 	SearchResultTreeNode(NodesIndex index):iCurrentIndex(index){}
 	void clear();
 	void find_node(unsigned int searchedNode, std::list<boost::shared_ptr<SearchResultTreeNode> > &foundNodes);
+	WordSearchResult parseDFS();
 public:
 	typedef std::map< NodesIndex, boost::shared_ptr<SearchResultTreeNode> >	ChildrenMap;
 	//index of second value in range covered with this node words
 	boost::optional<NodesIndex> iCurrentIndex;
 	boost::shared_ptr<SearchResultTreeNode>	parent;
 	ChildrenMap children;
-	std::list<std::string>  words;
+	std::list<std::string> words;
 };

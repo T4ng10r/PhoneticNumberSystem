@@ -63,8 +63,8 @@ std::string  CDataThreadPrivate::createCurrentDictionaryAffPath()
 void CDataThreadPrivate::setConnections()
 {
 	bool bResult = false;
-	bResult = QObject::connect(substituteSearch.get(), SIGNAL(searchProgress(int)), 
-		publicPart, SLOT(onSearchProgress(int)));
+	bResult = QObject::connect(substituteSearch.get(), SIGNAL(searchProgress(int,int)), 
+		publicPart, SIGNAL(searchProgress(int,int)));
 	logConnection("CDataThreadPrivate::setConnections",
 		"'substituteSearch::searchProgress' with 'CDataThread::onSearchProgress'", 
 		bResult);
@@ -123,10 +123,10 @@ const WordSearchResult & CDataThread::getSearchResult()
 	return privPart->substituteSearch->getSearchResult();
 }
 //////////////////////////////////////////////////////////////////////////
-void CDataThread::onSearchProgress(int current)
-{
-	Q_EMIT searchProgress(current, privPart->dictionaryData->getWordsCount());
-}
+//void CDataThread::onSearchProgress(int current)
+//{
+//	Q_EMIT searchProgress(current, privPart->dictionaryData->getWordsCount());
+//}
 void CDataThread::onScanDirectoryForDictionaries()
 {
 	QString dirPath;
