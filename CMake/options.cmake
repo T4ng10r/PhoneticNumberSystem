@@ -9,7 +9,7 @@ find_package(Qt5Core)
 find_package(Qt5Xml)
 find_package(Qt5Test)
 else (USE_Qt5)
-find_package(Qt4 REQUIRED QtNetwork QtGui QtCore QtXml QtTest)
+find_package(Qt4 REQUIRED QtGui QtCore QtXml QtTest)
 endif (USE_Qt5)   
 
 #boost build with bjam threading=multi runtime-link=static

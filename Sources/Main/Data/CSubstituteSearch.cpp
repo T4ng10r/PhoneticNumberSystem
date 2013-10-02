@@ -85,25 +85,32 @@ bool CSubstituteSearchPrivate::testWord(const std::string & wordToTest,const CSi
 }
 void CSubstituteSearchPrivate::buildSearchResultsTree()
 {
+	//using namespace SearchResultTreeNode;
 	std::size_t searchedNumberLength = number.size();
 	searchResult.clear();
 	searchResultTreeRoot.clear();
 
 	BOOST_FOREACH(const FittingWordsMap::value_type & resultItem, searchResultMap)
 	{
-		std::list<boost::shared_ptr<SearchResultTreeNode> > foundNodes;
-		BOOST_FOREACH(boost::shared_ptr<SearchResultTreeNode> foundNode,  foundNodes)
-		{
-			if (resultItem.first.first==resultItem.first.second)
-			{
-				//foundNode->words.push_back(resultItem.second);
-			}
-			
-			boost::shared_ptr<SearchResultTreeNode> nodeToAdd(new SearchResultTreeNode(resultItem.first.second));
-			//nodeToAdd->iCurrentIndex=resultItem.first.second;
-			nodeToAdd->parent=foundNode;
-			foundNode->children[nodeToAdd->iCurrentIndex.get()]=nodeToAdd;
-		}
+		//std::for_each(resultItem.second.begin(),resultItem.second.end(),
+		//	boost::bind(&SearchResultTreeNode.addNode, searchResultTreeRoot, resultItem.first.first,resultItem.first.second, 
+		//	(boost::bind(SuccessWord::words.front(),_1))
+		//	""));
+		//searchResultTreeRoot.addNode(resultItem.first.first,resultItem.first.second,resultItem.second);
+		//TreeNodesList foundNodes = searchResultTreeRoot.find_node(resultItem.first.first);
+		//BOOST_FOREACH(SharedTreeNodes foundNode,  foundNodes)
+		//{
+		//	if (resultItem.first.first==resultItem.first.second)
+		//	{
+		//		//foundNode->words.push_back(resultItem.second);
+		//	}
+
+		//	
+		//	boost::shared_ptr<SearchResultTreeNode> nodeToAdd(new SearchResultTreeNode(resultItem.first.second));
+		//	//nodeToAdd->iCurrentIndex=resultItem.first.second;
+		//	nodeToAdd->parent=foundNode;
+		//	foundNode->children[nodeToAdd->iCurrentIndex.get()]=nodeToAdd;
+		//}
 	}
 }
 void CSubstituteSearchPrivate::prepareSearchResults()

@@ -26,6 +26,7 @@ struct MatchingPair : public UnsignedPair
 
 struct SuccessWord  
 {
+	std::string getWord() {return words.front(); }
 	bool bFullCoverage;
 	std::list<std::string>  words;
 	//which and how many digits it can cover

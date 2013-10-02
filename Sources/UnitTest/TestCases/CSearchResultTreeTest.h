@@ -6,7 +6,8 @@ class CSearchResultTreeNodeTest : public QObject
 {
 	Q_OBJECT
 public:
-	boost::shared_ptr<SearchResultTreeNode> root;
+	SharedTreeNodes root;
+	void initialTree();
 private Q_SLOTS:
 	void init();
 	void cleanup();
@@ -14,4 +15,7 @@ private Q_SLOTS:
 	void test_FindSecondLevel();
 	void test_FindOnDiffLevel_01();
 	void test_FindOnDiffLevel_02();
+	void test_BuildTree_01();
+	void test_BuildTree_02();
+	void test_BuildTree_03();
 };
