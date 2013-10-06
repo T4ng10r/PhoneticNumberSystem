@@ -15,6 +15,8 @@ public:
      ~CSubstituteSearchPrivate();
 	 bool testWord(const std::string & ,const CSingleSubstituteDigitsConfiguration & digitConf);
 	 void buildSearchResultsTree();
+
+	 void clearSearchResult();
 	 void prepareSearchResults();
 public:
 	CSubstituteSearch *                    m_ptrPublic;
@@ -83,39 +85,29 @@ bool CSubstituteSearchPrivate::testWord(const std::string & wordToTest,const CSi
 	}
 	return false;
 }
-void CSubstituteSearchPrivate::buildSearchResultsTree()
+void CSubstituteSearchPrivate::clearSearchResult() 
 {
-	//using namespace SearchResultTreeNode;
-	std::size_t searchedNumberLength = number.size();
 	searchResult.clear();
 	searchResultTreeRoot.clear();
+}
+void CSubstituteSearchPrivate::buildSearchResultsTree()
+{
+	clearSearchResult();
 
 	BOOST_FOREACH(const FittingWordsMap::value_type & resultItem, searchResultMap)
 	{
-		//std::for_each(resultItem.second.begin(),resultItem.second.end(),
-		//	boost::bind(&SearchResultTreeNode.addNode, searchResultTreeRoot, resultItem.first.first,resultItem.first.second, 
-		//	(boost::bind(SuccessWord::words.front(),_1))
-		//	""));
-		//searchResultTreeRoot.addNode(resultItem.first.first,resultItem.first.second,resultItem.second);
-		//TreeNodesList foundNodes = searchResultTreeRoot.find_node(resultItem.first.first);
-		//BOOST_FOREACH(SharedTreeNodes foundNode,  foundNodes)
-		//{
-		//	if (resultItem.first.first==resultItem.first.second)
-		//	{
-		//		//foundNode->words.push_back(resultItem.second);
-		//	}
-
-		//	
-		//	boost::shared_ptr<SearchResultTreeNode> nodeToAdd(new SearchResultTreeNode(resultItem.first.second));
-		//	//nodeToAdd->iCurrentIndex=resultItem.first.second;
-		//	nodeToAdd->parent=foundNode;
-		//	foundNode->children[nodeToAdd->iCurrentIndex.get()]=nodeToAdd;
-		//}
+		const WordSearchResult & searchResult = resultItem.second;
+		int start=resultItem.first.first;
+		int end=resultItem.first.second;
+		std::for_each(searchResult.begin(),searchResult.end(),
+			boost::bind(&SearchResultTreeNode::addNode, searchResultTreeRoot, start,end, boost::bind(&SuccessWord::getWord, _1)));
 	}
 }
 void CSubstituteSearchPrivate::prepareSearchResults()
 {
+	printLog(eInfoLogLevel,eDebug,QString("Building tree of search results"));
 	buildSearchResultsTree();
+	printLog(eInfoLogLevel,eDebug,QString("Gathering processed search results"));
 	searchResult = searchResultTreeRoot.parseDFS();
 }
 //////////////////////////////////////////////////////////////////////////

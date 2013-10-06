@@ -11,7 +11,7 @@ void CSearchResultTreeNodeTest ::init()
 {
 	root.reset(new SearchResultTreeNode(0));
 }
-void CSearchResultTreeNodeTest::initialTree()
+void CSearchResultTreeNodeTest::initialTreeForFindTests()
 {
 	CREATE_CONNECTION(root, node1_1, 3);
 	{
@@ -29,6 +29,17 @@ void CSearchResultTreeNodeTest::initialTree()
 		CREATE_CONNECTION(node1_3, node3_3,8);
 	}
 };
+void CSearchResultTreeNodeTest ::initialTreeForParseDFS()
+{
+	std::string firstWord("First");
+	std::string secondWord("Second");
+	std::string thirdWord("Third");
+	std::string fourthWord("Fourth");
+	root->addNode(0,0,firstWord);
+	root->addNode(0,0,secondWord);
+	root->addNode(0,0,thirdWord);
+	root->addNode(0,0,fourthWord);
+}
 void CSearchResultTreeNodeTest ::cleanup()
 {
 	root.reset();
@@ -84,21 +95,21 @@ void CSearchResultTreeNodeTest::test_BuildTree_03()
 }
 void CSearchResultTreeNodeTest ::test_FindFirstLevel()
 {
-	initialTree();
+	initialTreeForFindTests();
 	TreeNodesList foundNodes = root->find_node(0);
 	QCOMPARE(foundNodes.size(),(std::size_t)1);
 	QCOMPARE(foundNodes.front().get(),root.get());
 }
 void CSearchResultTreeNodeTest ::test_FindSecondLevel()
 {
-	initialTree();
+	initialTreeForFindTests();
 	TreeNodesList foundNodes = root->find_node(3);
 	QCOMPARE(foundNodes.size(),(std::size_t)1);
 	QCOMPARE(foundNodes.front()->iCurrentIndex.get(),(unsigned int)3);
 }
 void CSearchResultTreeNodeTest ::test_FindOnDiffLevel_01()
 {
-	initialTree();
+	initialTreeForFindTests();
 	TreeNodesList foundNodes = root->find_node(4);
 	QCOMPARE(foundNodes.size(),(std::size_t)2);
 	QCOMPARE(foundNodes.front()->iCurrentIndex.get(),(unsigned int)4);
@@ -106,9 +117,69 @@ void CSearchResultTreeNodeTest ::test_FindOnDiffLevel_01()
 }
 void CSearchResultTreeNodeTest ::test_FindOnDiffLevel_02()
 {
-	initialTree();
+	initialTreeForFindTests();
 	TreeNodesList foundNodes = root->find_node(5);
 	QCOMPARE(foundNodes.size(),(std::size_t)3);
 	QCOMPARE(foundNodes.front()->iCurrentIndex.get(),(unsigned int)5);
 	QCOMPARE(foundNodes.back()->iCurrentIndex.get(),(unsigned int)5);
+}
+void CSearchResultTreeNodeTest ::test_ParseDFS_01()
+{
+	std::string firstWord("First");
+	std::string secondWord("Second");
+	std::string thirdWord("Third");
+	std::string fourthWord("Fourth");
+	root->addNode(0,0,firstWord);
+	root->addNode(0,0,secondWord);
+	root->addNode(0,0,thirdWord);
+	root->addNode(0,0,fourthWord);
+
+	WordSearchResult result;
+	result = root->parseDFS();
+	QCOMPARE(result.size(),(size_t)4);
+	WordSearchResult::const_iterator iterResult = result.begin();
+	QCOMPARE(iterResult->words.front(),firstWord);
+	iterResult++;
+	QCOMPARE(iterResult->words.front(),secondWord);
+	iterResult++;
+	QCOMPARE(iterResult->words.front(),thirdWord);
+	iterResult++;
+	QCOMPARE(iterResult->words.front(),fourthWord);
+}
+void CSearchResultTreeNodeTest ::test_ParseDFS_02()
+{
+	std::string firstWord("First");
+	std::string secondWord("Second");
+	std::string thirdWord("Third");
+	std::string fourthWord("Fourth");
+	std::string level2_FirstWord("_2lv_First");
+	std::string level2_SecondWord("_2lv_Second");
+
+	root->addNode(0,0,firstWord);
+	root->addNode(0,0,secondWord);
+	root->addNode(0,1,thirdWord);
+	root->addNode(0,1,fourthWord);
+	root->addNode(1,2,level2_FirstWord);
+	root->addNode(1,2,level2_SecondWord);
+
+	WordSearchResult result;
+	result = root->parseDFS();
+	QCOMPARE(result.size(),(size_t)6);
+	WordSearchResult::const_iterator iterResult = result.begin();
+	QCOMPARE(iterResult->words.front(),firstWord);
+	QCOMPARE(iterResult->words.back(),level2_FirstWord);
+	iterResult++;
+	QCOMPARE(iterResult->words.front(),firstWord);
+	QCOMPARE(iterResult->words.back(),level2_SecondWord);
+	iterResult++;
+	QCOMPARE(iterResult->words.front(),secondWord);
+	QCOMPARE(iterResult->words.back(),level2_FirstWord);
+	iterResult++;
+	QCOMPARE(iterResult->words.front(),secondWord);
+	QCOMPARE(iterResult->words.back(),level2_SecondWord);
+	iterResult++;
+	QCOMPARE(iterResult->words.front(),thirdWord);
+	iterResult++;
+	QCOMPARE(iterResult->words.front(),fourthWord);
+
 }

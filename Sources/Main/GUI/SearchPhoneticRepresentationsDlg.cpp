@@ -91,7 +91,15 @@ void CSearchPhoneticRepresentationsDlgPrivate::moveSearchResultIntoModel()
 	{
 		//if (iter->bFullCoverage==false)
 		//	continue;
-		QStandardItem *item = new QStandardItem(QString("%0").arg(iter->words.front().c_str()));
+		std::string itemString;
+		for(const std::string & word : iter->words)
+		{
+			if (!itemString.empty())
+				itemString.push_back(' ');
+			itemString+=word;
+		}
+		//QStandardItem *item = new QStandardItem(QString("%0").arg(iter->words.front().c_str()));
+		QStandardItem *item = new QStandardItem(QString("%0").arg(itemString.c_str()));
 		searchResultsModel.appendRow(item);
 	}
 }

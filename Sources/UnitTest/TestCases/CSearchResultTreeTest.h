@@ -7,7 +7,8 @@ class CSearchResultTreeNodeTest : public QObject
 	Q_OBJECT
 public:
 	SharedTreeNodes root;
-	void initialTree();
+	void initialTreeForFindTests();
+	void initialTreeForParseDFS();
 private Q_SLOTS:
 	void init();
 	void cleanup();
@@ -18,4 +19,6 @@ private Q_SLOTS:
 	void test_BuildTree_01();
 	void test_BuildTree_02();
 	void test_BuildTree_03();
+	void test_ParseDFS_01();
+	void test_ParseDFS_02();
 };

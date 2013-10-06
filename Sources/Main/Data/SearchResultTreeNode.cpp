@@ -1,5 +1,7 @@
 #include <Data/SearchResultTreeNode.h>
 #include <boost/foreach.hpp>
+#include <boost/bind.hpp>
+#include <boost/range/adaptor/map.hpp>
 
 void SearchResultTreeNode::clear()
 {
@@ -29,21 +31,26 @@ WordSearchResult SearchResultTreeNode::parseDFS()
 {
 	WordSearchResult result;
 	//pass through all edges
-	BOOST_FOREACH(const ChildrenMap::value_type & childItem,children)
+	for(const EdgesList & edgesToSingleChild : children | boost::adaptors::map_values)
 	{
-		//childItem.first
-		//WordSearchResult childWords = childItem.second->parseDFS();
-		//std::copy(childWords.begin(),childWords.end(),back_inserter(result));
+		//currently -> list of words between here and child
+		//get parseDFS words from child and add them to this list
+		WordsList wordsOnEdges = edgesToSingleChild.first;
+		WordSearchResult childWords = edgesToSingleChild.second->parseDFS();
+
+		if (childWords.empty())
+			std::copy(wordsOnEdges.begin(),wordsOnEdges.end(),back_inserter(result));
+		else
+			for(const std::string & word : wordsOnEdges)
+			{
+				for(SuccessWord & childWord : childWords)
+				{
+					SuccessWord newWord(word);
+					std::copy(childWord.words.begin(),childWord.words.end(),back_inserter(newWord.words));
+					result.push_back(newWord);
+				}
+			}
 	}
-	//BOOST_FOREACH(const std::string & word,words)
-	//{
-	//	//std::for_each(result.begin(),result.end(),front_inserter(result));
-	//	//std::copy(childWords.begin(),childWords.end(),front_inserter(result));
-	//	BOOST_FOREACH(SuccessWord & resultItem, result)
-	//	{
-	//		resultItem.words.push_front(word);
-	//	}
-	//}
 	return result;
 }
 void SearchResultTreeNode::addNode( StartingIndex startInd, StartingIndex endInd, std::string word )
