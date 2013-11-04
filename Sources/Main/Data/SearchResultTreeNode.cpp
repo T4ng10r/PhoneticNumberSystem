@@ -16,8 +16,7 @@ TreeNodesList SearchResultTreeNode::find_node(unsigned int searchedNode)
 		return result;
 	if (*iCurrentIndex==searchedNode)
 	{
-		SharedTreeNodes node(shared_from_this());
-		result.push_back(node);
+		result.push_back(shared_from_this());
 		return result;
 	}
 	BOOST_FOREACH(const ChildrenMap::value_type & childItem,children)
@@ -27,23 +26,29 @@ TreeNodesList SearchResultTreeNode::find_node(unsigned int searchedNode)
 	}
 	return result;
 }
-WordSearchResult SearchResultTreeNode::parseDFS()
+WordSearchResult SearchResultTreeNode::parseDFS( unsigned int endIndex )
 {
 	WordSearchResult result;
 	//pass through all edges
-	for(const EdgesList & edgesToSingleChild : children | boost::adaptors::map_values)
+    BOOST_FOREACH(const EdgesList & edgesToSingleChild , children | boost::adaptors::map_values)
+    //for(const EdgesList & edgesToSingleChild : children | boost::adaptors::map_values)
 	{
 		//currently -> list of words between here and child
 		//get parseDFS words from child and add them to this list
-		WordsList wordsOnEdges = edgesToSingleChild.first;
-		WordSearchResult childWords = edgesToSingleChild.second->parseDFS();
+		WordsList wordsOnEdge = edgesToSingleChild.first;
+		WordSearchResult childWords = edgesToSingleChild.second->parseDFS(endIndex);
+		if (*iCurrentIndex<(endIndex-1) && childWords.empty())
+			continue;
 
 		if (childWords.empty())
-			std::copy(wordsOnEdges.begin(),wordsOnEdges.end(),back_inserter(result));
+			std::copy(wordsOnEdge.begin(),wordsOnEdge.end(),back_inserter(result));
 		else
-			for(const std::string & word : wordsOnEdges)
+			//this coping section takes too much time
+            BOOST_FOREACH(const std::string & word , wordsOnEdge)
+            //for(const std::string & word : wordsOnEdge)
 			{
-				for(SuccessWord & childWord : childWords)
+                BOOST_FOREACH(const SuccessWord & childWord, childWords)
+                //for(SuccessWord & childWord : childWords)
 				{
 					SuccessWord newWord(word);
 					std::copy(childWord.words.begin(),childWord.words.end(),back_inserter(newWord.words));
@@ -63,7 +68,8 @@ void SearchResultTreeNode::addNode( StartingIndex startInd, StartingIndex endInd
 	else
 		targetNode = targetNodesList.front();
 
-	for(SharedTreeNodes & startNode : startNodesList)
+    BOOST_FOREACH(SharedTreeNodes & startNode , startNodesList)
+    //for(SharedTreeNodes & startNode : startNodesList)
 	{
 		EdgesList & edges = startNode->children[endInd+1];
 		edges.first.push_back(word);

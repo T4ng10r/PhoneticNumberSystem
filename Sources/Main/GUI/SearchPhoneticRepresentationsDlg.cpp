@@ -1,5 +1,7 @@
 #include <Data/CDataThread.h>
 #include <GUI/SearchPhoneticRepresentationsDlg.h>
+#include <GUI/ComposeSubstituteSentenceWidget.h>
+#include <GUI/SearchNumberLineEdit.h>
 #include <tools/loggers.h>
 #include <QtGui/QLineEdit>
 #include <QtGui/QLabel>
@@ -10,6 +12,7 @@
 #include <QtGui/QStandardItemModel>
 #include <Tools/qtTools.h>
 #include <QtCore/QMetaType>
+#include <boost/foreach.hpp>
 
 //Q_DECLARE_METATYPE (std::string)
 
@@ -24,13 +27,14 @@ public:
 	 void moveSearchResultIntoModel();
 public:
 	QLabel *									searchedNumberLabel;
-	QLineEdit *									searchedNumber;
+	SearchNumberLineEdit *						searchedNumber;
 	QPushButton *								performSearchButton;
 	QProgressBar *								searchProgressBar;
 	QListView *									searchResultsView;
 	QStandardItemModel  						searchResultsModel;
 
 	CSearchPhoneticRepresentationsDlg *         publicClass;
+	ComposeSubstituteSentenceWidget * composeSubstituteSentenceWidget;
 };
 
 CSearchPhoneticRepresentationsDlgPrivate::CSearchPhoneticRepresentationsDlgPrivate(CSearchPhoneticRepresentationsDlg * ptrPublic):publicClass(ptrPublic)
@@ -49,9 +53,7 @@ void CSearchPhoneticRepresentationsDlgPrivate::setupUI()
 
 	QHBoxLayout *	editLayout = new QHBoxLayout;
 	searchedNumberLabel = new QLabel;
-	searchedNumber = new QLineEdit;
-	searchedNumber->setInputMask("00000000000000000000");
-	searchedNumber->setMaxLength(20);
+	searchedNumber = new SearchNumberLineEdit;
 	performSearchButton = new QPushButton ;
 
 	editLayout->addWidget(searchedNumberLabel);
@@ -59,6 +61,9 @@ void CSearchPhoneticRepresentationsDlgPrivate::setupUI()
 	editLayout->addWidget(performSearchButton);
 
 	mainLayout->addLayout(editLayout);
+
+	composeSubstituteSentenceWidget = new ComposeSubstituteSentenceWidget;
+	mainLayout->addWidget(composeSubstituteSentenceWidget);
 
 	searchResultsView = new QListView;
 	mainLayout->addWidget(searchResultsView);
@@ -89,10 +94,11 @@ void CSearchPhoneticRepresentationsDlgPrivate::moveSearchResultIntoModel()
 	const WordSearchResult & result = CDataThread::getInstance()->getSearchResult();
 	for(WordSearchResult::const_iterator iter = result.begin();iter!=result.end();iter++)
 	{
-		//if (iter->bFullCoverage==false)
-		//	continue;
+		if (iter->bFullCoverage==false)
+			continue;
 		std::string itemString;
-		for(const std::string & word : iter->words)
+        BOOST_FOREACH(const std::string & word, iter->words)
+        //for(const std::string & word : iter->words)
 		{
 			if (!itemString.empty())
 				itemString.push_back(' ');

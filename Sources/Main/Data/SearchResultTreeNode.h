@@ -24,7 +24,7 @@ public:
 	void addNode(StartingIndex startInd, StartingIndex endInd, std::string word);
 	//void find_node(unsigned int searchedNode, std::list<boost::shared_ptr<SearchResultTreeNode> > &foundNodes);
 	TreeNodesList find_node(unsigned int searchedNode);
-	WordSearchResult parseDFS();
+	WordSearchResult parseDFS(unsigned int endIndex);
 public:
 	//index of second value in range covered with this node words
 	boost::optional<StartingIndex> iCurrentIndex;

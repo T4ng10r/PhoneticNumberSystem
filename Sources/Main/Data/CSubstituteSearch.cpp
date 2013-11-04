@@ -1,12 +1,10 @@
+#include <tools/loggers.h>
 #include <Data/CSubstituteSearch.h>
 #include <Data/CAppSettings.h>
-#include <Data/CAppSettings.h>
-#include <tools/loggers.h>
-#include <boost/algorithm/string.hpp>
-#include <boost/foreach.hpp>
 #include <Data/SearchResultTreeNode.h>
-#include <set>
-#include <stack>          // std::stack
+#include <boost/algorithm/string.hpp>	//boost::to_upper_copy
+#include <boost/foreach.hpp>
+#include <boost/bind.hpp>
 
 class CSubstituteSearchPrivate
 {
@@ -25,11 +23,14 @@ public:
 	WordSearchResult				searchResult;
 	WordSearchResult				searchCandidates;
 	FittingWordsMap					searchResultMap;
-	SearchResultTreeNode			searchResultTreeRoot;
+	SharedTreeNodes					searchResultTreeRoot;
 };
 
-CSubstituteSearchPrivate::CSubstituteSearchPrivate(CSubstituteSearch * ptrPublic):m_ptrPublic(ptrPublic)
-{}
+CSubstituteSearchPrivate::CSubstituteSearchPrivate(CSubstituteSearch * ptrPublic):m_ptrPublic(ptrPublic),
+	searchResultTreeRoot(new SearchResultTreeNode(0))
+{
+
+}
 CSubstituteSearchPrivate::~CSubstituteSearchPrivate(){}
 bool CSubstituteSearchPrivate::testWord(const std::string & wordToTest,const CSingleSubstituteDigitsConfiguration & digitConf)
 {
@@ -40,12 +41,13 @@ bool CSubstituteSearchPrivate::testWord(const std::string & wordToTest,const CSi
 	unsigned int digitIndex(0);
 	std::string word = boost::to_upper_copy(wordToTest);
 	result.bFullCoverage=true;
+	size_t acceptPos;
 	for(;digitIndex<number.size();digitIndex++)
 	{
 		unsigned int digit = number[digitIndex]-'0';
 		//test 
 		OneDigitConsonantsSet::const_iterator iter = digitConf.digitsConsonantsSetMap.find(digit);
-		size_t acceptPos = word.find_first_of(iter->second.first,searchStartPos);
+		acceptPos = word.find_first_of(iter->second.first,searchStartPos);
 		size_t forbPos = word.find_first_of(iter->second.second,searchStartPos);
 		//if both result are end - we reached end of word or no chars in 
 		if (acceptPos == std::string::npos && forbPos == std::string::npos)
@@ -62,7 +64,7 @@ bool CSubstituteSearchPrivate::testWord(const std::string & wordToTest,const CSi
 			//
 			matchingPair = MatchingPair();
 		}
-		//ok, expect subst char found
+		//ok, expect subset char found
 		if (acceptPos<forbPos)
 		{
 			if (result.matchingLetters.empty())
@@ -73,7 +75,7 @@ bool CSubstituteSearchPrivate::testWord(const std::string & wordToTest,const CSi
 		}
 	}
 	result.bFullCoverage=(coveredDigits==number);
-	if (word.find_first_of(digitConf.allConsonants,searchStartPos)==std::string::npos)
+	if (word.find_first_of(digitConf.allConsonants,searchStartPos)==std::string::npos && coveredDigits.size())
 	{
 		result.words.push_back(wordToTest);
 		if (digitIndex>=number.size())
@@ -81,6 +83,16 @@ bool CSubstituteSearchPrivate::testWord(const std::string & wordToTest,const CSi
 		matchingPair.second=digitIndex;
 		result.coveragePairs.push_back(matchingPair);
 		searchResultMap[matchingPair].push_back(result);
+		if (!result.bFullCoverage)
+		{
+			while((acceptPos = number.find(coveredDigits,matchingPair.second+1))!=std::string::npos);
+			{
+				matchingPair.first=acceptPos;
+				matchingPair.second=acceptPos+coveredDigits.size();
+				result.coveragePairs.front()=matchingPair;
+				searchResultMap[matchingPair].push_back(result);
+			}
+		}
 		return true;
 	}
 	return false;
@@ -88,7 +100,8 @@ bool CSubstituteSearchPrivate::testWord(const std::string & wordToTest,const CSi
 void CSubstituteSearchPrivate::clearSearchResult() 
 {
 	searchResult.clear();
-	searchResultTreeRoot.clear();
+	searchResultTreeRoot->clear();
+	searchResultTreeRoot->iCurrentIndex=0;
 }
 void CSubstituteSearchPrivate::buildSearchResultsTree()
 {
@@ -108,7 +121,7 @@ void CSubstituteSearchPrivate::prepareSearchResults()
 	printLog(eInfoLogLevel,eDebug,QString("Building tree of search results"));
 	buildSearchResultsTree();
 	printLog(eInfoLogLevel,eDebug,QString("Gathering processed search results"));
-	searchResult = searchResultTreeRoot.parseDFS();
+	searchResult = searchResultTreeRoot->parseDFS(number.length());
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////

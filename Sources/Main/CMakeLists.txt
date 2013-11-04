@@ -47,10 +47,13 @@ endif (USE_Qt5)
 		${CMAKE_CURRENT_SOURCE_DIR}/Data/CDictionaryData.h
 		${CMAKE_CURRENT_SOURCE_DIR}/Data/CSubstituteSearch.h 
 		${CMAKE_CURRENT_SOURCE_DIR}/GUI/MainWindow.h
+		${CMAKE_CURRENT_SOURCE_DIR}/GUI/SearchPhoneticRepresentationsDlg.h
+		${CMAKE_CURRENT_SOURCE_DIR}/GUI/ComposeSubstituteSentenceWidget.h 
+		${CMAKE_CURRENT_SOURCE_DIR}/GUI/SearchResultWordWidget.h 
+		${CMAKE_CURRENT_SOURCE_DIR}/GUI/SearchNumberLineEdit.h
 		${CMAKE_CURRENT_SOURCE_DIR}/GUI/Settings/AppSettingsDlg.h 
 		${CMAKE_CURRENT_SOURCE_DIR}/GUI/Settings/DictionariesConfigurationDlg.h 
 		${CMAKE_CURRENT_SOURCE_DIR}/GUI/Settings/SubstituteValuesConfigurationDlg.h
-		${CMAKE_CURRENT_SOURCE_DIR}/GUI/SearchPhoneticRepresentationsDlg.h
         )
         
 if (NOT USE_Qt5)

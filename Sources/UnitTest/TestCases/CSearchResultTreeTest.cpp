@@ -135,7 +135,7 @@ void CSearchResultTreeNodeTest ::test_ParseDFS_01()
 	root->addNode(0,0,fourthWord);
 
 	WordSearchResult result;
-	result = root->parseDFS();
+	result = root->parseDFS(1);
 	QCOMPARE(result.size(),(size_t)4);
 	WordSearchResult::const_iterator iterResult = result.begin();
 	QCOMPARE(iterResult->words.front(),firstWord);
@@ -163,7 +163,7 @@ void CSearchResultTreeNodeTest ::test_ParseDFS_02()
 	root->addNode(1,2,level2_SecondWord);
 
 	WordSearchResult result;
-	result = root->parseDFS();
+	result = root->parseDFS(2);
 	QCOMPARE(result.size(),(size_t)6);
 	WordSearchResult::const_iterator iterResult = result.begin();
 	QCOMPARE(iterResult->words.front(),firstWord);
