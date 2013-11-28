@@ -42,3 +42,8 @@ ComposeSubstituteSentenceWidget::ComposeSubstituteSentenceWidget(QWidget * paren
 	m_ptrPriv(new ComposeSubstituteSentenceWidgetPrivate(this))
 {}
 ComposeSubstituteSentenceWidget::~ComposeSubstituteSentenceWidget(void){}
+void ComposeSubstituteSentenceWidget::reset()
+{
+	for (int i=0;i<m_ptrPriv->combo_box_container->count();i++)
+		m_ptrPriv->combo_box_container->removeItem(0);
+}

@@ -13,6 +13,7 @@ class ComposeSubstituteSentenceWidget : public QWidget
 public:
       ComposeSubstituteSentenceWidget(QWidget * parent = NULL);
      ~ComposeSubstituteSentenceWidget(void);
+	 void reset();
 protected:
      boost::scoped_ptr<ComposeSubstituteSentenceWidgetPrivate> m_ptrPriv;
 };

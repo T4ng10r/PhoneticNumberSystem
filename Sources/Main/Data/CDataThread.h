@@ -17,7 +17,7 @@ public:
 	~CDataThread(void);
 	static boost::shared_ptr<CDataThread> getInstance();
 	void loadCurrentAppDictionary();
-	const WordSearchResult & getSearchResult();
+	WordSearchResult getSearchResult();
 Q_SIGNALS:
 	void onDictionariesFilesRefreshed();
 	void searchProgress(int current, int max);

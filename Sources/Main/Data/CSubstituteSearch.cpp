@@ -113,7 +113,8 @@ void CSubstituteSearchPrivate::buildSearchResultsTree()
 		int start=resultItem.first.first;
 		int end=resultItem.first.second;
 		std::for_each(searchResult.begin(),searchResult.end(),
-			boost::bind(&SearchResultTreeNode::addNode, searchResultTreeRoot, start,end, boost::bind(&SuccessWord::getWord, _1)));
+      //boost::bind(&SearchResultTreeNode::addNode, searchResultTreeRoot, start,end, boost::bind(&SuccessWord::getWord, _1)));
+      boost::bind(&SearchResultTreeNode::addNode, searchResultTreeRoot, start,end, _1));
 	}
 }
 void CSubstituteSearchPrivate::prepareSearchResults()
@@ -121,7 +122,7 @@ void CSubstituteSearchPrivate::prepareSearchResults()
 	printLog(eInfoLogLevel,eDebug,QString("Building tree of search results"));
 	buildSearchResultsTree();
 	printLog(eInfoLogLevel,eDebug,QString("Gathering processed search results"));
-	searchResult = searchResultTreeRoot->parseDFS(number.length());
+	//searchResult = searchResultTreeRoot->parseDFS(number.length());
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
@@ -157,11 +158,15 @@ void CSubstituteSearch::startSearchForNumber(const std::string & number)
 		}
 	}
 	Q_EMIT searchProgress(wordsCount,wordsCount);
-	privPart->prepareSearchResults();
+	privPart->buildSearchResultsTree();
 	Q_EMIT searchFinished();
 	printLog(eInfoLogLevel,eDebug,QString("Searching substitute for number '%1' finished").arg(number.c_str()));
 }
-const WordSearchResult & CSubstituteSearch::getSearchResult()
+WordSearchResult CSubstituteSearch::getSearchResult(int start_index)
 {
-	return privPart->searchResult;
+	return WordSearchResult();
+	if (start_index == 0)
+	{
+		//return privPart->searchResult;
+	}
 }

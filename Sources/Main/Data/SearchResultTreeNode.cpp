@@ -35,7 +35,7 @@ WordSearchResult SearchResultTreeNode::parseDFS( unsigned int endIndex )
 	{
 		//currently -> list of words between here and child
 		//get parseDFS words from child and add them to this list
-		WordsList wordsOnEdge = edgesToSingleChild.first;
+		WordsList wordsOnEdge = edgesToSingleChild.cwords_list();
 		WordSearchResult childWords = edgesToSingleChild.second->parseDFS(endIndex);
 		if (*iCurrentIndex<(endIndex-1) && childWords.empty())
 			continue;
@@ -72,9 +72,9 @@ void SearchResultTreeNode::addNode( StartingIndex startInd, StartingIndex endInd
     //for(SharedTreeNodes & startNode : startNodesList)
 	{
 		EdgesList & edges = startNode->children[endInd+1];
-		edges.first.push_back(word);
-		if (!edges.second)
-			edges.second=targetNode;
+		edges.words_list().push_back(word);
+		if (!edges.target_node())
+			edges.set_target_node(targetNode);
 	}
 }
 

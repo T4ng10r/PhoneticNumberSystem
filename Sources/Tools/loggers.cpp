@@ -87,8 +87,7 @@ void createLoggers(const QString &strPluginLogName /*= QString()*/)
 	}
 #else if USE_LOG4CPP
 	std::string initFileName = "logs/log4cpp.properties";
-	log4cpp::PropertyConfigurator::configure(initFileName);
-
+		log4cpp::PropertyConfigurator::configure(initFileName);
 #endif
 	bLoggersCreated=true;
 }

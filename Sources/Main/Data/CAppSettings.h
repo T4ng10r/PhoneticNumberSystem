@@ -16,6 +16,8 @@ class CSubstituteDigitsConfiguration
 	std::map<std::string, CSingleSubstituteDigitsConfiguration>	substitutes;
 };
 
+// Set of consonants to use in substitution
+// set of possible substitute configurations
 class CSubstituteValuesConfiguration : public boost::property_tree::ptree
 {
 public:
@@ -36,7 +38,6 @@ public:
 protected:
 	CAppSettings();
 	boost::scoped_ptr<CAppSettingsPrivate> m_ptrPriv;
-	//static CAppSettings* pInstance_;
 	static boost::shared_ptr<CAppSettings> pInstance_;
 };
 #define gAppSettings CAppSettings::getInstance() 

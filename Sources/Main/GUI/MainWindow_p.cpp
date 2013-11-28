@@ -63,6 +63,12 @@ void CMainWindowPrivate::setConnections()
 		"'CDataThread::searchFinished' with 'searchPhoneticRepresentations::searchFinished'", 
 		bResult);
 
+	bResult = QObject::connect(CDataThread::getInstance().get(), SIGNAL(searchFinished()),
+		searchPhoneticRepresentations.get(), SLOT(searchFinished()) );
+	logConnection("CMainWindowPrivate::setConnections",
+		"'CDataThread::searchFinished' with 'searchPhoneticRepresentations::searchFinished'", 
+		bResult);
+
 	bResult = QObject::connect(appSettingsDlg.get(), SIGNAL(dictionarySelected()),
 		searchPhoneticRepresentations.get(), SLOT(disableSearchButton()) );
 	logConnection("CMainWindowPrivate::setConnections",

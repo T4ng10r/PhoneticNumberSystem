@@ -64,6 +64,8 @@ endif()
 #copy configuration XML from main application PhoneticNumberSystem.xml
 add_custom_command(TARGET UnitTest POST_BUILD 
 	 COMMAND ${CMAKE_COMMAND} -E copy ${PhoneticNumberSystem_SOURCE_DIR}/PhoneticNumberSystem.xml ${CMAKE_CURRENT_BINARY_DIR}/PhoneticNumberSystem.xml)
+add_custom_command(TARGET UnitTest POST_BUILD 
+	 COMMAND ${CMAKE_COMMAND} -E copy ${PhoneticNumberSystem_SOURCE_DIR}/log4cpp.properties ${CMAKE_CURRENT_BINARY_DIR}/logs/log4cpp.properties)
 
 #add_test(UnitTest UnitTest)
 

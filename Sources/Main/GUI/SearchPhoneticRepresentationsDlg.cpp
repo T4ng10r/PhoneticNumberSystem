@@ -25,6 +25,7 @@ public:
 	 void retranstaleUI();
 	 void setConnections();
 	 void moveSearchResultIntoModel();
+	 void moveSearchResultIntoSubstituteComposer();
 public:
 	QLabel *									searchedNumberLabel;
 	SearchNumberLineEdit *						searchedNumber;
@@ -64,6 +65,7 @@ void CSearchPhoneticRepresentationsDlgPrivate::setupUI()
 
 	composeSubstituteSentenceWidget = new ComposeSubstituteSentenceWidget;
 	mainLayout->addWidget(composeSubstituteSentenceWidget);
+	composeSubstituteSentenceWidget->reset();
 
 	searchResultsView = new QListView;
 	mainLayout->addWidget(searchResultsView);
@@ -109,6 +111,10 @@ void CSearchPhoneticRepresentationsDlgPrivate::moveSearchResultIntoModel()
 		searchResultsModel.appendRow(item);
 	}
 }
+void CSearchPhoneticRepresentationsDlgPrivate::moveSearchResultIntoSubstituteComposer()
+{
+	WordSearchResult result = CDataThread::getInstance()->getSearchResult();
+}
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 CSearchPhoneticRepresentationsDlg::CSearchPhoneticRepresentationsDlg(QWidget * parent):QWidget(parent),m_ptrPriv(new CSearchPhoneticRepresentationsDlgPrivate(this))
@@ -141,4 +147,5 @@ void CSearchPhoneticRepresentationsDlg::searchFinished()
 	m_ptrPriv->searchProgressBar->hide();
 	enableSearchButton();
 	m_ptrPriv->moveSearchResultIntoModel();
+	m_ptrPriv->moveSearchResultIntoSubstituteComposer();
 }

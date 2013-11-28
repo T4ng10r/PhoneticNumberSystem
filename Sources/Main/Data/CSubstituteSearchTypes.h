@@ -28,16 +28,19 @@ struct SuccessWord;
 typedef std::list< SuccessWord >				WordSearchResult;
 struct SuccessWord  
 {
+public:
 	SuccessWord(){}
-	SuccessWord(const std::string & word)
+	SuccessWord(std::string word)
 	{
 		words.push_back(word);
 	}
-	const std::string &getWord() const {return words.front(); }
-	void appendWords( const std::string & wordToAppend)
+	void appendWords( std::string wordToAppend)
 	{
 		words.push_back(wordToAppend);
 	}
+	operator std::string() const		{ return words.front(); }
+	const std::string &getWord() const	{ return words.front(); }
+public:
 	bool bFullCoverage;
 	std::list<std::string>  words;
 	//which and how many digits it can cover

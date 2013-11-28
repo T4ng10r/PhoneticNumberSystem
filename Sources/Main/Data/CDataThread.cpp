@@ -118,7 +118,7 @@ void CDataThread::loadCurrentAppDictionary()
 		return;
 	}
 }
-const WordSearchResult & CDataThread::getSearchResult()
+WordSearchResult CDataThread::getSearchResult()
 {
 	return privPart->substituteSearch->getSearchResult();
 }
