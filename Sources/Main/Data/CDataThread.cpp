@@ -111,7 +111,7 @@ CDataThread::~CDataThread(void)
 {
 	int a=1;
 }
-void CDataThread::loadCurrentAppDictionary()
+void CDataThread::loadCurrentlySetDictionary()
 {
 	if (false==privPart->checkCurrentAppDictionary())
 	{

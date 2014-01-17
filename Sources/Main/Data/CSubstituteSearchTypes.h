@@ -26,6 +26,10 @@ struct MatchingPair : public UnsignedPair
 
 struct SuccessWord;
 typedef std::list< SuccessWord >				WordSearchResult;
+//typedef std::list< SuccessWord >				WordSearchResult;
+
+typedef std::map<unsigned int, WordSearchResult>				WordSearchResultMap;
+
 struct SuccessWord  
 {
 public:

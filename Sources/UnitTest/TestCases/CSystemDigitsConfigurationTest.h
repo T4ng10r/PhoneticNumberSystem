@@ -1,6 +1,7 @@
 #include <QtTest/QtTest>
 #include <Data/CSystemDigitsConfiguration.h>
 #include <boost/shared_ptr.hpp>
+#include <TestRunner.h>
 
 class CSystemDigitsConfigurationTest : public QObject
 {
@@ -21,3 +22,4 @@ public:
 		void test_CreateConsonantsDigits_08();
 		void test_CreateConsonantsDigits_09();
 };
+DECLARE_TEST(CSystemDigitsConfigurationTest)

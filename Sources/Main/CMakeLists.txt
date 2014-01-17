@@ -43,6 +43,7 @@ endif (USE_Qt5)
 	FILE(GLOB SOURCES_GUI_SETTINGS "GUI/Settings/*")
 
     SET ( SOURCES_MOC_HEADERS
+		${CMAKE_CURRENT_SOURCE_DIR}/Data/CAppSettings.h
 		${CMAKE_CURRENT_SOURCE_DIR}/Data/CDataThread.h
 		${CMAKE_CURRENT_SOURCE_DIR}/Data/CDictionaryData.h
 		${CMAKE_CURRENT_SOURCE_DIR}/Data/CSubstituteSearch.h 

@@ -30,6 +30,7 @@ FILE(GLOB SOURCES_TEST_DATA "TestCases/*")
 
 SET ( SOURCES_MAIN
       main.cpp
+      TestRunner.h
     )
 
 SET ( SOURCES_TEST_MOC 

@@ -1,16 +1,15 @@
 #ifndef _CDICTIONARYDATA_INCLUDE_
 #define _CDICTIONARYDATA_INCLUDE_
 
-#include <QtCore/QObject>
 #include <boost/scoped_ptr.hpp>
 #include <string>
 
 //class CDictionaryDataPrivate;
 class BaseDictionaryWarhouse;
 
-class CDictionaryData : public QObject
+// s³ownik
+class CDictionaryData
 {
-     Q_OBJECT
      friend class CDictionaryDataPrivate;
 public:
      CDictionaryData(void);

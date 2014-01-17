@@ -149,8 +149,13 @@ std::string CAppSettings::getCurrentDictPath()
 	std::string strPath;
 	return strPath;
 }
+void CAppSettings::on_set_selected_consonant_system(const QString &)
+{
+
+}
 //////////////////////////////////////////////////////////////////////////
 CSubstituteValuesConfiguration::CSubstituteValuesConfiguration():
 boost::property_tree::ptree(gAppSettings->getSubstituteValuesConfiguration())
 {
 }
+

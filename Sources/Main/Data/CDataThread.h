@@ -16,17 +16,19 @@ class CDataThread : public QObject
 public:
 	~CDataThread(void);
 	static boost::shared_ptr<CDataThread> getInstance();
-	void loadCurrentAppDictionary();
+  //currently not used
+	void loadCurrentlySetDictionary();
 	WordSearchResult getSearchResult();
+public Q_SLOTS:
+  void onScanDirectoryForDictionaries();
+  void onSetDictionary();
+  //initiate searching for substitute words
+  void onNumberSearchStarted(const std::string & number);
 Q_SIGNALS:
+  void dictionaryLoaded();
 	void onDictionariesFilesRefreshed();
 	void searchProgress(int current, int max);
 	void searchFinished();
-	void dictionaryLoaded();
-public Q_SLOTS:
-	void onScanDirectoryForDictionaries();
-	void onSetDictionary();
-	void onNumberSearchStarted(const std::string & number);
 //protected Q_SLOTS:
 //	void onSearchProgress(int current);
 protected:

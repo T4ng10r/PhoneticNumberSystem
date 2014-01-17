@@ -1,7 +1,7 @@
 #ifndef _CAPPSETTINGS_INCLUDE_
 #define _CAPPSETTINGS_INCLUDE_
 
-//#include <QtCore/QObject>
+#include <QtCore/QObject>
 #include <Data/CSystemDigitsConfiguration.h>
 #include <vector>
 #include <boost/scoped_ptr.hpp>
@@ -24,9 +24,9 @@ public:
 	CSubstituteValuesConfiguration();
 };
 
-class CAppSettings : public boost::property_tree::ptree //QObject
+class CAppSettings : public QObject, public boost::property_tree::ptree
 {
-	//Q_OBJECT
+	Q_OBJECT
 	friend class CAppSettingsPrivate;
 public:
 	static boost::shared_ptr<CAppSettings> getInstance();
@@ -35,6 +35,8 @@ public:
 	const boost::property_tree::ptree & getSubstituteValuesConfiguration();
 	const std::vector<CSingleSubstituteDigitsConfiguration> & getDigitsConfiguraions();
 	std::string getCurrentDictPath();
+public Q_SLOTS:
+  void on_set_selected_consonant_system(const QString &);
 protected:
 	CAppSettings();
 	boost::scoped_ptr<CAppSettingsPrivate> m_ptrPriv;

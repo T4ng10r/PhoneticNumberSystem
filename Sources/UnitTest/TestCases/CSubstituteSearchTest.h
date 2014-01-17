@@ -1,6 +1,7 @@
 #include <QtTest/QtTest>
 #include <boost/shared_ptr.hpp>
 #include <Data/CSystemDigitsConfiguration.h>
+#include <TestRunner.h>
 
 class CSubstituteSearchPrivate;
 
@@ -22,3 +23,4 @@ private Q_SLOTS:
 		void test_SubstituteSearch_WholeWordCoversPartOfNumber_02();
 		void test_SubstituteSearch_WholeNumberCoversPartOfWord();
 };
+DECLARE_TEST(CSubstituteSearchTest)

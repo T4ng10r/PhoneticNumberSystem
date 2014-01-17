@@ -1,6 +1,7 @@
 #include <GUI/Settings/SubstituteValuesConfigurationDlg.h>
 #include <Data/CAppSettings.h>
 #include <Data/CAppSettingsKeywords.h>
+#include <Data/CAppSettings_XMLKeywords.h>
 #include <QString>
 #include <QMenu>
 #include <QAction>
@@ -22,13 +23,13 @@ const unsigned int cPushButtonWidth(50);
 
 struct EntryLine
 {
-	QLabel *				m_ptrConsonantLabel;		//label with digit name
-	QPushButton *			m_ptrConsonantButton1;		//button for first consonant used in substitution
-	QPushButton *			m_ptrConsonantButton2;		//button for second consonant used in substitution
-	QMenu *					m_ptrConsonantsMenu1;		//menu on first substitution button
-	QMenu *					m_ptrConsonantsMenu2;		//menu on second substitution button
-	QActionGroup *			m_ptrActionGroup1;			//grouping consonant actions from first button
-	QActionGroup *			m_ptrActionGroup2;			//grouping consonant actions from second button
+	QLabel *				m_ptrConsonantLabel;		          //label with digit name
+	QPushButton *			m_ptrConsonantButton1;		      //button for first consonant used in substitution
+	QPushButton *			m_ptrConsonantButton2;		      //button for second consonant used in substitution
+	QMenu *					m_ptrConsonantsMenu1;		          //menu on first substitution button
+	QMenu *					m_ptrConsonantsMenu2;		          //menu on second substitution button
+	QActionGroup *			m_ptrActionGroup1;			      //grouping consonant actions from first button
+	QActionGroup *			m_ptrActionGroup2;			      //grouping consonant actions from second button
 	std::vector<QAction *>	m_ptrConsonantsActions1;	//actions-consonants under first button
 	std::vector<QAction *>	m_ptrConsonantsActions2;	//actions-consonants under second button
 };
@@ -50,10 +51,12 @@ public:
 	void addCreatedConsonantAction(EntryLine &stEntry, QAction * emptyAction, bool bAddToFirstGroup);
 	void fillGUIWithDigitsSystem(const CSingleSubstituteDigitsConfiguration & digitsSystem);
 	void selectConsonantActionByGivenConsonant( std::vector<QAction *>& actionsList, const char consonant);
-	void selectDigitsSystemByName( const std::string &systemName);
+	void selectDigitsSystemByName(QString system_name);
 
 public:
-	boost::property_tree::ptree				m_stProperties;
+	boost::property_tree::ptree				consonants_values_set;
+  //boost::property_tree::ptree				digits_substistute_configuration;
+  std::vector<CSingleSubstituteDigitsConfiguration>   digits_substistute_configuration;
 	CSubstituteValuesConfigurationDlg *		m_ptrPublic;
 	std::vector<EntryLine>					m_ptrDigitsEntries;
 	std::map<char, std::vector<QAction *> > m_mActionsList;
@@ -93,10 +96,12 @@ void CSubstituteValuesConfigurationDlgPrivate::setupUI()
 }
 void CSubstituteValuesConfigurationDlgPrivate::setConfigurations()
 {
+  m_ptrSystemsCombo->disconnect(m_ptrSystemsCombo, SIGNAL(currentIndexChanged   ( const QString ))); 
 	m_ptrSystemsCombo->addItem("");
 	const std::vector<CSingleSubstituteDigitsConfiguration> & vDigitsConf = gAppSettings->getDigitsConfiguraions();
 	BOOST_FOREACH(const CSingleSubstituteDigitsConfiguration & digitsConf, vDigitsConf)
 		m_ptrSystemsCombo->addItem(digitsConf.strName.c_str());
+  setConnections();
 }
 QHBoxLayout * CSubstituteValuesConfigurationDlgPrivate::setupUI_line(int iIndex)
 {
@@ -143,12 +148,12 @@ QHBoxLayout * CSubstituteValuesConfigurationDlgPrivate::setupUI_line(int iIndex)
 void CSubstituteValuesConfigurationDlgPrivate::setupActions()
 {
 	using boost::property_tree::ptree;
-	int iConsonantsCount(m_stProperties.get_child("count").get_value<int>());
+	int iConsonantsCount(consonants_values_set.get_child("count").get_value<int>());
 	bool bResult = false;
 
 	BOOST_FOREACH(EntryLine & stEntry, m_ptrDigitsEntries)
 		createAndAddConsonantActionOnBothSides(stEntry, ' ', true);
-	BOOST_FOREACH(const ptree::value_type &singleDigitsEntry, m_stProperties)
+	BOOST_FOREACH(const ptree::value_type &singleDigitsEntry, consonants_values_set)
 	{
 		if (singleDigitsEntry.first!="consonant")
 			continue;
@@ -231,22 +236,22 @@ void CSubstituteValuesConfigurationDlgPrivate::selectConsonantActionByGivenConso
 		}
 	}
 }
-void CSubstituteValuesConfigurationDlgPrivate::selectDigitsSystemByName(const std::string & systemName)
+void CSubstituteValuesConfigurationDlgPrivate::selectDigitsSystemByName(QString system_name)
 {
-	int index = m_ptrSystemsCombo->findText(systemName.c_str());
+	int index = m_ptrSystemsCombo->findText(system_name);
 	if (index<0)
 		return;
 	m_ptrSystemsCombo->setCurrentIndex(index);
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
-CSubstituteValuesConfigurationDlg::CSubstituteValuesConfigurationDlg(const boost::property_tree::ptree &stProperties)
-:QWidget(NULL), m_ptrPriv(new CSubstituteValuesConfigurationDlgPrivate(this))
+CSubstituteValuesConfigurationDlg::CSubstituteValuesConfigurationDlg(CSubstituteValuesConfigurationDlgInit init_data)
+:QWidget(NULL), priv_part(new CSubstituteValuesConfigurationDlgPrivate(this))
 {
-	m_ptrPriv->m_stProperties=stProperties;
-	m_ptrPriv->setupUI();
-	std::string systemName = gAppSettings->get<std::string>(SELECTED_CONSONANTS_SYSTEM,"");
-	m_ptrPriv->selectDigitsSystemByName(systemName);
+  priv_part->consonants_values_set=init_data.consonants_values_set;
+	priv_part->digits_substistute_configuration=init_data.digits_substistute_configuration;
+	priv_part->setupUI();
+  priv_part->selectDigitsSystemByName(init_data.selected_system_name);
 }
 CSubstituteValuesConfigurationDlg::~CSubstituteValuesConfigurationDlg(void){}
 void CSubstituteValuesConfigurationDlg::onMenuTriggered_SetButtonTextWithSelectedConsonant(QAction * pAction )
@@ -257,7 +262,7 @@ void CSubstituteValuesConfigurationDlg::onMenuTriggered_SetButtonTextWithSelecte
 	char cConsonant(pAction->text().at(iIndex).toLatin1());
 
 	//check to which Digit Entry belongs this action
-	BOOST_FOREACH(EntryLine & stEntry, m_ptrPriv->m_ptrDigitsEntries)
+	BOOST_FOREACH(EntryLine & stEntry, priv_part->m_ptrDigitsEntries)
 		if (stEntry.m_ptrConsonantsMenu1==ptrMenu)
 		{
 			stEntry.m_ptrConsonantButton1->setText(QString(cConsonant));
@@ -278,7 +283,7 @@ void CSubstituteValuesConfigurationDlg::onActionToggled_DeactivateThisConsonantI
 	char cConsonant;
 	iIndex = pAction->text().length()>1?1:0;
 	cConsonant = pAction->text().at(iIndex).toLatin1();
-	BOOST_FOREACH(QAction * pConsonantAction, m_ptrPriv->m_mActionsList[cConsonant])
+	BOOST_FOREACH(QAction * pConsonantAction, priv_part->m_mActionsList[cConsonant])
 		if (pConsonantAction!=pAction && cConsonant!=' ')
 		{
 			pConsonantAction->setDisabled(bState);
@@ -286,11 +291,10 @@ void CSubstituteValuesConfigurationDlg::onActionToggled_DeactivateThisConsonantI
 }
 void CSubstituteValuesConfigurationDlg::onSystemsActvivated_changeCurrentDigitsSystem(const QString& selectedSystemName)
 {
-	const std::vector<CSingleSubstituteDigitsConfiguration> & vDigitsConf = gAppSettings->getDigitsConfiguraions();
-	BOOST_FOREACH(const CSingleSubstituteDigitsConfiguration & digitsConf, vDigitsConf)
+	BOOST_FOREACH(const CSingleSubstituteDigitsConfiguration & digitsConf, priv_part->digits_substistute_configuration)
 		if (digitsConf.strName.c_str()==selectedSystemName)
 		{
-			m_ptrPriv->fillGUIWithDigitsSystem(digitsConf);
+			priv_part->fillGUIWithDigitsSystem(digitsConf);
 			gAppSettings->put(SELECTED_CONSONANTS_SYSTEM , selectedSystemName.toStdString());
 			gAppSettings->saveSettings();
 			return;

@@ -15,7 +15,6 @@ public:
      CSearchResultWordWidgetPrivate(CSearchResultWordWidget * ptrPublic);
      ~CSearchResultWordWidgetPrivate();
 	 void prepareFormatedText();
-	 void setupStyleSheet();
 public:
      CSearchResultWordWidget *                              m_ptrPublic;
 	 std::string found_word;
@@ -40,10 +39,6 @@ void CSearchResultWordWidgetPrivate::prepareFormatedText()
 		found_word = found_word.substr(pos+1);
 	};
 	m_ptrPublic->setText(formated_text);
-}
-void CSearchResultWordWidgetPrivate::setupStyleSheet()
-{
-
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////

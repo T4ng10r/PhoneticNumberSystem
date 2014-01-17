@@ -2,6 +2,7 @@
 #include <GUI/Settings/SubstituteValuesConfigurationDlg.h>
 #include <GUI/Settings/DictionariesConfigurationDlg.h>
 #include <Data/CAppSettings.h>
+#include <Data/CAppSettingsKeywords.h>
 #include <tools/loggers.h>
 #include <QtGui/QBoxLayout>
 #include <QtGui/QTabWidget>
@@ -37,8 +38,13 @@ void CAppSettingsDlgPrivate::setupUI()
 	tabWidget = new QTabWidget;
 	mainVerticalLayout->addWidget(tabWidget);
 
-	CSubstituteValuesConfiguration  stSubstituteValuesConfiguration;
-	substituteConfiguration.reset(new CSubstituteValuesConfigurationDlg(stSubstituteValuesConfiguration));
+	//CSubstituteValuesConfiguration  stSubstituteValuesConfiguration;
+  CSubstituteValuesConfigurationDlgInit init_data = 
+    { CSubstituteValuesConfiguration(), 
+    gAppSettings->getDigitsConfiguraions(), 
+    gAppSettings->get<std::string>(SELECTED_CONSONANTS_SYSTEM,"").c_str()
+    };
+	substituteConfiguration.reset(new CSubstituteValuesConfigurationDlg(init_data));
 	tabWidget->addTab(substituteConfiguration.get(), "Consonants");
 
 	dictionariesConfiguration.reset(new CDictionariesConfigurationDlg);
@@ -52,6 +58,12 @@ void CAppSettingsDlgPrivate::setConnections()
 	logConnection("CAppSettingsDlgPrivate::setConnections",
 		"'dictionariesConfiguration::dictionarySelected' with 'CAppSettingsDlg::dictionarySelected'", 
 		bResult);
+  //////////////////////////////////////////////////////////////////////////
+  bResult = QObject::connect(substituteConfiguration.get(), SIGNAL(set_selected_consonant_system(const QString &)), 
+    gAppSettings.get(), SLOT(on_set_selected_consonant_system(const QString &)));
+  logConnection("CAppSettingsDlgPrivate::setConnections",
+    "'substituteConfiguration::set_selected_consonant_system' with 'CAppSettings::on_set_selected_consonant_system'", 
+    bResult);
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////

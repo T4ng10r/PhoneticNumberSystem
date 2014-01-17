@@ -1,6 +1,7 @@
 #include <QtTest/QtTest>
 #include <boost/shared_ptr.hpp>
 #include <Data/SearchResultTreeNode.h>
+#include <TestRunner.h>
 
 class CSearchResultTreeNodeTest : public QObject
 {
@@ -20,3 +21,4 @@ private Q_SLOTS:
 	void test_BuildTree_02();
 	void test_BuildTree_03();
 };
+DECLARE_TEST(CSearchResultTreeNodeTest)

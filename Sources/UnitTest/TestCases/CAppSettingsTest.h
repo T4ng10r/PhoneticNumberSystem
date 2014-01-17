@@ -1,6 +1,7 @@
 #include <QtTest/QtTest>
 #include <boost/shared_ptr.hpp>
 #include <boost/property_tree/ptree.hpp>
+#include <TestRunner.h>
 
 struct digit_entry
 {
@@ -28,3 +29,5 @@ public:
 	void test_SubstituteValuesConfiguration_PtreeConfiguration();
 	void test_SubstituteValuesConfiguration_Configuration();
 };
+
+DECLARE_TEST(CAppSettingsTest)
