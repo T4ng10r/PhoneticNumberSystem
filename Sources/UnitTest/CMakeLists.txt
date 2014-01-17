@@ -15,6 +15,8 @@ else (USE_Qt5)
   include(${QT_USE_FILE})
 endif (USE_Qt5)   
 
+set(ENV{QTEST_COLORED} 1)
+
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
 
 	include_directories(${PhoneticNumberSystem_SOURCE_DIR})
