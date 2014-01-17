@@ -18,6 +18,7 @@
 enum { DigitsCount = 10 };
 const unsigned int cPushButtonWidth(50);
 #define ACTION_QUICK_SELECTOR '&'
+const QString empty_system_name("");
 //each push button should have list of available consonants
 //already selected consonants (in other buttons) shall be hidden or inactive
 
@@ -97,7 +98,7 @@ void CSubstituteValuesConfigurationDlgPrivate::setupUI()
 void CSubstituteValuesConfigurationDlgPrivate::setConfigurations()
 {
 	m_ptrSystemsCombo->disconnect(ptrPublic); 
-	m_ptrSystemsCombo->addItem("");
+	m_ptrSystemsCombo->addItem(empty_system_name);
 	const std::vector<CSingleSubstituteDigitsConfiguration> & vDigitsConf = gAppSettings->getDigitsConfiguraions();
 	BOOST_FOREACH(const CSingleSubstituteDigitsConfiguration & digitsConf, vDigitsConf)
 		m_ptrSystemsCombo->addItem(digitsConf.strName.c_str());
@@ -291,13 +292,21 @@ void CSubstituteValuesConfigurationDlg::onActionToggled_DeactivateThisConsonantI
 }
 void CSubstituteValuesConfigurationDlg::onSystemsActvivated_changeCurrentDigitsSystem(const QString& selectedSystemName)
 {
+	if (selectedSystemName==empty_system_name)
+	{
+		CSingleSubstituteDigitsConfiguration digitsConf;
+		digitsConf.create_empty_system();
+		priv_part->fillGUIWithDigitsSystem(digitsConf);
+		Q_EMIT set_selected_consonant_system(selectedSystemName);
+		return;
+	}
 	BOOST_FOREACH(const CSingleSubstituteDigitsConfiguration & digitsConf, priv_part->digits_substistute_configuration)
 		if (digitsConf.strName.c_str()==selectedSystemName)
 		{
 			priv_part->fillGUIWithDigitsSystem(digitsConf);
-			gAppSettings->put(SELECTED_CONSONANTS_SYSTEM , selectedSystemName.toStdString());
-			gAppSettings->saveSettings();
+			Q_EMIT set_selected_consonant_system(selectedSystemName);
 			return;
 		}
+	Q_EMIT set_selected_consonant_system(empty_system_name);
 	printLog(eErrorLogLevel, eDebug, QString("Couldn't find '%1' consonants configuration in SelectionList").arg(selectedSystemName));
 }

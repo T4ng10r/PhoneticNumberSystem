@@ -23,6 +23,7 @@ private Q_SLOTS:
 	void test_NoneInFirstMenusColumnSelected();
 	void test_OtherMenusEntriesDisabled();
 	void test_SecondMenusDisabled();
+	void test_SelectNoneConfiguration();
 protected:
   void createProperiestConfiguration();
   void createDigitsConfiguration();
