@@ -1,7 +1,7 @@
 #ifndef _SEARCHRESULTWORDWIDGET_INCLUDE_
 #define _SEARCHRESULTWORDWIDGET_INCLUDE_
 
-#include <QtGui/QLabel>
+#include <QLabel>
 #include <boost/scoped_ptr.hpp>
 
 class CSearchResultWordWidgetPrivate;

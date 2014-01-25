@@ -50,7 +50,8 @@ public:
 		fclose(fh);
 		fileCodepage.erase(std::remove(fileCodepage.begin(), fileCodepage.end(), '\n'), fileCodepage.end());
 		fileCodepage.erase(std::remove(fileCodepage.begin(), fileCodepage.end(), '\r'), fileCodepage.end());
-		QTextCodec::setCodecForCStrings(QTextCodec::codecForName (fileCodepage.c_str())); 
+    //QTextCodec::setCodecForCStrings(QTextCodec::codecForName (fileCodepage.c_str())); 
+    QTextCodec::setCodecForLocale(QTextCodec::codecForName (fileCodepage.c_str())); 
 		return fileCodepage;
 	}		
 	std::ifstream::pos_type fileSize(const char* filename)
@@ -233,7 +234,8 @@ void CDictionaryDataPrivate::loadFileContent()
 {
 	removeDictionary();
 	//set coding for 
-	QTextCodec::setCodecForCStrings(QTextCodec::codecForName (fileCodepage.c_str())); 
+  //QTextCodec::setCodecForCStrings(QTextCodec::codecForName (fileCodepage.c_str())); 
+  QTextCodec::setCodecForLocale(QTextCodec::codecForName (fileCodepage.c_str())); 
 
 	QString qLine = fgets(in, BUFSIZE - 1, fileHandle);
 	//get words count

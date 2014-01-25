@@ -1,7 +1,7 @@
 #ifndef _APPSETTINGSDLG_INCLUDE_
 #define _APPSETTINGSDLG_INCLUDE_
 
-#include <QtGui/QWidget>
+#include <QWidget>
 #include <boost/scoped_ptr.hpp>
 
 class CAppSettingsDlgPrivate;

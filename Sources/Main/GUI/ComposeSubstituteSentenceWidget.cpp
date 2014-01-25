@@ -1,8 +1,8 @@
 #include <GUI/ComposeSubstituteSentenceWidget.h>
 #include <tools/loggers.h>
 
-#include <QtGui/QComboBox>
-#include <QtGui/QBoxLayout>
+#include <QComboBox>
+#include <QBoxLayout>
 
 class ComposeSubstituteSentenceWidgetPrivate
 {

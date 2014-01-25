@@ -1,18 +1,13 @@
-cmake_minimum_required(VERSION 2.8)
-
 project(PhoneticNumberSystem)
 
 #dodajemy dane dotyczace QT - sciezki, biblioteki
-if (USE_Qt5)
-    set(CMAKE_AUTOMOC ON)
-    find_package(Qt5Widgets)
-    find_package(Qt5Core)
-    find_package(Qt5Xml)
-    include_directories($ENV{QTDIR} ${Qt5Widgets_INCLUDE_DIRS} ${Qt5Core_INCLUDE_DIRS})
-else (USE_Qt5)
-    find_package(Qt4 REQUIRED QtNetwork QtGui QtCore QtXml QtTest)
-    include(${QT_USE_FILE})
-endif (USE_Qt5)   
+cmake_policy(SET CMP0020 NEW)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+find_package(Qt5Widgets)
+find_package(Qt5Core)
+find_package(Qt5Xml)
+include_directories($ENV{QTDIR} ${Qt5Widgets_INCLUDE_DIRS} ${Qt5Core_INCLUDE_DIRS})
 
 
 	INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
@@ -57,10 +52,8 @@ endif (USE_Qt5)
 		${CMAKE_CURRENT_SOURCE_DIR}/GUI/Settings/SubstituteValuesConfigurationDlg.h
         )
         
-if (NOT USE_Qt5)
-    qt4_wrap_cpp(SOURCES_MOC ${SOURCES_MOC_HEADERS} OPTIONS -DBOOST_TT_HAS_OPERATOR_HPP_INCLUDED)
-    QT4_ADD_RESOURCES( SOURCES_RCC PhoneticNumberSystem.qrc )
-endif ()
+  #qt5_wrap_cpp(SOURCES_MOC ${SOURCES_MOC_HEADERS} OPTIONS -DBOOST_TT_HAS_OPERATOR_HPP_INCLUDED)
+  #QT4_ADD_RESOURCES( SOURCES_RCC PhoneticNumberSystem.qrc )
     
 IF (WIN32)
     SOURCE_GROUP(Data FILES ${SOURCES_DATA})
@@ -81,15 +74,13 @@ ELSE (WIN32)
         ${SOURCES_GUI_SETTINGS} main.cpp )
 ENDIF (WIN32)
 
-if (USE_Qt5)
     qt5_use_modules(PhoneticNumberSystem Widgets Core Xml)
-endif()
 
     add_library(PhoneticNumberSystem_lib STATIC ${SOURCES_DATA} ${SOURCES_MOC} 
         ${SOURCES_GUI} ${SOURCES_OTHER} 
         ${SOURCES_GUI_SETTINGS} ${SOURCES_RCC})
         
-	SET(LIBRARIES_LIST ${QT_LIBRARIES} ${Boost_LIBRARIES} Tools_Lib )
+	SET(LIBRARIES_LIST ${QT_LIBRARIES} ${Boost_LIBRARIES} tools_lib )
 	addLoggerLibrariesDependencies(PhoneticNumberSystem LIBRARIES_LIST)
 	addLoggerLibrariesDependencies(PhoneticNumberSystem_lib LIBRARIES_LIST)
 	

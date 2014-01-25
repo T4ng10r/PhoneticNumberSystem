@@ -1,7 +1,7 @@
 #ifndef _DICTIONARIESCONFIGURATIONDLG_INCLUDE_
 #define _DICTIONARIESCONFIGURATIONDLG_INCLUDE_
 
-#include <QtGui/QWidget>
+#include <QWidget>
 #include <boost/scoped_ptr.hpp>
 
 class CDictionariesConfigurationDlgPrivate;

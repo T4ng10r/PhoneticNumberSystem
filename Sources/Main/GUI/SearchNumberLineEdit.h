@@ -1,7 +1,7 @@
 #ifndef _SEARCHNUMBERLINEEDIT_INCLUDE_
 #define _SEARCHNUMBERLINEEDIT_INCLUDE_
 
-#include <QtGui/QLineEdit>
+#include <QLineEdit>
 #include <boost/scoped_ptr.hpp>
 
 class SearchNumberLineEditPrivate;

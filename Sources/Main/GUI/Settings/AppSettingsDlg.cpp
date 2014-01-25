@@ -4,8 +4,8 @@
 #include <Data/CAppSettings.h>
 #include <Data/CAppSettingsKeywords.h>
 #include <tools/loggers.h>
-#include <QtGui/QBoxLayout>
-#include <QtGui/QTabWidget>
+#include <QBoxLayout>
+#include <QTabWidget>
 #include <tools/qtTools.h>
 
 class CAppSettingsDlgPrivate

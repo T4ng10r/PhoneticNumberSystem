@@ -5,24 +5,24 @@
 #include <tools/loggers.h>
 #include <tools/qtTools.h>
 #include <boost/foreach.hpp>
-#include <QtCore/QVariant>
-#include <QtGui/QAction>
-#include <QtGui/QApplication>
-#include <QtGui/QButtonGroup>
-#include <QtGui/QComboBox>
-#include <QtGui/QGridLayout>
-#include <QtGui/QGroupBox>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QHeaderView>
-#include <QtGui/QLabel>
-#include <QtGui/QLineEdit>
-#include <QtGui/QPushButton>
-#include <QtGui/QSpacerItem>
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QWidget>
-#include <QtGui/QFileDialog>
-#include <QtGui/QMenu>
-#include <QtGui/QAction>
+#include <QVariant>
+#include <QAction>
+#include <QApplication>
+#include <QButtonGroup>
+#include <QComboBox>
+#include <QGridLayout>
+#include <QGroupBox>
+#include <QHBoxLayout>
+#include <QHeaderView>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QSpacerItem>
+#include <QVBoxLayout>
+#include <QWidget>
+#include <QFileDialog>
+#include <QMenu>
+#include <QAction>
 
 #define REFRESH_ACTION_NAME "Refresh"
 
@@ -193,13 +193,13 @@ void CDictionariesConfigurationDlgPrivate::setupUI_AddRefreshAction()
 }
 void CDictionariesConfigurationDlgPrivate::retranslateUI()
 {
-	m_ptrPublic->setWindowTitle(QApplication::translate("selectdictionary", "Selectd Dctionary", 0, QApplication::UnicodeUTF8));
-	selectedDictionaryLabel->setText(QApplication::translate("selectdictionary", "Selected dictionary", 0, QApplication::UnicodeUTF8));
-	changeDictionaryButton->setText(QApplication::translate("selectdictionary", "Change", 0, QApplication::UnicodeUTF8));
-	changeDictionaryDirButton->setText(QApplication::translate("selectdictionary", "Browse", 0, QApplication::UnicodeUTF8));
-	downloadDictButton->setText(QApplication::translate("selectdictionary", "Download", 0, QApplication::UnicodeUTF8));
-	dictionaryDirectoryLabel->setText(QApplication::translate("selectdictionary", "Directory", 0, QApplication::UnicodeUTF8));
-	dictionariesToDownloadGroup->setTitle(QApplication::translate("selectdictionary", "GroupBox", 0, QApplication::UnicodeUTF8));
+	m_ptrPublic->setWindowTitle(QApplication::translate("selectdictionary", "Selected Dictionary", 0, 0));
+	selectedDictionaryLabel->setText(QApplication::translate("selectdictionary", "Selected dictionary", 0, 0));
+	changeDictionaryButton->setText(QApplication::translate("selectdictionary", "Change", 0, 0));
+	changeDictionaryDirButton->setText(QApplication::translate("selectdictionary", "Browse", 0, 0));
+	downloadDictButton->setText(QApplication::translate("selectdictionary", "Download", 0, 0));
+	dictionaryDirectoryLabel->setText(QApplication::translate("selectdictionary", "Directory", 0, 0));
+	dictionariesToDownloadGroup->setTitle(QApplication::translate("selectdictionary", "GroupBox", 0, 0));
 }
 void CDictionariesConfigurationDlgPrivate::setConnections()
 {
@@ -287,7 +287,7 @@ void CDictionariesConfigurationDlg::onDictionaryFilesMenuActionToggled()
 	QString dictionaryName = actionToggled->text();
 	if (dictionaryName==REFRESH_ACTION_NAME)
 	{
-		m_ptrPriv->changeDictionaryButton->setText(QApplication::translate("selectdictionary", "Change", 0, QApplication::UnicodeUTF8));
+		m_ptrPriv->changeDictionaryButton->setText(QApplication::translate("selectdictionary", "Change", 0, 0));
 		Q_EMIT onDictionaryDirectoryChanged();
 		return;
 	}

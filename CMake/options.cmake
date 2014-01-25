@@ -1,16 +1,9 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_policy(SET CMP0020 NEW )
 
-option(USE_Qt5 "Use Qt5 version" FALSE)
-#store path to Qt in QTDIR env
-
-if (USE_Qt5)
 find_package(Qt5Widgets)
 find_package(Qt5Core)
 find_package(Qt5Xml)
 find_package(Qt5Test)
-else (USE_Qt5)
-find_package(Qt4 REQUIRED QtGui QtCore QtXml QtTest)
-endif (USE_Qt5)   
 
 #boost build with bjam threading=multi runtime-link=static
 #bjam link=static,shared threading=single,multi

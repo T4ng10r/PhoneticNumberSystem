@@ -14,5 +14,5 @@ void logConnection(const QString & strClassName,const QString &strConnDesc,bool 
 		strDebug+=" --FAIL--";
 		printLog(eWarningLogLevel, eSlots, strDebug);
 	}
-	Q_ASSERT_X(bResult==true,strClassName.toAscii(),strDebug.toAscii());
+	Q_ASSERT_X(bResult==true,strClassName.toLatin1(),strDebug.toLatin1());
 }

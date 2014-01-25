@@ -50,14 +50,14 @@ std::string  CDataThreadPrivate::createCurrentDictionaryPath()
 {
 	std::string dictionaryName = gAppSettings->get<std::string>(SELECTED_DICTIONARY,"");
 	std::string dictionaryDir = gAppSettings->get<std::string>(DICTIONARIES_DIRECTORY,"");
-	std::string dictionaryPath = dictionaryDir + QDir::separator().toAscii() + dictionaryName+DICTIONARY_FILE_EXTENSION;
+	std::string dictionaryPath = dictionaryDir + QDir::separator().toLatin1() + dictionaryName+DICTIONARY_FILE_EXTENSION;
 	return dictionaryPath;
 }
 std::string  CDataThreadPrivate::createCurrentDictionaryAffPath() 
 {
 	std::string dictionaryName = gAppSettings->get<std::string>(SELECTED_DICTIONARY,"");
 	std::string dictionaryDir = gAppSettings->get<std::string>(DICTIONARIES_DIRECTORY,"");
-	std::string dictionaryPath = dictionaryDir + QDir::separator().toAscii() + dictionaryName+DICTIONARY_AFF_FILE_EXTENSION;
+	std::string dictionaryPath = dictionaryDir + QDir::separator().toLatin1() + dictionaryName+DICTIONARY_AFF_FILE_EXTENSION;
 	return dictionaryPath;
 }
 void CDataThreadPrivate::setConnections()

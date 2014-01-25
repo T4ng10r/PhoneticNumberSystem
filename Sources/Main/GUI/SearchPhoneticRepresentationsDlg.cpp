@@ -3,15 +3,15 @@
 #include <GUI/ComposeSubstituteSentenceWidget.h>
 #include <GUI/SearchNumberLineEdit.h>
 #include <tools/loggers.h>
-#include <QtGui/QLineEdit>
-#include <QtGui/QLabel>
-#include <QtGui/QPushButton>
-#include <QtGui/QBoxLayout>
-#include <QtGui/QListView>
-#include <QtGui/QProgressBar>
-#include <QtGui/QStandardItemModel>
+#include <QLineEdit>
+#include <QLabel>
+#include <QPushButton>
+#include <QBoxLayout>
+#include <QListView>
+#include <QProgressBar>
+#include <QStandardItemModel>
 #include <Tools/qtTools.h>
-#include <QtCore/QMetaType>
+#include <QMetaType>
 #include <boost/foreach.hpp>
 
 //Q_DECLARE_METATYPE (std::string)
