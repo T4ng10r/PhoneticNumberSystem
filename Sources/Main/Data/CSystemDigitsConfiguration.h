@@ -19,6 +19,15 @@ public:
 		allConsonants.clear();
 		digitsConsonantsSetMap.clear();
 	}
+	void create_empty_system()
+	{
+		std::pair<char,char>	stPair(' ',' ');
+		for(int i=0;i<10;i++)
+		{
+			mSystem[i]=stPair;
+		}
+
+	}
 	std::string strName;
 	SystemMap mSystem; 
 	std::string allConsonants;

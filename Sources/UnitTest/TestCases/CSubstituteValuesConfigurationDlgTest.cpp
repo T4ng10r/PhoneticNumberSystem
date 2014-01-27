@@ -121,3 +121,28 @@ void CSubstituteValuesConfigurationDlgTest::test_SecondMenusDisabled()
 	entry.m_ptrConsonantsActions1[0]->trigger();
 	QCOMPARE(entry.m_ptrConsonantButton2->isEnabled(),false);
 }
+void CSubstituteValuesConfigurationDlgTest::test_SelectNoneConfiguration()
+{
+	int iCount =0;
+	QSignalSpy spy(dialog.get(), SIGNAL(set_selected_consonant_system(const QString &)));
+	dialog->priv_part->m_ptrSystemsCombo->setCurrentIndex(0);
+	while (spy.count() == 0)
+	{
+		QTest::qWait(ciSingleTimeout);
+		++iCount;
+		if (iCount>ciTimeoutsCount)
+		{
+			QVERIFY2(false,"Timeout waiting for columnsInserted signal");
+			return;
+		}
+	}
+	QList<QVariant> firstSignal = spy.takeFirst();
+	QCOMPARE(firstSignal.at(0).toString(), QString(""));
+	for(unsigned int index=0;index<dialog->priv_part->m_ptrDigitsEntries.size();index++)
+	{
+		EntryLine & entry = dialog->priv_part->m_ptrDigitsEntries[index];
+		QVERIFY2(entry.m_ptrConsonantsActions1[0]->isChecked()==true,QString("Entry line for %1 row").arg(index).toAscii());
+		QVERIFY2(entry.m_ptrConsonantButton1->isEnabled()==true,QString("Entry line for %1 row").arg(index).toAscii());
+		QVERIFY2(entry.m_ptrConsonantButton2->isEnabled()==false,QString("Entry line for %1 row").arg(index).toAscii());
+	}
+}

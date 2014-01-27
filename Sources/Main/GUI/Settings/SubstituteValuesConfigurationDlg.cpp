@@ -18,6 +18,7 @@
 enum { DigitsCount = 10 };
 const unsigned int cPushButtonWidth(50);
 #define ACTION_QUICK_SELECTOR '&'
+const QString empty_system_name("");
 //each push button should have list of available consonants
 //already selected consonants (in other buttons) shall be hidden or inactive
 
@@ -57,7 +58,7 @@ public:
 	boost::property_tree::ptree				consonants_values_set;
   //boost::property_tree::ptree				digits_substistute_configuration;
   std::vector<CSingleSubstituteDigitsConfiguration>   digits_substistute_configuration;
-	CSubstituteValuesConfigurationDlg *		m_ptrPublic;
+	CSubstituteValuesConfigurationDlg *		ptrPublic;
 	std::vector<EntryLine>					m_ptrDigitsEntries;
 	std::map<char, std::vector<QAction *> > m_mActionsList;
 	QComboBox *		m_ptrSystemsCombo;
@@ -65,15 +66,15 @@ public:
 };
 
 CSubstituteValuesConfigurationDlgPrivate::CSubstituteValuesConfigurationDlgPrivate(CSubstituteValuesConfigurationDlg * ptrPublic):
-m_ptrPublic(ptrPublic)
+ptrPublic(ptrPublic)
 {
 }
 CSubstituteValuesConfigurationDlgPrivate::~CSubstituteValuesConfigurationDlgPrivate(){}
 void CSubstituteValuesConfigurationDlgPrivate::setupUI()
 {
 	QVBoxLayout * ptrMainLayout = new QVBoxLayout;
-	delete m_ptrPublic->layout();
-	m_ptrPublic->setLayout(ptrMainLayout);
+	delete ptrPublic->layout();
+	ptrPublic->setLayout(ptrMainLayout);
 
 	QHBoxLayout *	m_ptrComboLayout = new QHBoxLayout;
 	m_ptrSystemsCombo = new QComboBox;
@@ -96,8 +97,8 @@ void CSubstituteValuesConfigurationDlgPrivate::setupUI()
 }
 void CSubstituteValuesConfigurationDlgPrivate::setConfigurations()
 {
-  m_ptrSystemsCombo->disconnect(m_ptrSystemsCombo, SIGNAL(currentIndexChanged   ( const QString ))); 
-	m_ptrSystemsCombo->addItem("");
+	m_ptrSystemsCombo->disconnect(ptrPublic); 
+	m_ptrSystemsCombo->addItem(empty_system_name);
 	const std::vector<CSingleSubstituteDigitsConfiguration> & vDigitsConf = gAppSettings->getDigitsConfiguraions();
 	BOOST_FOREACH(const CSingleSubstituteDigitsConfiguration & digitsConf, vDigitsConf)
 		m_ptrSystemsCombo->addItem(digitsConf.strName.c_str());
@@ -109,8 +110,8 @@ QHBoxLayout * CSubstituteValuesConfigurationDlgPrivate::setupUI_line(int iIndex)
 	EntryLine & stEntryLine = m_ptrDigitsEntries[iIndex];
 
 	QHBoxLayout * ptrHLayout = new QHBoxLayout;
-	stEntryLine.m_ptrActionGroup1 = new QActionGroup(m_ptrPublic);
-	stEntryLine.m_ptrActionGroup2 = new QActionGroup(m_ptrPublic);
+	stEntryLine.m_ptrActionGroup1 = new QActionGroup(ptrPublic);
+	stEntryLine.m_ptrActionGroup2 = new QActionGroup(ptrPublic);
 
 	stEntryLine.m_ptrConsonantLabel = new QLabel;
 	std::string strIndex = boost::lexical_cast<std::string>(iIndex);
@@ -133,12 +134,12 @@ QHBoxLayout * CSubstituteValuesConfigurationDlgPrivate::setupUI_line(int iIndex)
 	ptrHLayout->addWidget(stEntryLine.m_ptrConsonantButton2);
 
 	bResult = QObject::connect(stEntryLine.m_ptrConsonantsMenu1, SIGNAL(triggered ( QAction * )), 
-		m_ptrPublic, SLOT(onMenuTriggered_SetButtonTextWithSelectedConsonant(QAction *)));
+		ptrPublic, SLOT(onMenuTriggered_SetButtonTextWithSelectedConsonant(QAction *)));
 	logConnection("CSubstituteValuesConfigurationDlgPrivate::setupUI_line",
 		"'m_ptrConsonantsMenu1::triggered' with 'm_ptrPublic::onMenuTriggered'", 
 		bResult);
 	bResult = QObject::connect(stEntryLine.m_ptrConsonantsMenu2, SIGNAL(triggered ( QAction * )), 
-		m_ptrPublic, SLOT(onMenuTriggered_SetButtonTextWithSelectedConsonant(QAction *)));
+		ptrPublic, SLOT(onMenuTriggered_SetButtonTextWithSelectedConsonant(QAction *)));
 	logConnection("CSubstituteValuesConfigurationDlgPrivate::setupUI_line",
 		"'m_ptrConsonantsMenu2::triggered' with 'm_ptrPublic::onMenuTriggered'", 
 		bResult);
@@ -165,7 +166,7 @@ void CSubstituteValuesConfigurationDlgPrivate::setupActions()
 void CSubstituteValuesConfigurationDlgPrivate::setConnections()
 {
 	bool bResult = QObject::connect(m_ptrSystemsCombo, SIGNAL(currentIndexChanged   ( const QString )), 
-		m_ptrPublic, SLOT(onSystemsActvivated_changeCurrentDigitsSystem(const QString&)));
+		ptrPublic, SLOT(onSystemsActvivated_changeCurrentDigitsSystem(const QString&)));
 	logConnection("CSubstituteValuesConfigurationDlgPrivate::setupActions",
 		"'emptyAction::triggered' with 'm_ptrPublic::onActionToggled'", 
 		bResult);
@@ -209,7 +210,7 @@ void CSubstituteValuesConfigurationDlgPrivate::addCreatedConsonantAction( EntryL
 void CSubstituteValuesConfigurationDlgPrivate::setConnectionForConsonantAction( QAction * emptyAction ) 
 {
 	bool bResult = QObject::connect(emptyAction, SIGNAL(toggled ( bool )), 
-		m_ptrPublic, SLOT(onActionToggled_DeactivateThisConsonantInOtherMenus(bool)));
+		ptrPublic, SLOT(onActionToggled_DeactivateThisConsonantInOtherMenus(bool)));
 	logConnection("CSubstituteValuesConfigurationDlgPrivate::setupActions",
 		"'emptyAction::triggered' with 'm_ptrPublic::onActionToggled'", 
 		bResult);
@@ -291,13 +292,21 @@ void CSubstituteValuesConfigurationDlg::onActionToggled_DeactivateThisConsonantI
 }
 void CSubstituteValuesConfigurationDlg::onSystemsActvivated_changeCurrentDigitsSystem(const QString& selectedSystemName)
 {
+	if (selectedSystemName==empty_system_name)
+	{
+		CSingleSubstituteDigitsConfiguration digitsConf;
+		digitsConf.create_empty_system();
+		priv_part->fillGUIWithDigitsSystem(digitsConf);
+		Q_EMIT set_selected_consonant_system(selectedSystemName);
+		return;
+	}
 	BOOST_FOREACH(const CSingleSubstituteDigitsConfiguration & digitsConf, priv_part->digits_substistute_configuration)
 		if (digitsConf.strName.c_str()==selectedSystemName)
 		{
 			priv_part->fillGUIWithDigitsSystem(digitsConf);
-			gAppSettings->put(SELECTED_CONSONANTS_SYSTEM , selectedSystemName.toStdString());
-			gAppSettings->saveSettings();
+			Q_EMIT set_selected_consonant_system(selectedSystemName);
 			return;
 		}
+	Q_EMIT set_selected_consonant_system(empty_system_name);
 	printLog(eErrorLogLevel, eDebug, QString("Couldn't find '%1' consonants configuration in SelectionList").arg(selectedSystemName));
 }

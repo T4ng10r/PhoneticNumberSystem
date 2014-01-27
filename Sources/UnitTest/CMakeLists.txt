@@ -9,6 +9,8 @@ find_package(Qt5Test)
 set(CMAKE_AUTOMOC ON)
 include_directories($ENV{QTDIR})
 
+set(ENV{QTEST_COLORED} 1)
+
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
 
 	include_directories(${PhoneticNumberSystem_SOURCE_DIR})
