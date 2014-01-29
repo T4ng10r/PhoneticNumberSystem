@@ -132,7 +132,7 @@ void CSubstituteValuesConfigurationDlgTest::test_SelectNoneConfiguration()
 		++iCount;
 		if (iCount>ciTimeoutsCount)
 		{
-			QVERIFY2(false,"Timeout waiting for columnsInserted signal");
+			QVERIFY2(false,"Timeout waiting for set_selected_consonant_system signal");
 			return;
 		}
 	}

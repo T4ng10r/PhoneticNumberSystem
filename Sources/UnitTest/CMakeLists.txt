@@ -30,11 +30,12 @@ SET ( SOURCES_MAIN
     )
 
 SET ( SOURCES_TEST_MOC 
-	TestCases/CSubstituteValuesConfigurationDlgTest.h
+    TestCases/CSubstituteValuesConfigurationDlgTest.h
     TestCases/CAppSettingsTest.h
     TestCases/CSystemDigitsConfigurationTest.h
     TestCases/CSubstituteSearchTest.h
-	TestCases/CSearchResultTreeTest.h
+    TestCases/CSearchResultTreeTest.h
+    TestCases/CDataThreadTest.h
     )
 
 #QT5_WRAP_CPP(SOURCES_MOC ${SOURCES_TEST_MOC} OPTIONS -DBOOST_TT_HAS_OPERATOR_HPP_INCLUDED)
@@ -53,11 +54,15 @@ target_link_libraries(UnitTest ${QT_LIBRARIES} PhoneticNumberSystem_lib )
 qt5_use_modules(UnitTest Widgets Core Xml Test)
 
 
+add_custom_command(TARGET UnitTest POST_BUILD 
+		COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/dict
+		COMMAND ${CMAKE_COMMAND} -E copy ${PhoneticNumberSystem_SOURCE_DIR}/dictionaries/pl_PL.dic ${CMAKE_CURRENT_BINARY_DIR}/dict/pl_PL.dic
+		)
+
 #copy configuration XML from main application PhoneticNumberSystem.xml
 add_custom_command(TARGET UnitTest POST_BUILD 
-	 COMMAND ${CMAKE_COMMAND} -E copy ${PhoneticNumberSystem_SOURCE_DIR}/PhoneticNumberSystem.xml ${CMAKE_CURRENT_BINARY_DIR}/PhoneticNumberSystem.xml)
-add_custom_command(TARGET UnitTest POST_BUILD 
-	 COMMAND ${CMAKE_COMMAND} -E copy ${PhoneticNumberSystem_SOURCE_DIR}/log4cpp.properties ${CMAKE_CURRENT_BINARY_DIR}/logs/log4cpp.properties)
+	 COMMAND ${CMAKE_COMMAND} -E copy ${PhoneticNumberSystem_SOURCE_DIR}/PhoneticNumberSystem.xml ${CMAKE_CURRENT_BINARY_DIR}/PhoneticNumberSystem.xml
+	 COMMAND ${CMAKE_COMMAND} -E copy ${PhoneticNumberSystem_SOURCE_DIR}/log4cpp.properties ${CMAKE_CURRENT_BINARY_DIR}/logs/log4cpp.properties )
 
 #add_test(UnitTest UnitTest)
 
