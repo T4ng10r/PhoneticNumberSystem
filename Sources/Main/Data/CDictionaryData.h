@@ -5,7 +5,7 @@
 #include <string>
 
 //class CDictionaryDataPrivate;
-class BaseDictionaryWarhouse;
+class BaseDictionaryWarehouse;
 
 // s³ownik
 class CDictionaryData
@@ -14,11 +14,11 @@ class CDictionaryData
 public:
      CDictionaryData(void);
 	 ~CDictionaryData(void);
-	 void loadDictionary(const std::string & filePath);
+	 bool loadDictionary(const std::string & filePath);
 	 unsigned int getWordsCount();
 	 std::string getWordByNdex(unsigned int index);
 protected:
 	//boost::scoped_ptr<CDictionaryDataPrivate> privPart;
-	boost::scoped_ptr<BaseDictionaryWarhouse> privPart;
+	boost::scoped_ptr<BaseDictionaryWarehouse> privPart;
 };
 #endif //_CDICTIONARYDATA_INCLUDE_

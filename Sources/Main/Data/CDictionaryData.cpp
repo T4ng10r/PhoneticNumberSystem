@@ -3,13 +3,14 @@
 #include <vector>
 #include <stdio.h>
 #include <algorithm>
-#include <QtCore/QTextCodec>
+#include <QTextCodec>
+#include <QTextStream>
+#include <QFile>
 #include <boost/interprocess/file_mapping.hpp>
 #include <boost/interprocess/mapped_region.hpp>
 #include <boost/lexical_cast.hpp>
 #include <iostream>
 #include <fstream>
-#include <QtCore/QFile>
 
 #define BUFSIZE  65536
 #define WINDOWS_EOF_1CHAR '\r'
@@ -17,13 +18,13 @@
 #define LINUX_EOF_CHAR '\n'
 std::string emtpystring;
 
-
-class BaseDictionaryWarhouse
+class BaseDictionaryWarehouse
 {
 public:
 	virtual bool openFile(const std::string & filePath)=0;
 	virtual void loadFileContent()=0;
 	virtual void removeDictionary()=0;
+	virtual void close_file() = 0;
 	virtual std::string getWordByNdex(unsigned int index)=0;
 	std::string getFileCodepage( const std::string & filePath )
 	{
@@ -73,7 +74,7 @@ public:
 	unsigned int			wordsCount;
 };
 //////////////////////////////////////////////////////////////////////////
-class CDictionaryDataFileMemoryMap : public BaseDictionaryWarhouse
+class CDictionaryDataFileMemoryMap : public BaseDictionaryWarehouse
 {
 public:
 	CDictionaryDataFileMemoryMap(CDictionaryData * ptrPublic)
@@ -90,6 +91,7 @@ public:
 			);
 		return true;
 	}
+	void close_file(){};
 	void parseLineWordCounts(const char ** memAddr, const char * const endMemPos)
 	{
 		const char * startAddr = *memAddr;
@@ -183,17 +185,19 @@ public:
 };
 
 //////////////////////////////////////////////////////////////////////////
-class CDictionaryDataPrivate : public BaseDictionaryWarhouse
+class CDictionaryDataPrivate : public BaseDictionaryWarehouse
 {
 public:
      CDictionaryDataPrivate(CDictionaryData * ptrPublic);
      ~CDictionaryDataPrivate();
 	 bool openFile(const std::string & filePath);
 	 void loadFileContent();
+	 void close_file(){};
 	 void removeDictionary();
 	 std::string getFileCodepage( const std::string & filePath );
 public:
 	 FILE *					fileHandle;
+	 QFile					dict_file;
 	 int					linenum;
 	 std::vector<std::string>	dictionaryWords;
 };
@@ -222,10 +226,15 @@ void CDictionaryDataPrivate::removeDictionary()
 }
 bool CDictionaryDataPrivate::openFile( const std::string & filePath )
 {
-	fileHandle = fopen(filePath.c_str(), "r");
-	if (!fileHandle) 
+	dict_file.setFileName(filePath.c_str());
+	//dict_file.open(filePath.c_str());
+	//fileHandle = fopen(filePath.c_str(), "r");
+
+	//if (!fileHandle) 
+	if (false==dict_file.exists() || dict_file.open(QIODevice::ReadOnly))
 	{
 		printLog(eWarningLogLevel,eDebug,QString("CDictionaryData, can't open dictionary file (%1)").arg(filePath.c_str()));
+		dict_file.close();
 		return false;
 	}
 	return true;
@@ -234,12 +243,14 @@ void CDictionaryDataPrivate::loadFileContent()
 {
 	removeDictionary();
 	//set coding for 
-  //QTextCodec::setCodecForCStrings(QTextCodec::codecForName (fileCodepage.c_str())); 
-  QTextCodec::setCodecForLocale(QTextCodec::codecForName (fileCodepage.c_str())); 
+	//QTextCodec::setCodecForCStrings(QTextCodec::codecForName (fileCodepage.c_str())); 
+	QTextCodec::setCodecForLocale(QTextCodec::codecForName (fileCodepage.c_str())); 
+	QTextStream stream(&dict_file);
 
-	QString qLine = fgets(in, BUFSIZE - 1, fileHandle);
+	QString qLine;// = fgets(in, BUFSIZE - 1, fileHandle);
 	//get words count
-	unsigned int wordsCount = qLine.toUInt();
+	unsigned int wordsCount;// = qLine.toUInt();
+	stream >> wordsCount;
 	if (wordsCount<=0)
 		return;
 	int pos;
@@ -250,7 +261,9 @@ void CDictionaryDataPrivate::loadFileContent()
 #else
 	//dictionaryWordsArray = new std::string[wordsCount];
 #endif
-	qLine = fgets(in, BUFSIZE - 1, fileHandle);
+
+	//qLine = fgets(in, BUFSIZE - 1, fileHandle);
+	stream >> qLine;
 	//get single line
 	do 
 	{
@@ -265,7 +278,8 @@ void CDictionaryDataPrivate::loadFileContent()
 #else
 		//dictionaryWordsArray[index++]=qLine.toStdString();
 #endif
-		qLine = fgets(in, BUFSIZE - 1, fileHandle);
+		//qLine = fgets(in, BUFSIZE - 1, fileHandle);
+		stream >> qLine;
 	}
 	while(qLine.length()>0);
 }
@@ -274,13 +288,19 @@ void CDictionaryDataPrivate::loadFileContent()
 CDictionaryData::CDictionaryData(void):privPart(new CDictionaryDataFileMemoryMap(this))
 {}
 CDictionaryData::~CDictionaryData(void){}
-void CDictionaryData::loadDictionary(const std::string & filePath)
+bool CDictionaryData::loadDictionary(const std::string & filePath)
 {
 	printLog(eInfoLogLevel,eDebug,QString("Loading dictionary file (%1)").arg(filePath.c_str()));
 	privPart->fileCodepage = privPart->getFileCodepage( filePath );
 	if (privPart->openFile(filePath))
+	{
 		privPart->loadFileContent();
+		privPart->close_file();
+	}
+	else
+		return false;
 	printLog(eDebugLogLevel,eDebug,QString("Loading dictionary finished"));
+	return true;
 }
 unsigned int CDictionaryData::getWordsCount()
 {

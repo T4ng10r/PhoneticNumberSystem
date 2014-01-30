@@ -25,7 +25,7 @@ public Q_SLOTS:
   //initiate searching for substitute words
   void onNumberSearchStarted(const std::string & number);
 Q_SIGNALS:
-  void dictionaryLoaded();
+	void dictionaryLoaded(bool success);
 	void onDictionariesFilesRefreshed();
 	void searchProgress(int current, int max);
 	void searchFinished();
