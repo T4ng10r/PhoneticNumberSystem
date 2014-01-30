@@ -141,8 +141,8 @@ void CSubstituteValuesConfigurationDlgTest::test_SelectNoneConfiguration()
 	for(unsigned int index=0;index<dialog->priv_part->m_ptrDigitsEntries.size();index++)
 	{
 		EntryLine & entry = dialog->priv_part->m_ptrDigitsEntries[index];
-		QVERIFY2(entry.m_ptrConsonantsActions1[0]->isChecked()==true,QString("Entry line for %1 row").arg(index).toAscii());
-		QVERIFY2(entry.m_ptrConsonantButton1->isEnabled()==true,QString("Entry line for %1 row").arg(index).toAscii());
-		QVERIFY2(entry.m_ptrConsonantButton2->isEnabled()==false,QString("Entry line for %1 row").arg(index).toAscii());
+		QVERIFY2(entry.m_ptrConsonantsActions1[0]->isChecked()==true,QString("Entry line for %1 row").arg(index).toLatin1());
+		QVERIFY2(entry.m_ptrConsonantButton1->isEnabled()==true,QString("Entry line for %1 row").arg(index).toLatin1());
+		QVERIFY2(entry.m_ptrConsonantButton2->isEnabled()==false,QString("Entry line for %1 row").arg(index).toLatin1());
 	}
 }
