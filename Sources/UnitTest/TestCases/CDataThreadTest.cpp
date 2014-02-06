@@ -36,6 +36,8 @@ void CDataThreadTest::test_1()
 			break;
 		}
 	}
+	QList<QVariant> signal_resp = dictionary_loaded_spy.takeFirst();
+	QCOMPARE(signal_resp.at(0).toBool(), true);
 	QSignalSpy  search_finished_spy(CDataThread::getInstance().get(), SIGNAL(searchFinished()));
 	CDataThread::getInstance()->onNumberSearchStarted("571");
 	while (search_finished_spy.count() == 0)

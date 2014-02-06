@@ -4,7 +4,7 @@
 #include <list>
 #include <map>
 
-typedef std::pair<unsigned int,unsigned int> UnsignedPair;
+typedef std::pair<std::size_t,std::size_t> UnsignedPair;
 
 struct MatchingPair : public UnsignedPair
 {

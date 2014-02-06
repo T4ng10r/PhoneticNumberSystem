@@ -32,27 +32,33 @@ public:
 		size_t pos;
 		std::string affFilePath(filePath);
 		std::string fileCodepage;
+		QFile       file;
 		if ((pos=affFilePath.find(".dic"))!=std::string::npos)
 		{
 			affFilePath = affFilePath.substr(0,pos);
 			affFilePath.append(".aff");
 		}
-		FILE * fh = fopen(affFilePath.c_str(), "r");
-		if (!fh) 
+		file.setFileName(filePath.c_str());
+		QTextStream stream(&file);
+		//FILE * fh = fopen(affFilePath.c_str(), "r");
+		//if (!fh) 
+		if (!file.open(QIODevice::ReadOnly))
 		{
 			printLog(eWarningLogLevel,eDebug,QString("CDictionaryData, can't open dictionary aff file (%1)").arg(affFilePath.c_str()));
 			return fileCodepage;
 		}
-		fileCodepage = fgets(in, BUFSIZE - 1, fh);
+		fileCodepage = stream.readLine().toLatin1();
+		//fileCodepage = fgets(in, BUFSIZE - 1, fh);
 		if ((pos=fileCodepage.find("SET "))!=std::string::npos)
 		{
 			fileCodepage = fileCodepage.substr(pos+4);
 		}
-		fclose(fh);
+		//fclose(fh);
+		file.close();
 		fileCodepage.erase(std::remove(fileCodepage.begin(), fileCodepage.end(), '\n'), fileCodepage.end());
 		fileCodepage.erase(std::remove(fileCodepage.begin(), fileCodepage.end(), '\r'), fileCodepage.end());
-    //QTextCodec::setCodecForCStrings(QTextCodec::codecForName (fileCodepage.c_str())); 
-    QTextCodec::setCodecForLocale(QTextCodec::codecForName (fileCodepage.c_str())); 
+		//QTextCodec::setCodecForCStrings(QTextCodec::codecForName (fileCodepage.c_str())); 
+		QTextCodec::setCodecForLocale(QTextCodec::codecForName (fileCodepage.c_str())); 
 		return fileCodepage;
 	}		
 	std::ifstream::pos_type fileSize(const char* filename)
@@ -181,7 +187,7 @@ public:
 	boost::interprocess::file_mapping	fileMapping;
 	boost::interprocess::mapped_region  fileMappedRegion;
 	//vector of pairs - offset and length of each word
-	std::vector< std::pair<const char *, int> >	dictionaryWords;
+	std::vector< std::pair<const char *, long long int> >	dictionaryWords;
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -231,7 +237,7 @@ bool CDictionaryDataPrivate::openFile( const std::string & filePath )
 	//fileHandle = fopen(filePath.c_str(), "r");
 
 	//if (!fileHandle) 
-	if (false==dict_file.exists() || dict_file.open(QIODevice::ReadOnly))
+	if (false==QFile::exists(filePath.c_str()) || dict_file.open(QIODevice::ReadOnly))
 	{
 		printLog(eWarningLogLevel,eDebug,QString("CDictionaryData, can't open dictionary file (%1)").arg(filePath.c_str()));
 		dict_file.close();

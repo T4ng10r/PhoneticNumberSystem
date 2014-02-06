@@ -9,7 +9,7 @@ void SearchResultTreeNode::clear()
 	children.clear();
 	iCurrentIndex.reset();
 }
-TreeNodesList SearchResultTreeNode::find_node(unsigned int searchedNode)
+TreeNodesList SearchResultTreeNode::find_node(StartingIndex searchedNode)
 {
 	TreeNodesList result;
 	if (searchedNode<*iCurrentIndex)
@@ -26,7 +26,7 @@ TreeNodesList SearchResultTreeNode::find_node(unsigned int searchedNode)
 	}
 	return result;
 }
-WordSearchResult SearchResultTreeNode::parseDFS( unsigned int endIndex )
+WordSearchResult SearchResultTreeNode::parseDFS( StartingIndex endIndex )
 {
 	WordSearchResult result;
 	//pass through all edges

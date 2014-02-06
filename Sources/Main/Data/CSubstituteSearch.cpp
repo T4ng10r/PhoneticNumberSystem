@@ -38,7 +38,7 @@ bool CSubstituteSearchPrivate::testWord(const std::string & wordToTest,const CSi
 	MatchingPair matchingPair;
 	std::string  coveredDigits;
 	size_t searchStartPos(0);
-	unsigned int digitIndex(0);
+	StartingIndex digitIndex(0);
 	std::string word = boost::to_upper_copy(wordToTest);
 	result.bFullCoverage=true;
 	size_t acceptPos;
@@ -110,8 +110,8 @@ void CSubstituteSearchPrivate::buildSearchResultsTree()
 	BOOST_FOREACH(const FittingWordsMap::value_type & resultItem, searchResultMap)
 	{
 		const WordSearchResult & searchResult = resultItem.second;
-		int start=resultItem.first.first;
-		int end=resultItem.first.second;
+		StartingIndex start=resultItem.first.first;
+		StartingIndex end=resultItem.first.second;
 		std::for_each(searchResult.begin(),searchResult.end(),
       //boost::bind(&SearchResultTreeNode::addNode, searchResultTreeRoot, start,end, boost::bind(&SuccessWord::getWord, _1)));
       boost::bind(&SearchResultTreeNode::addNode, searchResultTreeRoot, start,end, _1));

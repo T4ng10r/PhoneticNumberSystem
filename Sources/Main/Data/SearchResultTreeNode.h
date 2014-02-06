@@ -9,7 +9,7 @@
 
 struct SearchResultTreeNode;
 //starting index of range
-typedef unsigned int StartingIndex;
+typedef std::size_t StartingIndex;
 typedef boost::shared_ptr<SearchResultTreeNode>  SharedTreeNodes;
 typedef std::list<SharedTreeNodes> TreeNodesList;
 typedef std::list<SuccessWord>	WordsList;
@@ -33,10 +33,10 @@ public:
 	void clear();
 	void addNode(StartingIndex startInd, StartingIndex endInd, std::string word);
 	//void find_node(unsigned int searchedNode, std::list<boost::shared_ptr<SearchResultTreeNode> > &foundNodes);
-	TreeNodesList find_node(unsigned int searchedNode);
+	TreeNodesList find_node(StartingIndex searchedNode);
   std::size_t getChildrenCount() { return children.size(); }
 
-  WordSearchResult parseDFS(unsigned int endIndex);
+  WordSearchResult parseDFS(StartingIndex endIndex);
 public:
 	//index of second value in range covered with this node words
 	boost::optional<StartingIndex> iCurrentIndex;
