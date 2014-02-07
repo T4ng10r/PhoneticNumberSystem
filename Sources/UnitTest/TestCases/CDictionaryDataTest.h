@@ -15,7 +15,7 @@ private Q_SLOTS:
 	void init();
 	void cleanup();
 	void test_load_dictionary_wrong_path();
-	void test_load_dictionary_lack_of_affFile();
+	void test_load_dictionary();
 };
 
 DECLARE_TEST(CDictionaryDataTest)

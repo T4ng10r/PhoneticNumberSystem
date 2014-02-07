@@ -16,6 +16,9 @@
 #define WINDOWS_EOF_1CHAR '\r'
 #define WINDOWS_EOF_2CHAR '\r'
 #define LINUX_EOF_CHAR '\n'
+const std::string file_dictionary_ext(".dic");
+const std::string file_dictionary_aff_ext(".aff");
+const std::string file_codepage_keyword("SET ");
 std::string emtpystring;
 
 class BaseDictionaryWarehouse
@@ -29,35 +32,30 @@ public:
 	std::string getFileCodepage( const std::string & filePath )
 	{
 		//if path contain '.dic'
+		QFile file;
 		size_t pos;
 		std::string affFilePath(filePath);
 		std::string fileCodepage;
-		QFile       file;
-		if ((pos=affFilePath.find(".dic"))!=std::string::npos)
+		if ((pos=affFilePath.find(file_dictionary_ext))!=std::string::npos)
 		{
 			affFilePath = affFilePath.substr(0,pos);
-			affFilePath.append(".aff");
+			affFilePath.append(file_dictionary_aff_ext);
 		}
 		file.setFileName(filePath.c_str());
 		QTextStream stream(&file);
-		//FILE * fh = fopen(affFilePath.c_str(), "r");
-		//if (!fh) 
 		if (!file.open(QIODevice::ReadOnly))
 		{
 			printLog(eWarningLogLevel,eDebug,QString("CDictionaryData, can't open dictionary aff file (%1)").arg(affFilePath.c_str()));
 			return fileCodepage;
 		}
 		fileCodepage = stream.readLine().toLatin1();
-		//fileCodepage = fgets(in, BUFSIZE - 1, fh);
-		if ((pos=fileCodepage.find("SET "))!=std::string::npos)
+		if ((pos=fileCodepage.find(file_codepage_keyword))!=std::string::npos)
 		{
-			fileCodepage = fileCodepage.substr(pos+4);
+			fileCodepage = fileCodepage.substr(pos+file_codepage_keyword.size());
 		}
-		//fclose(fh);
 		file.close();
 		fileCodepage.erase(std::remove(fileCodepage.begin(), fileCodepage.end(), '\n'), fileCodepage.end());
 		fileCodepage.erase(std::remove(fileCodepage.begin(), fileCodepage.end(), '\r'), fileCodepage.end());
-		//QTextCodec::setCodecForCStrings(QTextCodec::codecForName (fileCodepage.c_str())); 
 		QTextCodec::setCodecForLocale(QTextCodec::codecForName (fileCodepage.c_str())); 
 		return fileCodepage;
 	}		
@@ -173,14 +171,13 @@ public:
 		{
 			return std::string();
 		}
-		QString qWord = std::string(dictionaryWords[index].first,dictionaryWords[index].second).c_str();
-		return qWord.toStdString();
-		//return std::string(dictionaryWords[index].first,dictionaryWords[index].second);
+		//QString qWord = std::string(dictionaryWords[index].first,dictionaryWords[index].second).c_str();
+		//return qWord.toStdString();
+		return std::string(dictionaryWords[index].first,dictionaryWords[index].second);
 	}
 	void removeDictionary()
 	{
 		dictionaryWords.clear();
-
 	};
 public:
 	std::size_t dictionaryFileSize;
@@ -236,7 +233,6 @@ bool CDictionaryDataPrivate::openFile( const std::string & filePath )
 	//dict_file.open(filePath.c_str());
 	//fileHandle = fopen(filePath.c_str(), "r");
 
-	//if (!fileHandle) 
 	if (false==QFile::exists(filePath.c_str()) || dict_file.open(QIODevice::ReadOnly))
 	{
 		printLog(eWarningLogLevel,eDebug,QString("CDictionaryData, can't open dictionary file (%1)").arg(filePath.c_str()));

@@ -142,7 +142,7 @@ void CSearchPhoneticRepresentationsDlg::enableSearchButton()
 {
 	m_ptrPriv->performSearchButton->setEnabled(true);
 }
-void CSearchPhoneticRepresentationsDlg::searchFinished()
+void CSearchPhoneticRepresentationsDlg::searchFinished(bool)
 {
 	m_ptrPriv->searchProgressBar->hide();
 	enableSearchButton();

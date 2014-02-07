@@ -28,7 +28,7 @@ Q_SIGNALS:
 	void dictionaryLoaded(bool success);
 	void onDictionariesFilesRefreshed();
 	void searchProgress(int current, int max);
-	void searchFinished();
+	void searchFinished(bool);
 //protected Q_SLOTS:
 //	void onSearchProgress(int current);
 protected:

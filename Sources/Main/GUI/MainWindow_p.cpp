@@ -57,14 +57,8 @@ void CMainWindowPrivate::setConnections()
 		"'CDataThread::searchProgess' with 'searchPhoneticRepresentations::onSearchProgess'", 
 		bResult);
 
-	bResult = QObject::connect(CDataThread::getInstance().get(), SIGNAL(searchFinished()),
-		searchPhoneticRepresentations.get(), SLOT(searchFinished()) );
-	logConnection("CMainWindowPrivate::setConnections",
-		"'CDataThread::searchFinished' with 'searchPhoneticRepresentations::searchFinished'", 
-		bResult);
-
-	bResult = QObject::connect(CDataThread::getInstance().get(), SIGNAL(searchFinished()),
-		searchPhoneticRepresentations.get(), SLOT(searchFinished()) );
+	bResult = QObject::connect(CDataThread::getInstance().get(), SIGNAL(searchFinished(bool)),
+		searchPhoneticRepresentations.get(), SLOT(searchFinished(bool)) );
 	logConnection("CMainWindowPrivate::setConnections",
 		"'CDataThread::searchFinished' with 'searchPhoneticRepresentations::searchFinished'", 
 		bResult);

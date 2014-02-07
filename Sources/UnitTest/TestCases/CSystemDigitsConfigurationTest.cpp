@@ -1,6 +1,7 @@
 #include <TestCases/CSystemDigitsConfigurationTest.h>
 #include <map>
 #include <boost/foreach.hpp>
+Q_DECLARE_METATYPE(std::string);
 
 void CSystemDigitsConfigurationTest::init()
 {
@@ -27,84 +28,34 @@ void CSystemDigitsConfigurationTest::cleanup()
 {
 	//m_ptrAppSettings.reset();
 }
-void CSystemDigitsConfigurationTest::test_CreateConsonantsDigits_00()
+void CSystemDigitsConfigurationTest::test_CreateConsonantsDigits_data()
 {
-	systemDigitsConfiguration.createConsonantsDigitsMap();
-	AcceptableConsonants acceptableConsonants = systemDigitsConfiguration.digitsConsonantsSetMap[0].first;
-	ForbidenConsonants forbidenConsonants = systemDigitsConfiguration.digitsConsonantsSetMap[0].second;
-	QCOMPARE(acceptableConsonants.c_str(),"ZS");
-	QCOMPARE(forbidenConsonants.c_str(),"TDN M R L J KGFWPB");
-}
-void CSystemDigitsConfigurationTest::test_CreateConsonantsDigits_01()
-{
-	systemDigitsConfiguration.createConsonantsDigitsMap();
-	AcceptableConsonants acceptableConsonants = systemDigitsConfiguration.digitsConsonantsSetMap[1].first;
-	ForbidenConsonants forbidenConsonants = systemDigitsConfiguration.digitsConsonantsSetMap[1].second;
-	QCOMPARE(acceptableConsonants.c_str(),"TD");
-	QCOMPARE(forbidenConsonants.c_str(),"ZSN M R L J KGFWPB");
-}
-void CSystemDigitsConfigurationTest::test_CreateConsonantsDigits_02()
-{
-	systemDigitsConfiguration.createConsonantsDigitsMap();
-	AcceptableConsonants acceptableConsonants = systemDigitsConfiguration.digitsConsonantsSetMap[2].first;
-	ForbidenConsonants forbidenConsonants = systemDigitsConfiguration.digitsConsonantsSetMap[2].second;
-	QCOMPARE(acceptableConsonants.c_str(),"N ");
-	QCOMPARE(forbidenConsonants.c_str(),"ZSTDMRLJKGFWPB");
-}
-void CSystemDigitsConfigurationTest::test_CreateConsonantsDigits_03()
-{
-	systemDigitsConfiguration.createConsonantsDigitsMap();
-	AcceptableConsonants acceptableConsonants = systemDigitsConfiguration.digitsConsonantsSetMap[3].first;
-	ForbidenConsonants forbidenConsonants = systemDigitsConfiguration.digitsConsonantsSetMap[3].second;
-	QCOMPARE(acceptableConsonants.c_str(),"M ");
-	QCOMPARE(forbidenConsonants.c_str(),"ZSTDNRLJKGFWPB");
-}
-void CSystemDigitsConfigurationTest::test_CreateConsonantsDigits_04()
-{
-	systemDigitsConfiguration.createConsonantsDigitsMap();
-	AcceptableConsonants acceptableConsonants = systemDigitsConfiguration.digitsConsonantsSetMap[4].first;
-	ForbidenConsonants forbidenConsonants = systemDigitsConfiguration.digitsConsonantsSetMap[4].second;
-	QCOMPARE(acceptableConsonants.c_str(),"R ");
-	QCOMPARE(forbidenConsonants.c_str(),"ZSTDNMLJKGFWPB");
-}
-void CSystemDigitsConfigurationTest::test_CreateConsonantsDigits_05()
-{
-	systemDigitsConfiguration.createConsonantsDigitsMap();
-	AcceptableConsonants acceptableConsonants = systemDigitsConfiguration.digitsConsonantsSetMap[5].first;
-	ForbidenConsonants forbidenConsonants = systemDigitsConfiguration.digitsConsonantsSetMap[5].second;
-	QCOMPARE(acceptableConsonants.c_str(),"L ");
-	QCOMPARE(forbidenConsonants.c_str(),"ZSTDNMRJKGFWPB");
-}
-void CSystemDigitsConfigurationTest::test_CreateConsonantsDigits_06()
-{
-	systemDigitsConfiguration.createConsonantsDigitsMap();
-	AcceptableConsonants acceptableConsonants = systemDigitsConfiguration.digitsConsonantsSetMap[6].first;
-	ForbidenConsonants forbidenConsonants = systemDigitsConfiguration.digitsConsonantsSetMap[6].second;
-	QCOMPARE(acceptableConsonants.c_str(),"J ");
-	QCOMPARE(forbidenConsonants.c_str(),"ZSTDNMRLKGFWPB");
-}
-void CSystemDigitsConfigurationTest::test_CreateConsonantsDigits_07()
-{
-	systemDigitsConfiguration.createConsonantsDigitsMap();
-	AcceptableConsonants acceptableConsonants = systemDigitsConfiguration.digitsConsonantsSetMap[7].first;
-	ForbidenConsonants forbidenConsonants = systemDigitsConfiguration.digitsConsonantsSetMap[7].second;
-	QCOMPARE(acceptableConsonants.c_str(),"KG");
-	QCOMPARE(forbidenConsonants.c_str(),"ZSTDN M R L J FWPB");
-}
-void CSystemDigitsConfigurationTest::test_CreateConsonantsDigits_08()
-{
-	systemDigitsConfiguration.createConsonantsDigitsMap();
-	AcceptableConsonants acceptableConsonants = systemDigitsConfiguration.digitsConsonantsSetMap[8].first;
-	ForbidenConsonants forbidenConsonants = systemDigitsConfiguration.digitsConsonantsSetMap[8].second;
-	QCOMPARE(acceptableConsonants.c_str(),"FW");
-	QCOMPARE(forbidenConsonants.c_str(),"ZSTDN M R L J KGPB");
-}
-void CSystemDigitsConfigurationTest::test_CreateConsonantsDigits_09()
-{
-	systemDigitsConfiguration.createConsonantsDigitsMap();
-	AcceptableConsonants acceptableConsonants = systemDigitsConfiguration.digitsConsonantsSetMap[9].first;
-	ForbidenConsonants forbidenConsonants = systemDigitsConfiguration.digitsConsonantsSetMap[9].second;
-	QCOMPARE(acceptableConsonants.c_str(),"PB");
-	QCOMPARE(forbidenConsonants.c_str(),"ZSTDN M R L J KGFW");
+	QTest::addColumn<int>("consonant_index");
+	QTest::addColumn<std::string>("expected_acceptableConsonants");
+	QTest::addColumn<std::string>("expected_forbidenConsonants");
+
+	QTest::newRow("digit_01") << 0 << std::string("ZS") << std::string("TDN M R L J KGFWPB");
+	QTest::newRow("digit_02") << 1 << std::string("TD") << std::string("ZSN M R L J KGFWPB");
+	QTest::newRow("digit_03") << 2 << std::string("N ") << std::string("ZSTDMRLJKGFWPB");
+	QTest::newRow("digit_04") << 3 << std::string("M ") << std::string("ZSTDNRLJKGFWPB");
+
+	QTest::newRow("digit_05") << 4 << std::string("R ") << std::string("ZSTDNMLJKGFWPB");
+	QTest::newRow("digit_06") << 5 << std::string("L ") << std::string("ZSTDNMRJKGFWPB");
+	QTest::newRow("digit_07") << 6 << std::string("J ") << std::string("ZSTDNMRLKGFWPB");
+	QTest::newRow("digit_08") << 7 << std::string("KG") << std::string("ZSTDN M R L J FWPB");
+	QTest::newRow("digit_09") << 8 << std::string("FW") << std::string("ZSTDN M R L J KGPB");
+	QTest::newRow("digit_10") << 9 << std::string("PB") << std::string("ZSTDN M R L J KGFW");
 }
 
+void CSystemDigitsConfigurationTest::test_CreateConsonantsDigits()
+{
+	QFETCH(int, consonant_index);
+	QFETCH(std::string, expected_acceptableConsonants);
+	QFETCH(std::string, expected_forbidenConsonants);
+
+	systemDigitsConfiguration.createConsonantsDigitsMap();
+	AcceptableConsonants acceptableConsonants = systemDigitsConfiguration.digitsConsonantsSetMap[consonant_index].first;
+	ForbidenConsonants forbidenConsonants = systemDigitsConfiguration.digitsConsonantsSetMap[consonant_index].second;
+	QCOMPARE(acceptableConsonants.c_str(), expected_acceptableConsonants.c_str());
+	QCOMPARE(forbidenConsonants.c_str(), expected_forbidenConsonants.c_str());
+}

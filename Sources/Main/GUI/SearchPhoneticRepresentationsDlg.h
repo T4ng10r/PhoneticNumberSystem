@@ -17,7 +17,7 @@ Q_SIGNALS:
 	 void performSearch(const std::string & );
 public Q_SLOTS:
 	void onSearchProgress(int current, int max);
-	void searchFinished();
+	void searchFinished(bool);
 	void disableSearchButton();
 	void enableSearchButton();
 protected Q_SLOTS:

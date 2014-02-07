@@ -11,7 +11,7 @@ class CSubstituteSearchPrivate
 public:
      CSubstituteSearchPrivate(CSubstituteSearch * ptrPublic);
      ~CSubstituteSearchPrivate();
-	 bool testWord(const std::string & ,const CSingleSubstituteDigitsConfiguration & digitConf);
+	 bool testWord(const std::string &);
 	 void buildSearchResultsTree();
 
 	 void clearSearchResult();
@@ -24,6 +24,7 @@ public:
 	WordSearchResult				searchCandidates;
 	FittingWordsMap					searchResultMap;
 	SharedTreeNodes					searchResultTreeRoot;
+	CSingleSubstituteDigitsConfiguration digits_conf;
 };
 
 CSubstituteSearchPrivate::CSubstituteSearchPrivate(CSubstituteSearch * ptrPublic):m_ptrPublic(ptrPublic),
@@ -32,7 +33,7 @@ CSubstituteSearchPrivate::CSubstituteSearchPrivate(CSubstituteSearch * ptrPublic
 
 }
 CSubstituteSearchPrivate::~CSubstituteSearchPrivate(){}
-bool CSubstituteSearchPrivate::testWord(const std::string & wordToTest,const CSingleSubstituteDigitsConfiguration & digitConf)
+bool CSubstituteSearchPrivate::testWord( const std::string & wordToTest)
 {
 	SuccessWord	result;
 	MatchingPair matchingPair;
@@ -46,7 +47,7 @@ bool CSubstituteSearchPrivate::testWord(const std::string & wordToTest,const CSi
 	{
 		unsigned int digit = number[digitIndex]-'0';
 		//test 
-		OneDigitConsonantsSet::const_iterator iter = digitConf.digitsConsonantsSetMap.find(digit);
+		OneDigitConsonantsSet::const_iterator iter = digits_conf.digitsConsonantsSetMap.find(digit);
 		acceptPos = word.find_first_of(iter->second.first,searchStartPos);
 		size_t forbPos = word.find_first_of(iter->second.second,searchStartPos);
 		//if both result are end - we reached end of word or no chars in 
@@ -75,7 +76,7 @@ bool CSubstituteSearchPrivate::testWord(const std::string & wordToTest,const CSi
 		}
 	}
 	result.bFullCoverage=(coveredDigits==number);
-	if (word.find_first_of(digitConf.allConsonants,searchStartPos)==std::string::npos && coveredDigits.size())
+	if (word.find_first_of(digits_conf.allConsonants,searchStartPos)==std::string::npos && coveredDigits.size())
 	{
 		result.words.push_back(wordToTest);
 		if (digitIndex>=number.size())
@@ -130,6 +131,10 @@ CSubstituteSearch::CSubstituteSearch():privPart(new CSubstituteSearchPrivate(thi
 {
 }
 CSubstituteSearch::~CSubstituteSearch(void){}
+void CSubstituteSearch::setSubstituteDigitsConfiguration(CSingleSubstituteDigitsConfiguration conf)
+{
+	privPart->digits_conf = conf;
+}
 void CSubstituteSearch::setDictionaryWords(boost::shared_ptr<CDictionaryData> dictionaryWords)
 {
 	privPart->searchResultMap.clear();
@@ -139,8 +144,6 @@ void CSubstituteSearch::startSearchForNumber(const std::string & number)
 {
 	printLog(eInfoLogLevel,eDebug,QString("Searching substitute for number '%1' started").arg(number.c_str()));
 	privPart->number = number;
-	const std::vector<CSingleSubstituteDigitsConfiguration> & digitConf = gAppSettings->getDigitsConfiguraions();
-
 	unsigned int wordsCount = privPart->dictionaryWords->getWordsCount();
 	unsigned int notifyStepCount = wordsCount/100;
 	unsigned int notifyStep = 0;
@@ -150,7 +153,7 @@ void CSubstituteSearch::startSearchForNumber(const std::string & number)
 		std::string word = privPart->dictionaryWords->getWordByNdex(index);
 		if (word.size()<2)
 			continue;
-		privPart->testWord(word,digitConf[0]);
+		privPart->testWord(word);
 		if (notifyStep==notifyStepCount)
 		{
 			Q_EMIT searchProgress(index+1,wordsCount);
@@ -159,7 +162,7 @@ void CSubstituteSearch::startSearchForNumber(const std::string & number)
 	}
 	Q_EMIT searchProgress(wordsCount,wordsCount);
 	privPart->buildSearchResultsTree();
-	Q_EMIT searchFinished();
+	Q_EMIT searchFinished(true);
 	printLog(eInfoLogLevel,eDebug,QString("Searching substitute for number '%1' finished").arg(number.c_str()));
 }
 WordSearchResult CSubstituteSearch::getSearchResult(int start_index)

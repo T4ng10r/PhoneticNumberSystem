@@ -8,7 +8,7 @@ class CDataThreadTest : public QObject
 	Q_OBJECT
 private Q_SLOTS:
 	void initTestCase();
-	void test_1();
+	void test_serching_short_dict();
 };
 
 DECLARE_TEST(CDataThreadTest)

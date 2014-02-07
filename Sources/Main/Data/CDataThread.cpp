@@ -69,8 +69,8 @@ void CDataThreadPrivate::setConnections()
 		"'substituteSearch::searchProgress' with 'CDataThread::onSearchProgress'", 
 		bResult);
 
-	bResult = QObject::connect(substituteSearch.get(), SIGNAL(searchFinished()), 
-		publicPart, SIGNAL(searchFinished()));
+	bResult = QObject::connect(substituteSearch.get(), SIGNAL(searchFinished(bool)), 
+		publicPart, SIGNAL(searchFinished(bool)));
 	logConnection("CDataThreadPrivate::setConnections",
 		"'substituteSearch::searchFinished' with 'CDataThread::searchFinished'", 
 		bResult);
@@ -169,6 +169,12 @@ void CDataThread::onSetDictionary()
 }
 void CDataThread::onNumberSearchStarted(const std::string & number)
 {
+	if (gAppSettings->getDigitsConfiguraions().size()<=0)
+	{
+		Q_EMIT searchFinished(false);
+		return;
+	}
+	privPart->substituteSearch->setSubstituteDigitsConfiguration(gAppSettings->getDigitsConfiguraions()[0]);
 	privPart->substituteSearch->setDictionaryWords(privPart->dictionaryData);
 	privPart->substituteSearch->startSearchForNumber(number);
 }

@@ -17,6 +17,8 @@ private Q_SLOTS:
 		void initTestCase();
 		void init();
 		void cleanup();
+		void test_SubstituteSearch_WholeCorrectWord_data();
+		void test_SubstituteSearch_WholeCorrectWord();
 		void test_SubstituteSearch_WholeCorrectWord_01();
 		void test_SubstituteSearch_WholeCorrectWord_02();
 		void test_SubstituteSearch_WholeWordCoversPartOfNumber_01();

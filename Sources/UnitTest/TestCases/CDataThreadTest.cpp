@@ -4,8 +4,8 @@
 #include <Data/CAppSettingsKeywords.h>
 #include <string>
 
-const std::string short_dict("pl_PL_short.dic");
-const std::string standard_dict("pl_PL.dic");
+const std::string short_dict("pl_PL_short");
+const std::string standard_dict("pl_PL");
 const std::string dict_directory("dict");
 
 const unsigned int ciSingleTimeout(1000); //in s
@@ -18,7 +18,7 @@ void CDataThreadTest::initTestCase()
 	gAppSettings->put(DICTIONARIES_DIRECTORY,"");
 }
 
-void CDataThreadTest::test_1()
+void CDataThreadTest::test_serching_short_dict()
 {
 	int iCount =0;
 	gAppSettings->put(SELECTED_DICTIONARY,short_dict);
@@ -38,7 +38,7 @@ void CDataThreadTest::test_1()
 	}
 	QList<QVariant> signal_resp = dictionary_loaded_spy.takeFirst();
 	QCOMPARE(signal_resp.at(0).toBool(), true);
-	QSignalSpy  search_finished_spy(CDataThread::getInstance().get(), SIGNAL(searchFinished()));
+	QSignalSpy  search_finished_spy(CDataThread::getInstance().get(), SIGNAL(searchFinished(bool)));
 	CDataThread::getInstance()->onNumberSearchStarted("571");
 	while (search_finished_spy.count() == 0)
 	{
@@ -50,5 +50,10 @@ void CDataThreadTest::test_1()
 			break;
 		}
 	}
+	signal_resp = search_finished_spy.takeFirst();
+	QCOMPARE(signal_resp.at(0).toBool(), true);
 
+	WordSearchResult result = CDataThread::getInstance()->getSearchResult();
+	QVERIFY(result.size()!=0);
+	//signal_resp = search_finished_spy.takeFirst();
 }

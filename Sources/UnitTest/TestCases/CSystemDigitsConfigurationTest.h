@@ -11,15 +11,7 @@ public:
 	private Q_SLOTS:
 		void init();
 		void cleanup();
-		void test_CreateConsonantsDigits_00();
-		void test_CreateConsonantsDigits_01();
-		void test_CreateConsonantsDigits_02();
-		void test_CreateConsonantsDigits_03();
-		void test_CreateConsonantsDigits_04();
-		void test_CreateConsonantsDigits_05();
-		void test_CreateConsonantsDigits_06();
-		void test_CreateConsonantsDigits_07();
-		void test_CreateConsonantsDigits_08();
-		void test_CreateConsonantsDigits_09();
+		void test_CreateConsonantsDigits_data();
+		void test_CreateConsonantsDigits();
 };
 DECLARE_TEST(CSystemDigitsConfigurationTest)
