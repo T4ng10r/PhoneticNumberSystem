@@ -99,11 +99,11 @@ void CSearchPhoneticRepresentationsDlgPrivate::moveSearchResultIntoModel()
 	{
 		if (false==success_word.bFullCoverage)
 			continue;
-    QString itemString;
-    if (codec)
-		  itemString = codec->toUnicode(success_word.getWord().c_str());
-    else
-      itemString = success_word.getWord().c_str();
+		QString itemString;
+		if (codec)
+			itemString = codec->toUnicode(success_word.getWord().c_str());
+		else
+			itemString = success_word.getWord().c_str();
 		searchResultsModel.appendRow(new QStandardItem(itemString));
 	}
 }

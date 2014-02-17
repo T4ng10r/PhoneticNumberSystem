@@ -25,11 +25,11 @@ public:
 	std::string createCurrentDictionaryPath();
 	std::string createCurrentDictionaryAffPath();
 	void setConnections();
-  void prepareDirectories();
+	void prepareDirectories();
 public:
-	CDataThread *	publicPart;
-	boost::shared_ptr<CDictionaryData>	dictionaryData;
-	boost::shared_ptr<CSubstituteSearch>	substituteSearch;
+	CDataThread * publicPart;
+	boost::shared_ptr<CDictionaryData> dictionaryData;
+	boost::shared_ptr<CSubstituteSearch> substituteSearch;
 };
 
 CDataThreadPrivate::CDataThreadPrivate(CDataThread * ptrPublic):publicPart(ptrPublic), 
@@ -109,7 +109,6 @@ boost::shared_ptr<CDataThread> CDataThread::getInstance()
 }
 CDataThread::~CDataThread(void)
 {
-	int a=1;
 }
 void CDataThread::loadCurrentlySetDictionary()
 {
@@ -122,11 +121,7 @@ WordsList CDataThread::getSearchResult(StartingIndex start_index)
 {
 	return privPart->substituteSearch->getSearchResult(start_index);
 }
-//////////////////////////////////////////////////////////////////////////
-//void CDataThread::onSearchProgress(int current)
-//{
-//	Q_EMIT searchProgress(current, privPart->dictionaryData->getWordsCount());
-//}
+
 void CDataThread::onScanDirectoryForDictionaries()
 {
 	QString dirPath;
@@ -179,7 +174,7 @@ void CDataThread::onNumberSearchStarted(const std::string & number)
 }
 QTextCodec * CDataThread::get_current_codepage()
 {
-  std::string codepage = privPart->dictionaryData->get_file_codepage();
-  QTextCodec * codec = QTextCodec::codecForName(codepage.c_str());
-  return codec;
+	std::string codepage = privPart->dictionaryData->get_file_codepage();
+	QTextCodec * codec = QTextCodec::codecForName(codepage.c_str());
+	return codec;
 }

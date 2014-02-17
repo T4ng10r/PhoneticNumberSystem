@@ -31,8 +31,6 @@ Q_SIGNALS:
 	void onDictionariesFilesRefreshed();
 	void searchProgress(int current, int max);
 	void searchFinished(bool);
-//protected Q_SLOTS:
-//	void onSearchProgress(int current);
 protected:
 	boost::scoped_ptr<CDataThreadPrivate> privPart;
 };

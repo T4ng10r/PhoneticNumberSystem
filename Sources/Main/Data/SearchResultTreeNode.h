@@ -15,10 +15,10 @@ typedef std::list<SharedTreeNodes> TreeNodesList;
 class EdgesList : public std::pair<WordsList, SharedTreeNodes>
 {
 public:
-  WordsList & words_list() { return first; };
-  const WordsList & cwords_list() const { return first; };
-  SharedTreeNodes target_node() { return second; }
-  void set_target_node(SharedTreeNodes node) { second = node; }
+	WordsList & words_list() { return first; };
+	const WordsList & cwords_list() const { return first; };
+	SharedTreeNodes target_node() { return second; }
+	void set_target_node(SharedTreeNodes node) { second = node; }
 };
 
 //first - ID of node to which this entry points
@@ -35,11 +35,10 @@ public:
 	TreeNodesList find_node(StartingIndex searchedNode);
 	std::size_t getChildrenCount() { return children.size(); }
 
-  WordsList parseDFS(StartingIndex endIndex);
+	WordsList parseDFS(StartingIndex endIndex);
 public:
 	//index of second value in range covered with this node words
 	boost::optional<StartingIndex> iCurrentIndex;
 	SharedTreeNodes	parent;
 	ChildrenMap children;
-	//WordsList words;
 };

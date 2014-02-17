@@ -9,16 +9,16 @@
 class CSubstituteSearchPrivate
 {
 public:
-     CSubstituteSearchPrivate(CSubstituteSearch * ptrPublic);
-     ~CSubstituteSearchPrivate();
-	 bool testWord(const std::string &);
-	 void buildSearchResultsTree();
+	CSubstituteSearchPrivate(CSubstituteSearch * ptrPublic);
+	~CSubstituteSearchPrivate();
+	bool testWord(const std::string &);
+	void buildSearchResultsTree();
 
-	 void clearSearchResult();
-	 void prepareSearchResults();
+	void clearSearchResult();
+	void prepareSearchResults();
 public:
 	CSubstituteSearch *                    m_ptrPublic;
-	boost::shared_ptr<CDictionaryData>		dictionaryWords;
+	boost::shared_ptr<CDictionaryData>     dictionaryWords;
 	std::string			number;
 	WordsList				searchResult;
 	WordsList				searchCandidates;
@@ -30,7 +30,6 @@ public:
 CSubstituteSearchPrivate::CSubstituteSearchPrivate(CSubstituteSearch * ptrPublic):m_ptrPublic(ptrPublic),
 	searchResultTreeRoot(new SearchResultTreeNode(0))
 {
-
 }
 CSubstituteSearchPrivate::~CSubstituteSearchPrivate(){}
 bool CSubstituteSearchPrivate::testWord( const std::string & wordToTest)
@@ -114,8 +113,7 @@ void CSubstituteSearchPrivate::buildSearchResultsTree()
 		StartingIndex start=resultItem.first.first;
 		StartingIndex end=resultItem.first.second;
 		std::for_each(searchResult.begin(),searchResult.end(),
-      //boost::bind(&SearchResultTreeNode::addNode, searchResultTreeRoot, start,end, boost::bind(&SuccessWord::getWord, _1)));
-      boost::bind(&SearchResultTreeNode::addNode, searchResultTreeRoot, start,end, _1));
+			boost::bind(&SearchResultTreeNode::addNode, searchResultTreeRoot, start,end, _1));
 	}
 }
 void CSubstituteSearchPrivate::prepareSearchResults()
