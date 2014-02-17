@@ -113,6 +113,7 @@ void CSearchPhoneticRepresentationsDlgPrivate::moveSearchResultIntoModel()
 }
 void CSearchPhoneticRepresentationsDlgPrivate::moveSearchResultIntoSubstituteComposer()
 {
+	composeSubstituteSentenceWidget->initialize_after_success_search();
 	WordsList result = CDataThread::getInstance()->getSearchResult(0);
 }
 //////////////////////////////////////////////////////////////////////////

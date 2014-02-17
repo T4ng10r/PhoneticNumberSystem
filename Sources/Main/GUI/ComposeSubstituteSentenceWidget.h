@@ -14,6 +14,7 @@ public:
       ComposeSubstituteSentenceWidget(QWidget * parent = NULL);
      ~ComposeSubstituteSentenceWidget(void);
 	 void reset();
+	 void initialize_after_success_search();
 protected:
      boost::scoped_ptr<ComposeSubstituteSentenceWidgetPrivate> m_ptrPriv;
 };

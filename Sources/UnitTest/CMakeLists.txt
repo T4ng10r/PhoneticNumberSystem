@@ -34,7 +34,7 @@ SET ( SOURCES_TEST_MOC
     TestCases/CAppSettingsTest.h
     TestCases/CSystemDigitsConfigurationTest.h
     TestCases/CSubstituteSearchTest.h
-    TestCases/MTSubstituteSearchTest.h
+    TestCases/mt_substitute_search_test.h
     TestCases/CSearchResultTreeTest.h
     TestCases/CDataThreadTest.h
     )

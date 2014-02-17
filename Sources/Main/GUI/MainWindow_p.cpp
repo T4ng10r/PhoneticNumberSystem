@@ -69,7 +69,7 @@ void CMainWindowPrivate::setConnections()
 		"'appSettingsDlg::dictionarySelected' with 'searchPhoneticRepresentations::disableSearchButton'", 
 		bResult);
 
-	bResult = QObject::connect(CDataThread::getInstance().get(), SIGNAL(dictionaryLoaded()),
+	bResult = QObject::connect(CDataThread::getInstance().get(), SIGNAL(dictionaryLoaded(bool)),
 		searchPhoneticRepresentations.get(), SLOT(enableSearchButton()) );
 	logConnection("CMainWindowPrivate::setConnections",
 		"'CDataThread::dictionaryLoaded' with 'searchPhoneticRepresentations::enableSearchButton'", 
