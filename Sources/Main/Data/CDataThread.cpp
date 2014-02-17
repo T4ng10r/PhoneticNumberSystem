@@ -118,9 +118,9 @@ void CDataThread::loadCurrentlySetDictionary()
 		return;
 	}
 }
-WordSearchResult CDataThread::getSearchResult()
+WordsList CDataThread::getSearchResult(StartingIndex start_index)
 {
-	return privPart->substituteSearch->getSearchResult();
+	return privPart->substituteSearch->getSearchResult(start_index);
 }
 //////////////////////////////////////////////////////////////////////////
 //void CDataThread::onSearchProgress(int current)

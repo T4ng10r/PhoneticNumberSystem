@@ -18,7 +18,7 @@ public:
 	static boost::shared_ptr<CDataThread> getInstance();
   //currently not used
 	void loadCurrentlySetDictionary();
-	WordSearchResult getSearchResult();
+	WordsList getSearchResult(StartingIndex start_index);
 public Q_SLOTS:
   void onScanDirectoryForDictionaries();
   void onSetDictionary();

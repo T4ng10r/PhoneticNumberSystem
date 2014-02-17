@@ -53,7 +53,7 @@ void CDataThreadTest::test_serching_short_dict()
 	signal_resp = search_finished_spy.takeFirst();
 	QCOMPARE(signal_resp.at(0).toBool(), true);
 
-	WordSearchResult result = CDataThread::getInstance()->getSearchResult();
+	WordsList result = CDataThread::getInstance()->getSearchResult(0);
 	QVERIFY(result.size()!=0);
 	//signal_resp = search_finished_spy.takeFirst();
 }

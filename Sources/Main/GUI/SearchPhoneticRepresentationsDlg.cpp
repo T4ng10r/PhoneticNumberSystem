@@ -93,8 +93,8 @@ void CSearchPhoneticRepresentationsDlgPrivate::moveSearchResultIntoModel()
 	searchResultsModel.clear();
 	searchResultsModel.setColumnCount(1);
 	std::string searchNumber = searchedNumber->text().toStdString();
-	const WordSearchResult & result = CDataThread::getInstance()->getSearchResult();
-	for(WordSearchResult::const_iterator iter = result.begin();iter!=result.end();iter++)
+	const WordsList & result = CDataThread::getInstance()->getSearchResult(0);
+	for(WordsList::const_iterator iter = result.begin();iter!=result.end();iter++)
 	{
 		if (iter->bFullCoverage==false)
 			continue;
@@ -113,7 +113,7 @@ void CSearchPhoneticRepresentationsDlgPrivate::moveSearchResultIntoModel()
 }
 void CSearchPhoneticRepresentationsDlgPrivate::moveSearchResultIntoSubstituteComposer()
 {
-	WordSearchResult result = CDataThread::getInstance()->getSearchResult();
+	WordsList result = CDataThread::getInstance()->getSearchResult(0);
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////

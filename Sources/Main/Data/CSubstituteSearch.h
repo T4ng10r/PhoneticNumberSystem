@@ -20,8 +20,8 @@ public:
 	 void setSubstituteDigitsConfiguration(CSingleSubstituteDigitsConfiguration conf);
 	 void setDictionaryWords(boost::shared_ptr<CDictionaryData>);
 	 void startSearchForNumber(const std::string & number);
-	 //const WordSearchResult & getSearchResult();
-	 WordSearchResult getSearchResult(int start_index = 0);
+	 //const WordsList & getSearchResult();
+	 WordsList getSearchResult(StartingIndex start_index = 0);
 Q_SIGNALS:
 	 void searchProgress(int current, int max);
 	 void searchFinished(bool);

@@ -20,8 +20,8 @@ public:
 	CSubstituteSearch *                    m_ptrPublic;
 	boost::shared_ptr<CDictionaryData>		dictionaryWords;
 	std::string			number;
-	WordSearchResult				searchResult;
-	WordSearchResult				searchCandidates;
+	WordsList				searchResult;
+	WordsList				searchCandidates;
 	FittingWordsMap					searchResultMap;
 	SharedTreeNodes					searchResultTreeRoot;
 	CSingleSubstituteDigitsConfiguration digits_conf;
@@ -110,7 +110,7 @@ void CSubstituteSearchPrivate::buildSearchResultsTree()
 
 	BOOST_FOREACH(const FittingWordsMap::value_type & resultItem, searchResultMap)
 	{
-		const WordSearchResult & searchResult = resultItem.second;
+		const WordsList & searchResult = resultItem.second;
 		StartingIndex start=resultItem.first.first;
 		StartingIndex end=resultItem.first.second;
 		std::for_each(searchResult.begin(),searchResult.end(),
@@ -165,11 +165,20 @@ void CSubstituteSearch::startSearchForNumber(const std::string & number)
 	Q_EMIT searchFinished(true);
 	printLog(eInfoLogLevel,eDebug,QString("Searching substitute for number '%1' finished").arg(number.c_str()));
 }
-WordSearchResult CSubstituteSearch::getSearchResult(int start_index)
+WordsList CSubstituteSearch::getSearchResult(StartingIndex start_index)
 {
-	return WordSearchResult();
-	if (start_index == 0)
+	WordsList searchResult;
+	TreeNodesList nodes_list = privPart->searchResultTreeRoot->find_node(start_index);
+
+	for(SharedTreeNodes tree_node : nodes_list)
 	{
-		//return privPart->searchResult;
+		for(ChildrenMap::value_type & child : tree_node->children)
+		{
+			std::copy(child.second.words_list().begin(),
+				child.second.words_list().end(),
+				back_inserter(searchResult));
+		}
 	}
+
+	return searchResult;
 }

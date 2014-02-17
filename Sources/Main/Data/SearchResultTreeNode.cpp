@@ -26,9 +26,9 @@ TreeNodesList SearchResultTreeNode::find_node(StartingIndex searchedNode)
 	}
 	return result;
 }
-WordSearchResult SearchResultTreeNode::parseDFS( StartingIndex endIndex )
+WordsList SearchResultTreeNode::parseDFS( StartingIndex endIndex )
 {
-	WordSearchResult result;
+	WordsList result;
 	//pass through all edges
     BOOST_FOREACH(const EdgesList & edgesToSingleChild , children | boost::adaptors::map_values)
     //for(const EdgesList & edgesToSingleChild : children | boost::adaptors::map_values)
@@ -36,7 +36,7 @@ WordSearchResult SearchResultTreeNode::parseDFS( StartingIndex endIndex )
 		//currently -> list of words between here and child
 		//get parseDFS words from child and add them to this list
 		WordsList wordsOnEdge = edgesToSingleChild.cwords_list();
-		WordSearchResult childWords = edgesToSingleChild.second->parseDFS(endIndex);
+		WordsList childWords = edgesToSingleChild.second->parseDFS(endIndex);
 		if (*iCurrentIndex<(endIndex-1) && childWords.empty())
 			continue;
 
