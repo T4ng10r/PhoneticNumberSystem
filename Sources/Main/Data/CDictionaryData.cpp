@@ -14,7 +14,7 @@
 
 #define BUFSIZE  65536
 #define WINDOWS_EOF_1CHAR '\r'
-#define WINDOWS_EOF_2CHAR '\r'
+#define WINDOWS_EOF_2CHAR '\n'
 #define LINUX_EOF_CHAR '\n'
 const std::string file_dictionary_ext(".dic");
 const std::string file_dictionary_aff_ext(".aff");
@@ -115,6 +115,7 @@ public:
 			if (**memAddr==WINDOWS_EOF_1CHAR && *(*memAddr+1)==WINDOWS_EOF_2CHAR)
 			{
 				(*memAddr)++;
+				(*memAddr)++;
 				return;
 			}
 			if (**memAddr==LINUX_EOF_CHAR)
@@ -171,8 +172,6 @@ public:
 		{
 			return std::string();
 		}
-		//QString qWord = std::string(dictionaryWords[index].first,dictionaryWords[index].second).c_str();
-		//return qWord.toStdString();
 		return std::string(dictionaryWords[index].first,dictionaryWords[index].second);
 	}
 	void removeDictionary()

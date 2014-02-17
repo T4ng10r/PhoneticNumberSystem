@@ -8,8 +8,8 @@ const std::string short_dict("pl_PL_short");
 const std::string standard_dict("pl_PL");
 const std::string dict_directory("dict");
 
-const unsigned int ciSingleTimeout(1000); //in s
-const unsigned int ciTimeoutsCount(5); //in s
+const unsigned int single_timeout(1000); //in s
+const unsigned int timeouts_count(5); //in s
 
 void CDataThreadTest::initTestCase()
 {
@@ -28,9 +28,9 @@ void CDataThreadTest::test_serching_short_dict()
 	CDataThread::getInstance()->onSetDictionary();
 	while (dictionary_loaded_spy.count() == 0)
 	{
-		QTest::qWait(ciSingleTimeout);
+		QTest::qWait(single_timeout);
 		++iCount;
-		if (iCount>ciTimeoutsCount)
+		if (iCount>timeouts_count)
 		{
 			QVERIFY2(false,"Timeout waiting for dictionaryLoaded signal");
 			break;
@@ -42,9 +42,9 @@ void CDataThreadTest::test_serching_short_dict()
 	CDataThread::getInstance()->onNumberSearchStarted("571");
 	while (search_finished_spy.count() == 0)
 	{
-		QTest::qWait(ciSingleTimeout);
+		QTest::qWait(single_timeout);
 		++iCount;
-		if (iCount>ciTimeoutsCount)
+		if (iCount>timeouts_count)
 		{
 			QVERIFY2(false,"Timeout waiting for searchFinished signal");
 			break;

@@ -1,7 +1,7 @@
 #include "CDictionaryDataTest.h"
 
-const unsigned int ciSingleTimeout(1000); //in s
-const unsigned int ciTimeoutsCount(5); //in s
+const unsigned int single_timeout(1000); //in s
+const unsigned int timeouts_count(5); //in s
 
 const std::string short_dict("pl_PL_short.dic");
 const std::string standard_dict("pl_PL.dic");

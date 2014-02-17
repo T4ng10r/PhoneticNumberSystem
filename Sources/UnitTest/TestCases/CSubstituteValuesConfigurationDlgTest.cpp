@@ -5,8 +5,8 @@
 //#include <QMetaType>
 #include <string>
 
-const unsigned int ciSingleTimeout(1000); //in s
-const unsigned int ciTimeoutsCount(5); //in s
+const unsigned int single_timeout(1000); //in s
+const unsigned int timeouts_count(5); //in s
 //Q_DECLARE_METATYPE(Qt::Orientation)
 //Q_DECLARE_METATYPE(QModelIndex)
 
@@ -128,9 +128,9 @@ void CSubstituteValuesConfigurationDlgTest::test_SelectNoneConfiguration()
 	dialog->priv_part->m_ptrSystemsCombo->setCurrentIndex(0);
 	while (spy.count() == 0)
 	{
-		QTest::qWait(ciSingleTimeout);
+		QTest::qWait(single_timeout);
 		++iCount;
-		if (iCount>ciTimeoutsCount)
+		if (iCount>timeouts_count)
 		{
 			QVERIFY2(false,"Timeout waiting for set_selected_consonant_system signal");
 			return;

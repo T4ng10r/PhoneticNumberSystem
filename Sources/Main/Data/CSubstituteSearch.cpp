@@ -86,7 +86,7 @@ bool CSubstituteSearchPrivate::testWord( const std::string & wordToTest)
 		searchResultMap[matchingPair].push_back(result);
 		if (!result.bFullCoverage)
 		{
-			while((acceptPos = number.find(coveredDigits,matchingPair.second+1))!=std::string::npos);
+			while((acceptPos = number.find(coveredDigits,matchingPair.second+1))!=std::string::npos)
 			{
 				matchingPair.first=acceptPos;
 				matchingPair.second=acceptPos+coveredDigits.size();

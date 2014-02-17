@@ -41,6 +41,7 @@ void CSubstituteSearchTest::test_SubstituteSearch_WholeCorrectWord_data()
 
 	QTest::newRow("whole_01") << std::string("99") << std::string("BABCIA") << size_t(0) << size_t(1) << size_t(1) << std::string("BB") << true;
 	QTest::newRow("whole_02") << std::string("034") << std::string("SMAR") << size_t(0) << size_t(2) << size_t(1) << std::string("SMR") << true;
+	//QTest::newRow("whole_03") << std::string("99") << std::string("AAP") << size_t(0) << size_t(1) << size_t(1) << std::string("BB") << true;
 	QTest::newRow("partial_01") << std::string("885421866") << std::string("LERNED") << size_t(2) << size_t(5) << size_t(1) << std::string("LRND") << false;
 	QTest::newRow("partial_02") << std::string("123") << std::string("ACETON") << size_t(0) << size_t(1) << size_t(1) << std::string("TN") << false;
 }
@@ -69,15 +70,15 @@ void CSubstituteSearchTest::test_SubstituteSearch_WholeCorrectWord()
 void CSubstituteSearchTest::test_SubstituteSearch_WholeCorrectWord_01()
 {
 	substituteSearchPrivate->number = "99";
-	QVERIFY(substituteSearchPrivate->testWord("BABCIA"));
-	FittingWordsMap::const_iterator iter = substituteSearchPrivate->searchResultMap.find(MatchingPair(0,1));
+	QVERIFY(substituteSearchPrivate->testWord("AAP"));
+	FittingWordsMap::const_iterator iter = substituteSearchPrivate->searchResultMap.find(MatchingPair(0,0));
 	QVERIFY(iter!=substituteSearchPrivate->searchResultMap.end());
 	QCOMPARE(iter->second.size(), (std::size_t)1);
 	SuccessWord result = iter->second.front();
-	QCOMPARE(result.matchingLetters.c_str(), "BB");
-	QCOMPARE(result.bFullCoverage, true);
+	QCOMPARE(result.matchingLetters.c_str(), "P");
+	QCOMPARE(result.bFullCoverage, false);
 	QCOMPARE(result.coveragePairs.front().first, (unsigned int)0);
-	QCOMPARE(result.coveragePairs.front().second, (unsigned int)1);
+	QCOMPARE(result.coveragePairs.front().second, (unsigned int)0);
 }
 void CSubstituteSearchTest::test_SubstituteSearch_WholeCorrectWord_02()
 {

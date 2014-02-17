@@ -58,7 +58,7 @@ WordsList SearchResultTreeNode::parseDFS( StartingIndex endIndex )
 	}
 	return result;
 }
-void SearchResultTreeNode::addNode( StartingIndex startInd, StartingIndex endInd, std::string word )
+void SearchResultTreeNode::addNode( StartingIndex startInd, StartingIndex endInd, SuccessWord word )
 {
 	TreeNodesList startNodesList = find_node(startInd);
 	TreeNodesList targetNodesList = find_node(endInd+1);

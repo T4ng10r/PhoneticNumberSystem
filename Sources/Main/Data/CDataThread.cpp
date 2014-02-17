@@ -164,7 +164,6 @@ void CDataThread::onScanDirectoryForDictionaries()
 void CDataThread::onSetDictionary()
 {
 	std::string dicionaryPath = privPart->createCurrentDictionaryPath();
-	//std::string dicionaryAff = privPart->createCurrentDictionaryAffPath();
 	Q_EMIT dictionaryLoaded(privPart->dictionaryData->loadDictionary(dicionaryPath));
 }
 void CDataThread::onNumberSearchStarted(const std::string & number)
