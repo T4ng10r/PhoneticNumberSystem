@@ -25,7 +25,7 @@ public:
 	std::string createCurrentDictionaryPath();
 	std::string createCurrentDictionaryAffPath();
 	void setConnections();
-	void prepareDirectories();
+  void prepareDirectories();
 public:
 	CDataThread *	publicPart;
 	boost::shared_ptr<CDictionaryData>	dictionaryData;
@@ -176,4 +176,10 @@ void CDataThread::onNumberSearchStarted(const std::string & number)
 	privPart->substituteSearch->setSubstituteDigitsConfiguration(gAppSettings->getDigitsConfiguraions()[0]);
 	privPart->substituteSearch->setDictionaryWords(privPart->dictionaryData);
 	privPart->substituteSearch->startSearchForNumber(number);
+}
+QTextCodec * CDataThread::get_current_codepage()
+{
+  std::string codepage = privPart->dictionaryData->get_file_codepage();
+  QTextCodec * codec = QTextCodec::codecForName(codepage.c_str());
+  return codec;
 }

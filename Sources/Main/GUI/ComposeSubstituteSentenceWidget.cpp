@@ -1,5 +1,4 @@
 #include <GUI/ComposeSubstituteSentenceWidget.h>
-#include <QtCore/QTextCodec>
 #include <Data/CDataThread.h>
 #include <tools/loggers.h>
 
@@ -55,13 +54,14 @@ void ComposeSubstituteSentenceWidget::initialize_after_success_search()
 	m_ptrPriv->combo_box_container->addItem("");
 	WordsList result = CDataThread::getInstance()->getSearchResult(0);
 
-	QTextCodec * codec = QTextCodec::codecForName("ISO 8859-2");
+  QTextCodec * codec = CDataThread::getInstance()->get_current_codepage();
 	for (const SuccessWord & word : result)
 	{
-		std::string word_ = word.getWord();
-		QString q_word = codec->toUnicode(word_.c_str());
-
+    QString q_word = word.getWord().c_str();
+    if (codec)
+		  q_word = codec->toUnicode(word.getWord().c_str());
+    else
+      q_word = word.getWord().c_str();
 		m_ptrPriv->combo_box_container->addItem(q_word);
-		//m_ptrPriv->combo_box_container->addItem(word.getWord().c_str());
 	}
 }

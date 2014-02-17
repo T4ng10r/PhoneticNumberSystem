@@ -41,7 +41,7 @@ public:
 			affFilePath = affFilePath.substr(0,pos);
 			affFilePath.append(file_dictionary_aff_ext);
 		}
-		file.setFileName(filePath.c_str());
+		file.setFileName(affFilePath.c_str());
 		QTextStream stream(&file);
 		if (!file.open(QIODevice::ReadOnly))
 		{
@@ -56,7 +56,6 @@ public:
 		file.close();
 		fileCodepage.erase(std::remove(fileCodepage.begin(), fileCodepage.end(), '\n'), fileCodepage.end());
 		fileCodepage.erase(std::remove(fileCodepage.begin(), fileCodepage.end(), '\r'), fileCodepage.end());
-		QTextCodec::setCodecForLocale(QTextCodec::codecForName (fileCodepage.c_str())); 
 		return fileCodepage;
 	}		
 	std::ifstream::pos_type fileSize(const char* filename)
@@ -244,8 +243,6 @@ void CDictionaryDataPrivate::loadFileContent()
 {
 	removeDictionary();
 	//set coding for 
-	//QTextCodec::setCodecForCStrings(QTextCodec::codecForName (fileCodepage.c_str())); 
-	QTextCodec::setCodecForLocale(QTextCodec::codecForName (fileCodepage.c_str())); 
 	QTextStream stream(&dict_file);
 
 	QString qLine;// = fgets(in, BUFSIZE - 1, fileHandle);
@@ -320,4 +317,8 @@ std::string CDictionaryData::getWordByNdex(unsigned int index)
 #else
 	//return privPart->dictionaryWordsArray[index];
 #endif
+}
+std::string CDictionaryData::get_file_codepage()
+{
+  return privPart->fileCodepage;
 }

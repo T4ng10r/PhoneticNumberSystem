@@ -3,6 +3,7 @@
 #include <GUI/ComposeSubstituteSentenceWidget.h>
 #include <GUI/SearchNumberLineEdit.h>
 #include <tools/loggers.h>
+#include <QtCore/QTextCodec>
 #include <QLineEdit>
 #include <QLabel>
 #include <QPushButton>
@@ -92,23 +93,18 @@ void CSearchPhoneticRepresentationsDlgPrivate::moveSearchResultIntoModel()
 {
 	searchResultsModel.clear();
 	searchResultsModel.setColumnCount(1);
-	std::string searchNumber = searchedNumber->text().toStdString();
 	const WordsList & result = CDataThread::getInstance()->getSearchResult(0);
-	for(WordsList::const_iterator iter = result.begin();iter!=result.end();iter++)
+  QTextCodec * codec = CDataThread::getInstance()->get_current_codepage();
+  for(SuccessWord success_word : result)
 	{
-		if (iter->bFullCoverage==false)
+		if (false==success_word.bFullCoverage)
 			continue;
-		std::string itemString;
-        BOOST_FOREACH(const std::string & word, iter->words)
-        //for(const std::string & word : iter->words)
-		{
-			if (!itemString.empty())
-				itemString.push_back(' ');
-			itemString+=word;
-		}
-		//QStandardItem *item = new QStandardItem(QString("%0").arg(iter->words.front().c_str()));
-		QStandardItem *item = new QStandardItem(QString("%0").arg(itemString.c_str()));
-		searchResultsModel.appendRow(item);
+    QString itemString;
+    if (codec)
+		  itemString = codec->toUnicode(success_word.getWord().c_str());
+    else
+      itemString = success_word.getWord().c_str();
+		searchResultsModel.appendRow(new QStandardItem(itemString));
 	}
 }
 void CSearchPhoneticRepresentationsDlgPrivate::moveSearchResultIntoSubstituteComposer()

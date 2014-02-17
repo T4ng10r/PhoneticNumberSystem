@@ -2,6 +2,7 @@
 #define _CAF_DATA_THREAD_INCLUDE_
 #include <QtCore/QObject>
 #include <Data/CSubstituteSearchTypes.h>
+#include <QtCore/QTextCodec>
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 
@@ -19,6 +20,7 @@ public:
   //currently not used
 	void loadCurrentlySetDictionary();
 	WordsList getSearchResult(StartingIndex start_index);
+  QTextCodec * get_current_codepage();
 public Q_SLOTS:
   void onScanDirectoryForDictionaries();
   void onSetDictionary();
