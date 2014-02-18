@@ -5,6 +5,12 @@
 
 #include <QComboBox>
 #include <QBoxLayout>
+#define USE_COLOR_TAG
+
+#ifdef USE_COLOR_TAG
+const QString start_tag("<b>");
+const QString end_tag("</b>");
+#endif
 
 class ComposeSubstituteSentenceWidgetPrivate
 {
@@ -16,6 +22,8 @@ public:
 	void fill_combo_box(const WordsList & list, StartingIndex combo_id);
 	void reset(unsigned int starting_index = 1);
 	void set_connections();
+	QString process_word(SuccessWord word, QTextCodec * codec);
+
 public:
 	ComposeSubstituteSentenceWidget * public_part;
 	std::vector<QComboBox*>   combo_box_container;
@@ -70,11 +78,7 @@ void ComposeSubstituteSentenceWidgetPrivate::fill_combo_box(const WordsList & li
 	QTextCodec * codec = CDataThread::getInstance()->get_current_codepage();
 	for (const SuccessWord & word : list)
 	{
-		QString q_word;
-		if (codec)
-			q_word = codec->toUnicode(word.getWord().c_str());
-		else
-			q_word = word.getWord().c_str();
+		QString q_word = process_word(word, codec);
 		combo_box->addItem(q_word,word.coveragePairs.front().second);
 	}
 }
@@ -99,6 +103,27 @@ void ComposeSubstituteSentenceWidgetPrivate::set_connections()
 	//logConnection("CMainWindowPrivate::setConnections",
 	//	"'CMainWindowPrivate::triggered' with 'CMainWindow::onActionTrigger'", 
 	//	bResult);
+}
+QString ComposeSubstituteSentenceWidgetPrivate::process_word(SuccessWord word, QTextCodec * codec)
+{
+	QString style_word;
+	if (codec)
+		style_word = codec->toUnicode(word.getWord().c_str());
+	else
+		style_word = word.getWord().c_str();
+#ifdef USE_COLOR_TAG
+	int start_pos=0;
+	for(char letter : word.matchingLetters)
+	{
+		start_pos = style_word.indexOf(letter, start_pos, Qt::CaseInsensitive);
+		if (start_pos<0)
+			break;
+		style_word = style_word.left(start_pos)+start_tag+letter+end_tag+style_word.right(style_word.size()-start_pos-1);
+		std::string word_2 = style_word.toStdString();
+		start_pos++;
+	}
+#endif
+	return style_word;
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
