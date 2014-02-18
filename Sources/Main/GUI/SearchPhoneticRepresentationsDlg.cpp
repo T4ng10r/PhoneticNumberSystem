@@ -66,7 +66,7 @@ void CSearchPhoneticRepresentationsDlgPrivate::setupUI()
 
 	composeSubstituteSentenceWidget = new ComposeSubstituteSentenceWidget;
 	mainLayout->addWidget(composeSubstituteSentenceWidget);
-	composeSubstituteSentenceWidget->reset();
+	//composeSubstituteSentenceWidget->reset();
 
 	searchResultsView = new QListView;
 	mainLayout->addWidget(searchResultsView);
@@ -88,14 +88,20 @@ void CSearchPhoneticRepresentationsDlgPrivate::setConnections()
 	logConnection("CSearchPhoneticRepresentationsDlgPrivate::setConnections",
 		"'performSearch::clicked' with 'publicClass::onPerformSearch'", 
 		bResult);
+
+	bResult = QObject::connect(searchedNumber, SIGNAL(returnPressed()), 
+		publicClass, SLOT(on_return_pressed()));
+	logConnection("CSearchPhoneticRepresentationsDlgPrivate::setConnections",
+		"'performSearch::clicked' with 'publicClass::onPerformSearch'", 
+		bResult);
 }
 void CSearchPhoneticRepresentationsDlgPrivate::moveSearchResultIntoModel()
 {
 	searchResultsModel.clear();
 	searchResultsModel.setColumnCount(1);
 	const WordsList & result = CDataThread::getInstance()->getSearchResult(0);
-  QTextCodec * codec = CDataThread::getInstance()->get_current_codepage();
-  for(SuccessWord success_word : result)
+	QTextCodec * codec = CDataThread::getInstance()->get_current_codepage();
+	for(SuccessWord success_word : result)
 	{
 		if (false==success_word.bFullCoverage)
 			continue;
@@ -145,4 +151,9 @@ void CSearchPhoneticRepresentationsDlg::searchFinished(bool)
 	enableSearchButton();
 	m_ptrPriv->moveSearchResultIntoModel();
 	m_ptrPriv->moveSearchResultIntoSubstituteComposer();
+}
+void CSearchPhoneticRepresentationsDlg::on_return_pressed()
+{
+	if (m_ptrPriv->performSearchButton->isEnabled())
+		onPerformSearch();
 }

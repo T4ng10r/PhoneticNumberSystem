@@ -107,6 +107,7 @@ void CSubstituteSearchPrivate::buildSearchResultsTree()
 {
 	clearSearchResult();
 
+	printLog(eInfoLogLevel,eDebug,QString("Building tree of search results"));
 	BOOST_FOREACH(const FittingWordsMap::value_type & resultItem, searchResultMap)
 	{
 		const WordsList & searchResult = resultItem.second;

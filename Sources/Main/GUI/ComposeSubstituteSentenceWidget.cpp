@@ -1,6 +1,7 @@
 #include <GUI/ComposeSubstituteSentenceWidget.h>
 #include <Data/CDataThread.h>
 #include <tools/loggers.h>
+#include <Tools/qtTools.h>
 
 #include <QComboBox>
 #include <QBoxLayout>
@@ -11,51 +12,93 @@ public:
 	ComposeSubstituteSentenceWidgetPrivate(ComposeSubstituteSentenceWidget * ptrPublic);
 	~ComposeSubstituteSentenceWidgetPrivate();
 	void setupUI();
+	void add_combo_box();
 	void fill_combo_box(const WordsList & list, StartingIndex combo_id);
+	void reset(unsigned int starting_index = 1);
+	void set_connections();
 public:
-	ComposeSubstituteSentenceWidget * m_ptrPublic;
-	QComboBox*   combo_box_container;
-	//std::vector<QComboBox*>   combo_box_container;
+	ComposeSubstituteSentenceWidget * public_part;
+	std::vector<QComboBox*>   combo_box_container;
 	QHBoxLayout * compose_layout;
 };
 
-ComposeSubstituteSentenceWidgetPrivate::ComposeSubstituteSentenceWidgetPrivate(ComposeSubstituteSentenceWidget * ptrPublic):m_ptrPublic(ptrPublic)
+//For delegate see QComboBox::setItemDelegate() and read about Qt's Model/View Programming.
+//	For rich text: Use QTextDocument read in the docs about Rich Text Document Structure. After you set your document up use QTextDocument::drawContents() to draw the content in your QAbstractItemDelegate::paint() method. 
+
+ComposeSubstituteSentenceWidgetPrivate::ComposeSubstituteSentenceWidgetPrivate(ComposeSubstituteSentenceWidget * ptrPublic):public_part(ptrPublic)
 {
 	setupUI();
+	set_connections();
 }
-ComposeSubstituteSentenceWidgetPrivate::~ComposeSubstituteSentenceWidgetPrivate(){}
+ComposeSubstituteSentenceWidgetPrivate::~ComposeSubstituteSentenceWidgetPrivate()
+{
+	reset();
+}
+void ComposeSubstituteSentenceWidgetPrivate::add_combo_box()
+{
+	QComboBox * combo_box = new QComboBox();
+	combo_box->setSizeAdjustPolicy(QComboBox::AdjustToContents);
+	combo_box_container.push_back(combo_box);
+	compose_layout->addWidget(combo_box);
+
+	bool bResult = false;
+	bResult = QObject::connect(combo_box, SIGNAL(activated(int)), 
+		public_part, SLOT(on_word_selected(int)));
+	logConnection("ComposeSubstituteSentenceWidgetPrivate::add_combo_box",
+		"'combo_box::activated' with 'public_part::on_word_selected'", 
+		bResult);
+
+}
 void ComposeSubstituteSentenceWidgetPrivate::setupUI()
 {
 	QHBoxLayout * main_layout = new QHBoxLayout;
-	delete m_ptrPublic->layout();
-	m_ptrPublic->setLayout(main_layout);
+	delete public_part->layout();
+	public_part->setLayout(main_layout);
 
 	compose_layout = new QHBoxLayout;
-
-	combo_box_container = new QComboBox();
-	combo_box_container->setSizeAdjustPolicy(QComboBox::AdjustToContents);
-
-	compose_layout->addWidget(combo_box_container);
 	main_layout->addLayout(compose_layout);
-
 	main_layout->addStretch(5);
+	add_combo_box();
 }
 void ComposeSubstituteSentenceWidgetPrivate::fill_combo_box(const WordsList & list,
 	StartingIndex combo_id)
 {
+	QComboBox * combo_box = combo_box_container[combo_id];
 	//combo_id
-	combo_box_container->addItem("");
+	combo_box->addItem("");
 
 	QTextCodec * codec = CDataThread::getInstance()->get_current_codepage();
 	for (const SuccessWord & word : list)
 	{
-		QString q_word = word.getWord().c_str();
+		QString q_word;
 		if (codec)
 			q_word = codec->toUnicode(word.getWord().c_str());
 		else
 			q_word = word.getWord().c_str();
-		combo_box_container->addItem(q_word,word.coveragePairs.front().second);
+		combo_box->addItem(q_word,word.coveragePairs.front().second);
 	}
+}
+void ComposeSubstituteSentenceWidgetPrivate::reset(unsigned int starting_index)
+{
+	if (starting_index<0) starting_index=0;
+	if (starting_index>combo_box_container.size()) 
+		starting_index=combo_box_container.size()-1;
+	for(int i=starting_index;i<combo_box_container.size();i++)
+	{
+		QComboBox * combo_box = combo_box_container.back();
+		compose_layout->removeWidget(combo_box);
+		delete combo_box;
+		combo_box_container.pop_back();
+	}
+}
+void ComposeSubstituteSentenceWidgetPrivate::set_connections()
+{
+	bool bResult = false;
+	//bResult = QObject::connect(m_actionConfiguration, SIGNAL(activated(int)), 
+	//	m_ptrPublic, SLOT(on_word_selected(int)));
+	//logConnection("CMainWindowPrivate::setConnections",
+	//	"'CMainWindowPrivate::triggered' with 'CMainWindow::onActionTrigger'", 
+	//	bResult);
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
@@ -63,15 +106,29 @@ ComposeSubstituteSentenceWidget::ComposeSubstituteSentenceWidget(QWidget * paren
 	priv_part(new ComposeSubstituteSentenceWidgetPrivate(this))
 {}
 ComposeSubstituteSentenceWidget::~ComposeSubstituteSentenceWidget(void){}
-void ComposeSubstituteSentenceWidget::reset()
-{
-	for(int i=0;i<priv_part->combo_box_container->count();i++)
-		priv_part->combo_box_container->removeItem(0);
-}
-
 void ComposeSubstituteSentenceWidget::initialize_after_success_search()
 {
-	reset();
+	priv_part->reset();
 	WordsList result = CDataThread::getInstance()->getSearchResult(0);
 	priv_part->fill_combo_box(result, 0);
+}
+void ComposeSubstituteSentenceWidget::on_word_selected(int selected_index)
+{
+	QComboBox * sender_ = dynamic_cast<QComboBox*>(sender());
+	int starting_index=1;
+	for(QComboBox * combo_box : priv_part->combo_box_container)
+	{
+		if (combo_box != sender_)
+			starting_index++;
+		else
+			break;
+	}
+	priv_part->reset(starting_index);
+	int node_id = sender_->itemData(selected_index).toInt()+1;
+	WordsList result = CDataThread::getInstance()->getSearchResult(node_id);
+	if (result.size())
+	{
+		priv_part->add_combo_box();
+		priv_part->fill_combo_box(result, starting_index);
+	}
 }

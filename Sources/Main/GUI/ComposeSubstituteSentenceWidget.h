@@ -13,8 +13,9 @@ class ComposeSubstituteSentenceWidget : public QWidget
 public:
 	ComposeSubstituteSentenceWidget(QWidget * parent = NULL);
 	~ComposeSubstituteSentenceWidget(void);
-	void reset();
 	void initialize_after_success_search();
+protected Q_SLOTS:
+	void on_word_selected(int);
 protected:
 	boost::scoped_ptr<ComposeSubstituteSentenceWidgetPrivate> priv_part;
 };

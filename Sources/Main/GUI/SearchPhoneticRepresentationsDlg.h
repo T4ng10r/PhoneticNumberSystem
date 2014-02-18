@@ -22,6 +22,7 @@ public Q_SLOTS:
 	void enableSearchButton();
 protected Q_SLOTS:
 	void onPerformSearch();
+	void on_return_pressed();
 protected:
      boost::scoped_ptr<CSearchPhoneticRepresentationsDlgPrivate> m_ptrPriv;
 };
