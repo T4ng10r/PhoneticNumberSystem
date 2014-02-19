@@ -1,16 +1,11 @@
 #include <GUI/ComposeSubstituteSentenceWidget.h>
+#include <GUI/SubstituteSearchResultComboDelegate.h>
 #include <Data/CDataThread.h>
 #include <tools/loggers.h>
 #include <Tools/qtTools.h>
 
 #include <QComboBox>
 #include <QBoxLayout>
-#define USE_COLOR_TAG
-
-#ifdef USE_COLOR_TAG
-const QString start_tag("<b>");
-const QString end_tag("</b>");
-#endif
 
 class ComposeSubstituteSentenceWidgetPrivate
 {
@@ -28,6 +23,7 @@ public:
 	ComposeSubstituteSentenceWidget * public_part;
 	std::vector<QComboBox*>   combo_box_container;
 	QHBoxLayout * compose_layout;
+	SubstituteSearchResultComboDelegate delegate_;
 };
 
 //For delegate see QComboBox::setItemDelegate() and read about Qt's Model/View Programming.
@@ -45,6 +41,7 @@ ComposeSubstituteSentenceWidgetPrivate::~ComposeSubstituteSentenceWidgetPrivate(
 void ComposeSubstituteSentenceWidgetPrivate::add_combo_box()
 {
 	QComboBox * combo_box = new QComboBox();
+	combo_box->setItemDelegate(&delegate_);
 	combo_box->setSizeAdjustPolicy(QComboBox::AdjustToContents);
 	combo_box_container.push_back(combo_box);
 	compose_layout->addWidget(combo_box);
@@ -111,7 +108,6 @@ QString ComposeSubstituteSentenceWidgetPrivate::process_word(SuccessWord word, Q
 		style_word = codec->toUnicode(word.getWord().c_str());
 	else
 		style_word = word.getWord().c_str();
-#ifdef USE_COLOR_TAG
 	int start_pos=0;
 	for(char letter : word.matchingLetters)
 	{
@@ -122,7 +118,6 @@ QString ComposeSubstituteSentenceWidgetPrivate::process_word(SuccessWord word, Q
 		std::string word_2 = style_word.toStdString();
 		start_pos++;
 	}
-#endif
 	return style_word;
 }
 //////////////////////////////////////////////////////////////////////////
