@@ -4,9 +4,9 @@
 #include <QtWidgets/QItemDelegate>
 #include <QtGui/QPainter>
 #include <QtWidgets/QApplication>
-
-const QString start_tag("<b>");
-const QString end_tag("</b>");
+#include <Tools/loggers.h>
+#include <Data/CSubstituteSearchTypes.h>
+Q_DECLARE_METATYPE(SuccessWord);
 
 class SubstituteSearchResultComboDelegate : public QItemDelegate
 {
@@ -15,7 +15,7 @@ public:
 	void drawItem(QPainter *painter, QRect text_rect, QString text_, int text_width, QPen pen) const
 	{
 		text_rect.setLeft(current_width);
-		text_rect.setWidth(text_width);
+		text_rect.setWidth(text_width+1);
 		painter->setPen(pen);
 		painter->drawText(text_rect, 0, text_);
 		current_width += text_rect.width();
@@ -25,6 +25,7 @@ public:
 		const QModelIndex &index ) const
 	{
 		QString text = index.model()->data(index).toString();
+		SuccessWord success_word = index.model()->data(index,Qt::UserRole).value<SuccessWord>();
 		QStyleOptionViewItemV4 myOption = option;
 		QFontMetrics font_metric(myOption.font);
 
@@ -32,29 +33,33 @@ public:
 		current_width=0;
 		myOption.text="";
 		QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &myOption, painter);
+		QString text_;
 
 		QPen standard_pen = painter->pen();
 		if (myOption.state.testFlag(QStyle::State_Selected))
 			standard_pen.setColor(myOption.palette.color(QPalette::HighlightedText));
 		else
 			standard_pen.setColor(myOption.palette.color(QPalette::WindowText));
-		QPen special_pen = standard_pen;
+		QPen special_pen = painter->pen();
 		special_pen.setColor(QColor(Qt::red));
+		special_pen.setWidth(special_pen.width()+1);
 
-		QRect text_rect = myOption.rect;
-		QString text_;
-		while((start_pos=text.indexOf(start_tag, prev_pos))>=0)
+		for(char letter : success_word.matchingLetters)
 		{
+			start_pos = text.indexOf(letter, prev_pos, Qt::CaseInsensitive);
+			if (start_pos<0)
+				break;
+
 			text_ = text.mid(prev_pos, start_pos-prev_pos);
-			drawItem(painter, text_rect, text_, font_metric.width(text_), standard_pen);
-			prev_pos = start_pos+start_tag.size();
-			start_pos=text.indexOf(end_tag, prev_pos);
-			text_ = text.mid(prev_pos, start_pos-prev_pos);
-			drawItem(painter, text_rect, text_, font_metric.width(text_), special_pen);
-			prev_pos = start_pos+end_tag.size();
+			drawItem(painter, myOption.rect, text_, font_metric.width(text_), standard_pen);
+			prev_pos = start_pos;
+
+			text_ = text.mid(prev_pos, 1);
+			drawItem(painter, myOption.rect, text_, font_metric.width(text_), special_pen);
+			prev_pos++;
 		}
 		text_ = text.mid(prev_pos);
-		drawItem(painter, text_rect, text_, font_metric.width(text_), standard_pen);
+		drawItem(painter, myOption.rect, text_, font_metric.width(text_)+5, standard_pen);
 	} 
 };
 #endif

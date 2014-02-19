@@ -142,6 +142,7 @@ void CSubstituteSearch::setDictionaryWords(boost::shared_ptr<CDictionaryData> di
 void CSubstituteSearch::startSearchForNumber(const std::string & number)
 {
 	printLog(eInfoLogLevel,eDebug,QString("Searching substitute for number '%1' started").arg(number.c_str()));
+	privPart->clearSearchResult();
 	privPart->number = number;
 	unsigned int wordsCount = privPart->dictionaryWords->getWordsCount();
 	unsigned int notifyStepCount = wordsCount/100;
@@ -178,6 +179,5 @@ WordsList CSubstituteSearch::getSearchResult(StartingIndex start_index)
 				back_inserter(searchResult));
 		}
 	}
-
 	return searchResult;
 }

@@ -6,6 +6,17 @@
 
 #include <QComboBox>
 #include <QBoxLayout>
+//Q_DECLARE_METATYPE(SuccessWord);
+
+bool cmp_success_words(const SuccessWord & first, const SuccessWord & second)
+{
+	if (first.matchingLetters.size()>second.matchingLetters.size())
+		return true;
+	if (first.matchingLetters.size()==second.matchingLetters.size() &&
+		first.words.front()<second.words.front())
+		return true;
+	return false;
+}
 
 class ComposeSubstituteSentenceWidgetPrivate
 {
@@ -73,7 +84,7 @@ void ComposeSubstituteSentenceWidgetPrivate::fill_combo_box(const WordsList & li
 	for (const SuccessWord & word : list)
 	{
 		QString q_word = process_word(word, codec);
-		combo_box->addItem(q_word,word.coveragePairs.front().second);
+		combo_box->addItem(q_word,QVariant::fromValue(word));
 	}
 }
 void ComposeSubstituteSentenceWidgetPrivate::reset(unsigned int starting_index)
@@ -105,16 +116,6 @@ QString ComposeSubstituteSentenceWidgetPrivate::process_word(SuccessWord word, Q
 		style_word = codec->toUnicode(word.getWord().c_str());
 	else
 		style_word = word.getWord().c_str();
-	int start_pos=0;
-	for(char letter : word.matchingLetters)
-	{
-		start_pos = style_word.indexOf(letter, start_pos, Qt::CaseInsensitive);
-		if (start_pos<0)
-			break;
-		style_word = style_word.left(start_pos)+start_tag+letter+end_tag+style_word.right(style_word.size()-start_pos-1);
-		std::string word_2 = style_word.toStdString();
-		start_pos++;
-	}
 	return style_word;
 }
 //////////////////////////////////////////////////////////////////////////
@@ -127,6 +128,7 @@ void ComposeSubstituteSentenceWidget::initialize_after_success_search()
 {
 	priv_part->reset();
 	WordsList result = CDataThread::getInstance()->getSearchResult(0);
+	result.sort(cmp_success_words);
 	priv_part->fill_combo_box(result, 0);
 }
 void ComposeSubstituteSentenceWidget::on_word_selected(int selected_index)
@@ -145,6 +147,7 @@ void ComposeSubstituteSentenceWidget::on_word_selected(int selected_index)
 	WordsList result = CDataThread::getInstance()->getSearchResult(node_id);
 	if (result.size())
 	{
+		result.sort(cmp_success_words);
 		priv_part->add_combo_box();
 		priv_part->fill_combo_box(result, starting_index);
 	}

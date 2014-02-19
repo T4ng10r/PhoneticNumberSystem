@@ -18,7 +18,6 @@ x linkowanie na Win7 z Qt5 wywala błąd 'fatal error LNK1112: module machine ty
 
 - wpisy w ComboBox z wynikami wyszukiwania
 -- jesli wybiorę pozycję niech w ComboBox pojawi się kolorowy wpis, bez tagów kolorowania
--- posortować wpisy po ilości pokrywanych znaków (te które pokrywają więcej - na początek)
--- długośc ComboBoxa jest za duża
+xx posortować wpisy po ilości pokrywanych znaków (te które pokrywają więcej - na początek)
 
 - kolorowanie wpisów w oknie z pełnymi wynikami
