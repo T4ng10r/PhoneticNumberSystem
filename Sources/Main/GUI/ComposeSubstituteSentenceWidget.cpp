@@ -26,9 +26,6 @@ public:
 	SubstituteSearchResultComboDelegate delegate_;
 };
 
-//For delegate see QComboBox::setItemDelegate() and read about Qt's Model/View Programming.
-//	For rich text: Use QTextDocument read in the docs about Rich Text Document Structure. After you set your document up use QTextDocument::drawContents() to draw the content in your QAbstractItemDelegate::paint() method. 
-
 ComposeSubstituteSentenceWidgetPrivate::ComposeSubstituteSentenceWidgetPrivate(ComposeSubstituteSentenceWidget * ptrPublic):public_part(ptrPublic)
 {
 	setupUI();
