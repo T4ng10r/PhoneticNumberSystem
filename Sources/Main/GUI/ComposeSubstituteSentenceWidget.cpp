@@ -7,6 +7,7 @@
 
 #include <QComboBox>
 #include <QBoxLayout>
+#include <algorithm>
 //Q_DECLARE_METATYPE(SuccessWord);
 
 bool cmp_success_words(const SuccessWord & first, const SuccessWord & second)
@@ -27,7 +28,7 @@ public:
 	void setupUI();
 	void add_combo_box();
 	void fill_combo_box(const WordsList & list, StartingIndex combo_id);
-	void reset(unsigned int starting_index = 1);
+	void reset(std::size_t starting_index = 1);
 	void set_connections();
 	QString process_word(SuccessWord word, QTextCodec * codec);
 
@@ -88,12 +89,12 @@ void ComposeSubstituteSentenceWidgetPrivate::fill_combo_box(const WordsList & li
 		combo_box->addItem(q_word,QVariant::fromValue(word));
 	}
 }
-void ComposeSubstituteSentenceWidgetPrivate::reset(unsigned int starting_index)
+void ComposeSubstituteSentenceWidgetPrivate::reset(std::size_t starting_index)
 {
 	if (starting_index<0) starting_index=0;
 	if (starting_index>combo_box_container.size()) 
 		starting_index=combo_box_container.size()-1;
-	for(int i=starting_index;i<combo_box_container.size();i++)
+	for(std::size_t i=starting_index;i<combo_box_container.size();i++)
 	{
 		QComboBox * combo_box = combo_box_container.back();
 		compose_layout->removeWidget(combo_box);
@@ -135,7 +136,7 @@ void ComposeSubstituteSentenceWidget::initialize_after_success_search()
 void ComposeSubstituteSentenceWidget::on_word_selected(int selected_index)
 {
 	QComboBox * sender_ = dynamic_cast<QComboBox*>(sender());
-	int combo_box_starting_index=1;
+	std::size_t combo_box_starting_index=1;
 	for(QComboBox * combo_box : priv_part->combo_box_container)
 	{
 		if (combo_box != sender_)
@@ -145,7 +146,7 @@ void ComposeSubstituteSentenceWidget::on_word_selected(int selected_index)
 	}
 	priv_part->reset(combo_box_starting_index);
 	SuccessWord success_word = sender_->itemData(selected_index).value<SuccessWord>();
-	int node_id = success_word.coveragePairs.front().second+1;
+	std::size_t node_id = success_word.coveragePairs.front().second+1;
 
 	printLog(eInfoLogLevel, eDebug, QString("node id %1").arg(node_id));
 	WordsList result = CDataThread::getInstance()->getSearchResult(node_id);
@@ -153,6 +154,7 @@ void ComposeSubstituteSentenceWidget::on_word_selected(int selected_index)
 	{
 		result.sort(cmp_success_words);
 		priv_part->add_combo_box();
-		priv_part->fill_combo_box(result, combo_box_starting_index);
+		WordsList::iterator it = std::unique(result.begin(),result.end());
+		priv_part->fill_combo_box(WordsList(result.begin(),it), combo_box_starting_index);
 	}
 }

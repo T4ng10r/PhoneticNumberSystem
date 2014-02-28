@@ -45,6 +45,13 @@ public:
 	}
 	operator std::string() const		{ return words.front(); }
 	const std::string &getWord() const	{ return words.front(); }
+	bool operator==(const SuccessWord & other)
+	{
+		if (getWord()==other.getWord())
+			return true;
+		else 
+			return false;
+	}
 public:
 	bool bFullCoverage;
 	//which and how many digits it can cover

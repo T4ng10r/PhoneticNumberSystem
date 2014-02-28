@@ -17,7 +17,8 @@ xx konfiguracja pokazuje uprzednio wybrany system spółgłosek
 x linkowanie na Win7 z Qt5 wywala błąd 'fatal error LNK1112: module machine type 'x64' conflicts with target machine type 'X86''
 
 - wpisy w ComboBox z wynikami wyszukiwania
--- jesli wybiorę pozycję niech w ComboBox pojawi się kolorowy wpis, bez tagów kolorowania
 xx posortować wpisy po ilości pokrywanych znaków (te które pokrywają więcej - na początek)
+-- jesli wybiorę pozycję niech w ComboBox pojawi się kolorowy wpis, bez tagów kolorowania
+-- usuń duplikaty z rozwijanej listy wpisów
 
 - kolorowanie wpisów w oknie z pełnymi wynikami

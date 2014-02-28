@@ -4,13 +4,14 @@
 #include <Tools/loggers.h>
 #include <QtWidgets/QApplication>
 #include <Data/CSubstituteSearchTypes.h>
+#include <QtWidgets/QStyle>
 Q_DECLARE_METATYPE(SuccessWord);
 
 void SubstituteSearchResultComboBox::drawItem(QPainter *painter, QRect text_rect, QString text_, int text_width, QPen pen)
 {
 	text_rect.setLeft(current_width);
 	text_rect.setWidth(text_width+1);
-	text_rect.adjust(2,2,0,0);
+	text_rect.adjust(1,0,-1,0);
 	painter->setPen(pen);
 	painter->drawText(text_rect, 0, text_);
 	current_width += text_rect.width();
@@ -65,6 +66,9 @@ void SubstituteSearchResultComboBox::paintEvent(QPaintEvent * event)
 	QString text_;
 	QFontMetrics font_metric(font());
 
+	QStyleOptionComboBox cmb;
+	initStyleOption(&cmb);
+
 	QModelIndex index = model()->index(currentIndex(),0);
 	QString text = model()->data(index).toString();
 	SuccessWord success_word = model()->data(index,Qt::UserRole).value<SuccessWord>();
@@ -74,6 +78,8 @@ void SubstituteSearchResultComboBox::paintEvent(QPaintEvent * event)
 	QPen special_pen = painter.pen();
 	special_pen.setColor(QColor(Qt::red));
 	special_pen.setWidth(special_pen.width()+1);
+	//QRect rect_ = rect();
+	QRect rect_ = painter.style()->proxy()->subControlRect(QStyle::CC_ComboBox, &cmb, QStyle::SC_ComboBoxEditField, this);
 
 	for(char letter : success_word.matchingLetters)
 	{
@@ -81,14 +87,14 @@ void SubstituteSearchResultComboBox::paintEvent(QPaintEvent * event)
 		if (start_pos<0) break;
 
 		text_ = text.mid(prev_pos, start_pos-prev_pos);
-		drawItem(&painter, rect(), text_, font_metric.width(text_), standard_pen);
+		drawItem(&painter, rect_ , text_, font_metric.width(text_), standard_pen);
 		prev_pos = start_pos;
 
 		text_ = text.mid(prev_pos, 1);
-		drawItem(&painter, rect(), text_, font_metric.width(text_), special_pen);
+		drawItem(&painter, rect_ , text_, font_metric.width(text_), special_pen);
 		prev_pos++;
 	}
 	text_ = text.mid(prev_pos);
-	drawItem(&painter, rect(), text_, font_metric.width(text_)+5, standard_pen);
+	drawItem(&painter, rect_ , text_, font_metric.width(text_)+5, standard_pen);
 }
 	

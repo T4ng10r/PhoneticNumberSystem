@@ -15,8 +15,6 @@
 #include <QMetaType>
 #include <boost/foreach.hpp>
 
-//Q_DECLARE_METATYPE (std::string)
-
 class CSearchPhoneticRepresentationsDlgPrivate
 {
 public:
