@@ -7,19 +7,11 @@
 #include <Tools/loggers.h>
 #include <Data/CSubstituteSearchTypes.h>
 Q_DECLARE_METATYPE(SuccessWord);
+#include <GUI/CustomComboBox_tools.h>
 
 class SubstituteSearchResultComboDelegate : public QItemDelegate
 {
 public:
-	mutable int current_width;
-	void drawItem(QPainter *painter, QRect text_rect, QString text_, int text_width, QPen pen) const
-	{
-		text_rect.setLeft(current_width);
-		text_rect.setWidth(text_width+1);
-		painter->setPen(pen);
-		painter->drawText(text_rect, 0, text_);
-		current_width += text_rect.width();
-	};
 
 	inline void paint(QPainter *painter, const QStyleOptionViewItem &option,
 		const QModelIndex &index ) const
@@ -29,8 +21,7 @@ public:
 		QStyleOptionViewItemV4 myOption = option;
 		QFontMetrics font_metric(myOption.font);
 
-		int start_pos(0), prev_pos(0);
-		current_width=0;
+		int start_pos(0), prev_pos(0), current_width(0);
 		myOption.text="";
 		QApplication::style()->drawControl(QStyle::CE_ItemViewItem, &myOption, painter);
 		QString text_;
@@ -51,15 +42,15 @@ public:
 				break;
 
 			text_ = text.mid(prev_pos, start_pos-prev_pos);
-			drawItem(painter, myOption.rect, text_, font_metric.width(text_), standard_pen);
+			drawItem(painter, myOption.rect, text_, font_metric.width(text_), standard_pen, current_width);
 			prev_pos = start_pos;
 
 			text_ = text.mid(prev_pos, 1);
-			drawItem(painter, myOption.rect, text_, font_metric.width(text_), special_pen);
+			drawItem(painter, myOption.rect, text_, font_metric.width(text_), special_pen, current_width);
 			prev_pos++;
 		}
 		text_ = text.mid(prev_pos);
-		drawItem(painter, myOption.rect, text_, font_metric.width(text_)+5, standard_pen);
+		drawItem(painter, myOption.rect, text_, font_metric.width(text_)+5, standard_pen, current_width);
 	} 
 };
 #endif
