@@ -1,5 +1,6 @@
 #include <GUI/ComposeSubstituteSentenceWidget.h>
 #include <GUI/SubstituteSearchResultComboDelegate.h>
+#include <GUI/SubstituteSearchResultComboBox.h>
 #include <Data/CDataThread.h>
 #include <tools/loggers.h>
 #include <Tools/qtTools.h>
@@ -32,7 +33,7 @@ public:
 
 public:
 	ComposeSubstituteSentenceWidget * public_part;
-	std::vector<QComboBox*>   combo_box_container;
+	std::vector<SubstituteSearchResultComboBox*>   combo_box_container;
 	QHBoxLayout * compose_layout;
 	SubstituteSearchResultComboDelegate delegate_;
 };
@@ -48,7 +49,7 @@ ComposeSubstituteSentenceWidgetPrivate::~ComposeSubstituteSentenceWidgetPrivate(
 }
 void ComposeSubstituteSentenceWidgetPrivate::add_combo_box()
 {
-	QComboBox * combo_box = new QComboBox();
+	SubstituteSearchResultComboBox * combo_box = new SubstituteSearchResultComboBox();
 	combo_box->setItemDelegate(&delegate_);
 	combo_box->setSizeAdjustPolicy(QComboBox::AdjustToContents);
 	combo_box_container.push_back(combo_box);
@@ -134,21 +135,24 @@ void ComposeSubstituteSentenceWidget::initialize_after_success_search()
 void ComposeSubstituteSentenceWidget::on_word_selected(int selected_index)
 {
 	QComboBox * sender_ = dynamic_cast<QComboBox*>(sender());
-	int starting_index=1;
+	int combo_box_starting_index=1;
 	for(QComboBox * combo_box : priv_part->combo_box_container)
 	{
 		if (combo_box != sender_)
-			starting_index++;
+			combo_box_starting_index++;
 		else
 			break;
 	}
-	priv_part->reset(starting_index);
-	int node_id = sender_->itemData(selected_index).toInt()+1;
+	priv_part->reset(combo_box_starting_index);
+	SuccessWord success_word = sender_->itemData(selected_index).value<SuccessWord>();
+	int node_id = success_word.coveragePairs.front().second+1;
+
+	printLog(eInfoLogLevel, eDebug, QString("node id %1").arg(node_id));
 	WordsList result = CDataThread::getInstance()->getSearchResult(node_id);
 	if (result.size())
 	{
 		result.sort(cmp_success_words);
 		priv_part->add_combo_box();
-		priv_part->fill_combo_box(result, starting_index);
+		priv_part->fill_combo_box(result, combo_box_starting_index);
 	}
 }
