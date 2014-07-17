@@ -78,9 +78,9 @@ ENDIF (WIN32)
         ${SOURCES_GUI} ${SOURCES_OTHER} 
         ${SOURCES_GUI_SETTINGS} ${SOURCES_RCC})
         
-	SET(LIBRARIES_LIST ${QT_LIBRARIES} ${Boost_LIBRARIES} tools_lib )
-	addLoggerLibrariesDependencies(PhoneticNumberSystem LIBRARIES_LIST)
-	addLoggerLibrariesDependencies(PhoneticNumberSystem_lib LIBRARIES_LIST)
+	#SET(LIBRARIES_LIST ${QT_LIBRARIES} ${Boost_LIBRARIES} tools_lib log4cpp)
+  target_link_libraries(PhoneticNumberSystem ${QT_LIBRARIES} ${Boost_LIBRARIES} tools_lib log4cpp)
+  target_link_libraries(PhoneticNumberSystem_lib ${QT_LIBRARIES} ${Boost_LIBRARIES} tools_lib log4cpp)
 	
 	add_custom_command(TARGET PhoneticNumberSystem POST_BUILD 
 		 COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/dict
@@ -103,7 +103,7 @@ ENDIF (WIN32)
   INSTALL(FILES PhoneticNumberSystem.xml
 	        DESTINATION PhoneticNumberSystem 
 					PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ 
-					            GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
-
-
+					GROUP_READ GROUP_EXECUTE GROUP_WRITE 
+					WORLD_READ WORLD EXECUTE #WORLD_WRITE 
+)
 

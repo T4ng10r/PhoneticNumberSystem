@@ -42,6 +42,7 @@ void CAppSettingsPrivate::saveSettings()
 }
 void CAppSettingsPrivate::loadSettings()
 {
+	printLog(eDebug, eInfoLogLevel, "Loading properties file");
 	using boost::property_tree::ptree;
 	try
 	{
@@ -51,6 +52,7 @@ void CAppSettingsPrivate::loadSettings()
 	{
 		printLog(eDebug, eErrorLogLevel, "Lack of properties file");
 	}
+	printLog(eDebug, eInfoLogLevel, "Loading properties file finished");
 	m_ptrSubstValConf = m_ptrPublic->get_child(CONSONANTS_SETTINGS);
 	printLog(eDebug, eDebugLogLevel, "AppSettings: loading settings from file finished");
 }

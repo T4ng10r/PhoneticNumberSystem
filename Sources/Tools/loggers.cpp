@@ -142,6 +142,7 @@ void printLog_log4qt(boost::optional<std::string> logger_name, eLogLevel debugLe
 void printLog_log4cpp(boost::optional<std::string> logger_name, eLogLevel debugLevel, const std::string &strMsg)
 {
 	log4cpp::Category * ptrCategory(NULL);
+	ptrCategory = log4cpp::Category::exists(logger_name.get());
 	switch(debugLevel)
 	{
 		case eInfoLogLevel:
