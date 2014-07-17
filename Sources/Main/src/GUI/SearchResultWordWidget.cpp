@@ -1,5 +1,5 @@
 #include <GUI/SearchResultWordWidget.h>
-#include <tools/loggers.h>
+#include <Tools/loggers.h>
 
 
 const QColor colorHighlightedLetter(Qt::red);

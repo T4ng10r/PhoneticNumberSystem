@@ -11,10 +11,9 @@
 #include <log4qt/patternlayout.h>
 using namespace Log4Qt;
 
-#else if USE_LOG4CPP
+#elif USE_LOG4CPP
 #include	<log4cpp/Category.hh>
 #include	<log4cpp/FileAppender.hh>
-#include	<log4cpp/Win32DebugAppender.hh>
 #include	<log4cpp/PatternLayout.hh>
 #include	<log4cpp/Category.hh>
 #include	<log4cpp/PropertyConfigurator.hh>
@@ -85,7 +84,7 @@ void createLoggers(const QString &strPluginLogName /*= QString()*/)
 		//////////////////////////////////////////////////////////////////////////
 		LogManager::logger(DEBUG_LOGGER)->addAppender(p_FileNetworkAppender);
 	}
-#else if USE_LOG4CPP
+#elif USE_LOG4CPP
 	std::string initFileName = "logs/log4cpp.properties";
 		log4cpp::PropertyConfigurator::configure(initFileName);
 #endif

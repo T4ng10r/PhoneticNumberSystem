@@ -1,6 +1,6 @@
 #include <Data/CAppSettings.h>
 #include <Data/CAppSettingsKeywords.h>
-#include <tools/loggers.h>
+#include <Tools/loggers.h>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/foreach.hpp>
 

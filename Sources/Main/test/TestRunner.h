@@ -22,7 +22,7 @@ static TestRunner& Instance()
 }
  
 template <typename T>
-char RegisterTest(char* name)
+char RegisterTest(const char* name)
 {
    if ( std::find_if( begin(m_tests), end(m_tests), [&name](QSharedPointer<QObject>& elem)
    { return elem->objectName() == name; }) == end(m_tests) )

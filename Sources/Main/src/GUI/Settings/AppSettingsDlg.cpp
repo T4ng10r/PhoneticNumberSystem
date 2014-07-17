@@ -3,10 +3,10 @@
 #include <GUI/Settings/DictionariesConfigurationDlg.h>
 #include <Data/CAppSettings.h>
 #include <Data/CAppSettingsKeywords.h>
-#include <tools/loggers.h>
+#include <Tools/loggers.h>
 #include <QBoxLayout>
 #include <QTabWidget>
-#include <tools/qtTools.h>
+#include <Tools/qtTools.h>
 
 class CAppSettingsDlgPrivate
 {

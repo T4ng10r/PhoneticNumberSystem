@@ -1,8 +1,10 @@
 project(PhoneticNumberSystem_Sources)
 
-add_subdirectory(tools)
+set_c11_flags()
+
+include_directories(${PNS_include_SOURCE_DIR})
+add_subdirectory(Tools)
 add_subdirectory(Main)
-add_subdirectory(UnitTest)
 if (Logger STREQUAL "log4Qt")
   add_subdirectory(log4qt)
 elseif (Logger STREQUAL "log4cpp")

@@ -9,7 +9,7 @@
 #include <QtCore/QThread>
 
 #include <list>
-#include <tools/loggers.h>
+#include <Tools/loggers.h>
 #include <Tools/qtTools.h>
 #include <boost/foreach.hpp>
 

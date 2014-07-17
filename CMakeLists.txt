@@ -1,8 +1,10 @@
 cmake_minimum_required(VERSION 2.8.12)
-
-project(PhoneticNumberSystem_PROJECT)
 ENABLE_TESTING()
 
+project(PhoneticNumberSystem_PROJECT)
+add_subdirectory(include)  #to add PNS_include identificator
+
+include(${PROJECT_SOURCE_DIR}/CMake/functions.cmake)
 include(${PROJECT_SOURCE_DIR}/CMake/options.cmake)
 include(${PROJECT_SOURCE_DIR}/CMake/plugins.cmake)
 

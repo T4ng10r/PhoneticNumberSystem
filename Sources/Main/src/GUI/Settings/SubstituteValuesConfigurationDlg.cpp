@@ -9,8 +9,8 @@
 #include <QPushButton>
 #include <QBoxLayout>
 #include <QComboBox>
-#include <tools/loggers.h>
 #include <Tools/qtTools.h>
+#include <Tools/loggers.h>
 #include <boost/lexical_cast.hpp>
 #include <boost/foreach.hpp>
 #include <boost/shared_ptr.hpp>

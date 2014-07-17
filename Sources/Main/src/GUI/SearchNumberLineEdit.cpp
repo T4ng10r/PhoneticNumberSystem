@@ -1,6 +1,6 @@
 #include <GUI/SearchNumberLineEdit.h>
 #include <QtGui/QValidator>
-#include <tools/loggers.h>
+#include <Tools/loggers.h>
 
 class SearchNumberValidator : public QValidator
 {

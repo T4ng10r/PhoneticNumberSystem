@@ -54,7 +54,7 @@ void CAppSettingsTest::test_SubstituteValuesConfiguration_Consonants()
 
 void CAppSettingsTest::testSingleDigitEntry( boost::property_tree::ptree & digit_tree, const digit_entry & to_match)
 {
-	ptree & child = getChildTree(digit_tree);
+	ptree child = getChildTree(digit_tree);
 	ptree::const_iterator iter = child.begin();
 
 	QCOMPARE(iter->first,std::string("value"));

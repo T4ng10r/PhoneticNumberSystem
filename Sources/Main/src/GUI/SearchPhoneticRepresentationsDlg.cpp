@@ -2,7 +2,7 @@
 #include <GUI/SearchPhoneticRepresentationsDlg.h>
 #include <GUI/ComposeSubstituteSentenceWidget.h>
 #include <GUI/SearchNumberLineEdit.h>
-#include <tools/loggers.h>
+#include <Tools/loggers.h>
 #include <QtCore/QTextCodec>
 #include <QLineEdit>
 #include <QLabel>

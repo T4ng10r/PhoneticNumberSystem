@@ -1,5 +1,5 @@
 
-project(UnitTest)
+project(UT_PNS)
 
 #dodajemy dane dotyczace QT - sciezki, biblioteki
 find_package(Qt5Widgets)
@@ -15,7 +15,7 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
 
 	include_directories(${PhoneticNumberSystem_SOURCE_DIR})
 	include_directories(${PhoneticNumberSystem_Sources_SOURCE_DIR})
-	include_directories(${PhoneticNumberSystem_PROJECT_SOURCE_DIR}/include)
+	include_directories(${PNS_SOURCE_DIR}/include)
 	include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 	include_directories(${PhoneticNumberSystem_SOURCE_DIR}/Sources/Main)
 

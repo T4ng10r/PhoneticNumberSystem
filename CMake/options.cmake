@@ -33,7 +33,12 @@ if (MSVC)
     set ( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /MP")
     #SET(CMAKE_CXX_FLAGS "/WL /MP /GR /EHsc" )
     message(STATUS "Added parallel build arguments to CMAKE_CXX_FLAGS: ${CMAKE_CXX_FLAGS}")
-endif(MSVC)
+endif()
+
+if (UNIX)
+	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+    message(STATUS "Set position independet code")
+endif()
 
 function(GetLogingLibrary )
 

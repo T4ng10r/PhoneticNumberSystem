@@ -1,5 +1,5 @@
 #include <Data/CDictionaryData.h>
-#include <tools/loggers.h>
+#include <Tools/loggers.h>
 #include <vector>
 #include <stdio.h>
 #include <algorithm>
@@ -48,7 +48,7 @@ public:
 			printLog(eWarningLogLevel,eDebug,QString("CDictionaryData, can't open dictionary aff file (%1)").arg(affFilePath.c_str()));
 			return fileCodepage;
 		}
-		fileCodepage = stream.readLine().toLatin1();
+		fileCodepage = stream.readLine().toStdString();
 		if ((pos=fileCodepage.find(file_codepage_keyword))!=std::string::npos)
 		{
 			fileCodepage = fileCodepage.substr(pos+file_codepage_keyword.size());
@@ -167,7 +167,7 @@ public:
 	}
 	std::string getWordByNdex(unsigned int index)
 	{
-		if (index<0 || index >= wordsCount)
+		if (index >= wordsCount)
 		{
 			return std::string();
 		}
@@ -306,7 +306,7 @@ unsigned int CDictionaryData::getWordsCount()
 }
 std::string CDictionaryData::getWordByNdex(unsigned int index)
 {
-	if (index<0 || index >= privPart->wordsCount)
+	if (index >= privPart->wordsCount)
 	{
 		printLog(eWarningLogLevel,eDebug,QString("CDictionaryData, incorrect index value (%1)").arg(index));
 		return emtpystring;

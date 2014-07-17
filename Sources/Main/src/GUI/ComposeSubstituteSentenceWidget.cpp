@@ -2,7 +2,7 @@
 #include <GUI/SubstituteSearchResultComboDelegate.h>
 #include <GUI/SubstituteSearchResultComboBox.h>
 #include <Data/CDataThread.h>
-#include <tools/loggers.h>
+#include <Tools/loggers.h>
 #include <Tools/qtTools.h>
 
 #include <QComboBox>

@@ -1,4 +1,4 @@
-#include <tools/loggers.h>
+#include <Tools/loggers.h>
 #include <Data/CSubstituteSearch.h>
 #include <Data/CAppSettings.h>
 #include <Data/SearchResultTreeNode.h>
