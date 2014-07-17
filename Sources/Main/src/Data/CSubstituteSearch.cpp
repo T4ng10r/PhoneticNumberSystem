@@ -5,6 +5,7 @@
 #include <boost/algorithm/string.hpp>	//boost::to_upper_copy
 #include <boost/foreach.hpp>
 #include <boost/bind.hpp>
+#include <boost/format.hpp>
 
 class CSubstituteSearchPrivate
 {
@@ -107,7 +108,7 @@ void CSubstituteSearchPrivate::buildSearchResultsTree()
 {
 	clearSearchResult();
 
-	printLog(eInfoLogLevel,eDebug,QString("Building tree of search results"));
+	printLog(eDebug, eInfoLogLevel, "Building tree of search results");
 	BOOST_FOREACH(const FittingWordsMap::value_type & resultItem, searchResultMap)
 	{
 		const WordsList & searchResult = resultItem.second;
@@ -119,9 +120,9 @@ void CSubstituteSearchPrivate::buildSearchResultsTree()
 }
 void CSubstituteSearchPrivate::prepareSearchResults()
 {
-	printLog(eInfoLogLevel,eDebug,QString("Building tree of search results"));
+	printLog(eDebug, eInfoLogLevel, "Building tree of search results");
 	buildSearchResultsTree();
-	printLog(eInfoLogLevel,eDebug,QString("Gathering processed search results"));
+	printLog(eDebug, eInfoLogLevel, "Gathering processed search results");
 	//searchResult = searchResultTreeRoot->parseDFS(number.length());
 }
 //////////////////////////////////////////////////////////////////////////
@@ -141,7 +142,7 @@ void CSubstituteSearch::setDictionaryWords(boost::shared_ptr<CDictionaryData> di
 }
 void CSubstituteSearch::startSearchForNumber(const std::string & number)
 {
-	printLog(eInfoLogLevel,eDebug,QString("Searching substitute for number '%1' started").arg(number.c_str()));
+	printLog(eDebug, eInfoLogLevel, str(boost::format("Searching substitute for number '%1%' started") % number));
 	privPart->clearSearchResult();
 	privPart->number = number;
 	unsigned int wordsCount = privPart->dictionaryWords->getWordsCount();
@@ -163,7 +164,7 @@ void CSubstituteSearch::startSearchForNumber(const std::string & number)
 	Q_EMIT searchProgress(wordsCount,wordsCount);
 	privPart->buildSearchResultsTree();
 	Q_EMIT searchFinished(true);
-	printLog(eInfoLogLevel,eDebug,QString("Searching substitute for number '%1' finished").arg(number.c_str()));
+	printLog(eDebug, eInfoLogLevel, str(boost::format("Searching substitute for number '%1%' finished") % number));
 }
 WordsList CSubstituteSearch::getSearchResult(StartingIndex start_index)
 {

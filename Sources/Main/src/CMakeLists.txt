@@ -90,5 +90,20 @@ ENDIF (WIN32)
 		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/log4cpp.properties ${CMAKE_CURRENT_BINARY_DIR}/logs/log4cpp.properties
 		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/PhoneticNumberSystem.xml ${CMAKE_CURRENT_BINARY_DIR}/PhoneticNumberSystem.xml)
 
-	
+	INSTALL(TARGETS PhoneticNumberSystem 
+	        DESTINATION PhoneticNumberSystem
+					PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ 
+					            GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+	INSTALL(FILES dictionaries/pl_PL.aff dictionaries/pl_PL.dic
+          DESTINATION PhoneticNumberSystem/dict)
+  INSTALL(FILES log4cpp.properties
+	        DESTINATION PhoneticNumberSystem/logs
+					PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ 
+					            GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+  INSTALL(FILES PhoneticNumberSystem.xml
+	        DESTINATION PhoneticNumberSystem 
+					PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ 
+					            GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+
+
 

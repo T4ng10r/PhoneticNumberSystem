@@ -1,6 +1,6 @@
 #ifndef _LOGGERS_INCLUDE_
 #define _LOGGERS_INCLUDE_
-#include <QtCore/QString>
+#include <string>
 
 enum eLogLevel
 {
@@ -14,10 +14,9 @@ enum eLoggerType
 {
 	eDebug=0,
 	eGUI,
-	eSlots,
-	eNetwork
+	eSlots
 };
-void createLoggers(const QString &strPluginLogName = QString());
+void createLoggers(const std::string &strPluginLogName = std::string());
 void destroyLoggers();
-void printLog(eLogLevel, eLoggerType, const QString &strMsg);
+void printLog(eLoggerType loggerType, eLogLevel debugLevel, const std::string &strMsg);
 #endif //_LOGGERS_INCLUDE_

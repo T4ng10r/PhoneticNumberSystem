@@ -9,6 +9,7 @@
 #include <boost/interprocess/file_mapping.hpp>
 #include <boost/interprocess/mapped_region.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/format.hpp>
 #include <iostream>
 #include <fstream>
 
@@ -45,7 +46,8 @@ public:
 		QTextStream stream(&file);
 		if (!file.open(QIODevice::ReadOnly))
 		{
-			printLog(eWarningLogLevel,eDebug,QString("CDictionaryData, can't open dictionary aff file (%1)").arg(affFilePath.c_str()));
+			printLog(eDebug, eWarningLogLevel,
+			    str(boost::format("CDictionaryData, can't open dictionary aff file %1%") % affFilePath));
 			return fileCodepage;
 		}
 		fileCodepage = stream.readLine().toStdString();
@@ -233,7 +235,7 @@ bool CDictionaryDataPrivate::openFile( const std::string & filePath )
 
 	if (false==QFile::exists(filePath.c_str()) || dict_file.open(QIODevice::ReadOnly))
 	{
-		printLog(eWarningLogLevel,eDebug,QString("CDictionaryData, can't open dictionary file (%1)").arg(filePath.c_str()));
+		printLog(eDebug, eWarningLogLevel,str(boost::format("CDictionaryData, can't open dictionary file %1%") %filePath));
 		dict_file.close();
 		return false;
 	}
@@ -288,7 +290,7 @@ CDictionaryData::CDictionaryData(void):privPart(new CDictionaryDataFileMemoryMap
 CDictionaryData::~CDictionaryData(void){}
 bool CDictionaryData::loadDictionary(const std::string & filePath)
 {
-	printLog(eInfoLogLevel,eDebug,QString("Loading dictionary file (%1)").arg(filePath.c_str()));
+	printLog(eDebug, eInfoLogLevel, str(boost::format("Loading dictionary file %1%") % filePath));
 	privPart->fileCodepage = privPart->getFileCodepage( filePath );
 	if (privPart->openFile(filePath))
 	{
@@ -297,7 +299,7 @@ bool CDictionaryData::loadDictionary(const std::string & filePath)
 	}
 	else
 		return false;
-	printLog(eDebugLogLevel,eDebug,QString("Loading dictionary finished"));
+	printLog(eDebug,eDebugLogLevel,"Loading dictionary finished");
 	return true;
 }
 unsigned int CDictionaryData::getWordsCount()
@@ -308,7 +310,7 @@ std::string CDictionaryData::getWordByNdex(unsigned int index)
 {
 	if (index >= privPart->wordsCount)
 	{
-		printLog(eWarningLogLevel,eDebug,QString("CDictionaryData, incorrect index value (%1)").arg(index));
+		printLog(eDebug, eWarningLogLevel, str(boost::format("CDictionaryData, incorrect index value (%1%)") % index));
 		return emtpystring;
 	}
 	return privPart->getWordByNdex(index);

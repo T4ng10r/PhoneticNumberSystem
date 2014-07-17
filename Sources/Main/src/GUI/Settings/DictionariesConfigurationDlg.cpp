@@ -23,6 +23,7 @@
 #include <QFileDialog>
 #include <QMenu>
 #include <QAction>
+#include <boost/format.hpp>
 
 #define REFRESH_ACTION_NAME "Refresh"
 
@@ -180,7 +181,7 @@ void CDictionariesConfigurationDlgPrivate::setupUI_RefreshDictionariesFilesMenu(
 	}
 	catch (boost::property_tree::ptree_bad_path &e)
 	{
-		printLog(eWarningLogLevel,eDebug,QString("Error during gathering dictionaryFilesList '%1'").arg(e.what()));	
+		printLog(eDebug, eWarningLogLevel, str(boost::format("Error during gathering dictionaryFilesList '%1%'") % e.what()));	
 	}
 	setupUI_AddRefreshAction();
 }

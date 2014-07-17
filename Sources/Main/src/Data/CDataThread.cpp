@@ -12,6 +12,7 @@
 #include <Tools/loggers.h>
 #include <Tools/qtTools.h>
 #include <boost/foreach.hpp>
+#include <boost/format.hpp>
 
 boost::shared_ptr<CDataThread> CDataThread::pInstance_;
 enum { MaxRecentFiles = 5 };
@@ -131,7 +132,8 @@ void CDataThread::onScanDirectoryForDictionaries()
 	}
 	catch (boost::property_tree::ptree_bad_path &e)
 	{
-		printLog(eWarningLogLevel,eDebug,QString("Error during gathering dictionaryFilesList '%1'").arg(e.what()));	
+		printLog(eDebug, eWarningLogLevel, str(boost::format("Error during gathering dictionaryFilesList '%1%'") 
+		    % e.what()));	
 	}
 
 	QDir directory(dirPath);

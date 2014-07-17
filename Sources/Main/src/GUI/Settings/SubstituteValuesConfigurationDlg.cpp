@@ -14,6 +14,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/foreach.hpp>
 #include <boost/shared_ptr.hpp>
+#include <boost/format.hpp>
 
 enum { DigitsCount = 10 };
 const unsigned int cPushButtonWidth(50);
@@ -308,5 +309,6 @@ void CSubstituteValuesConfigurationDlg::onSystemsActvivated_changeCurrentDigitsS
 			return;
 		}
 	Q_EMIT set_selected_consonant_system(empty_system_name);
-	printLog(eErrorLogLevel, eDebug, QString("Couldn't find '%1' consonants configuration in SelectionList").arg(selectedSystemName));
+	printLog(eDebug, eErrorLogLevel, str(boost::format("Couldn't find '%1%' consonants configuration in SelectionList") % 
+	    selectedSystemName.toStdString()));
 }

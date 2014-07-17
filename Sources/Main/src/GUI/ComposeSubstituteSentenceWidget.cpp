@@ -4,6 +4,7 @@
 #include <Data/CDataThread.h>
 #include <Tools/loggers.h>
 #include <Tools/qtTools.h>
+#include <boost/format.hpp>
 
 #include <QComboBox>
 #include <QBoxLayout>
@@ -91,7 +92,7 @@ void ComposeSubstituteSentenceWidgetPrivate::fill_combo_box(const WordsList & li
 }
 void ComposeSubstituteSentenceWidgetPrivate::reset(std::size_t starting_index)
 {
-	if (starting_index<0) starting_index=0;
+	//if (starting_index<0) starting_index=0;
 	if (starting_index>combo_box_container.size()) 
 		starting_index=combo_box_container.size()-1;
 	for(std::size_t i=starting_index;i<combo_box_container.size();i++)
@@ -148,7 +149,7 @@ void ComposeSubstituteSentenceWidget::on_word_selected(int selected_index)
 	SuccessWord success_word = sender_->itemData(selected_index).value<SuccessWord>();
 	std::size_t node_id = success_word.coveragePairs.front().second+1;
 
-	printLog(eInfoLogLevel, eDebug, QString("node id %1").arg(node_id));
+	printLog(eDebug, eInfoLogLevel, str(boost::format("node id %1%") % node_id));
 	WordsList result = CDataThread::getInstance()->getSearchResult(node_id);
 	if (result.size())
 	{

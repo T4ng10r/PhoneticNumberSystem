@@ -3,6 +3,7 @@
 #include <Tools/loggers.h>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/foreach.hpp>
+#include <boost/format.hpp>
 
 #define CONFIGURATION_FILE std::string("PhoneticNumberSystem.xml")
 const std::string strConfigurationFileName("PhoneticNumberSystem.xml");
@@ -48,10 +49,10 @@ void CAppSettingsPrivate::loadSettings()
 	}
 	catch (boost::property_tree::xml_parser::xml_parser_error const&  /*ex*/)
 	{
-		printLog(eErrorLogLevel, eDebug, "Lack of properties file");
+		printLog(eDebug, eErrorLogLevel, "Lack of properties file");
 	}
 	m_ptrSubstValConf = m_ptrPublic->get_child(CONSONANTS_SETTINGS);
-	printLog(eDebugLogLevel, eDebug, "AppSettings: loading settings from file finished");
+	printLog(eDebug, eDebugLogLevel, "AppSettings: loading settings from file finished");
 }
 void CAppSettingsPrivate::getDigitsConfiguration()
 {
@@ -109,7 +110,7 @@ void CAppSettingsPrivate::defaultValues()
 	}
 	catch (boost::property_tree::ptree_bad_path &/*e*/)
 	{
-		printLog(eDebugLogLevel, eDebug, QString("Lack of '%1 - adding default value").arg(DICTIONARIES_DIRECTORY));
+		printLog(eDebug, eDebugLogLevel, str(boost::format("Lack of '%1% - adding default value") % DICTIONARIES_DIRECTORY));
 		m_ptrPublic->put<std::string>(DICTIONARIES_DIRECTORY,DICTIONARIES_DIRECTORY_DEFAULT_VALUE);
 	}
 }
@@ -117,12 +118,12 @@ void CAppSettingsPrivate::defaultValues()
 //////////////////////////////////////////////////////////////////////////
 CAppSettings::CAppSettings():m_ptrPriv(new CAppSettingsPrivate(this))
 {
-	printLog(eDebugLogLevel, eDebug, "AppSettings created");
+	printLog(eDebug, eDebugLogLevel, "AppSettings created");
 }
 CAppSettings::~CAppSettings(){}
 const boost::property_tree::ptree &CAppSettings::getSubstituteValuesConfiguration()
 {
-	printLog(eDebugLogLevel, eDebug, "SubstituteValuesConfiguration provided");
+	printLog(eDebug, eDebugLogLevel, "SubstituteValuesConfiguration provided");
 	return m_ptrPriv->m_ptrSubstValConf;
 }
 boost::shared_ptr<CAppSettings> CAppSettings::getInstance()

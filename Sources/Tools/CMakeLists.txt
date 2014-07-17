@@ -15,5 +15,4 @@ IF (WIN32)
 endif(WIN32)
 
 add_library(tools_lib STATIC ${TOOLS_SRC} )
-target_link_libraries(tools_lib ${LOGGER_LIBRARY} )
-
+target_link_libraries(tools_lib ${LOGGER_LIBRARY} ${Boost_LIBRARIES} )
