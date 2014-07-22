@@ -24,7 +24,5 @@ TEST_F(ut_path_manager_test, current_program_path)
 TEST_F(ut_path_manager_test, executable_path)
 {
 	std::string directory = uut.executable_dir();
-#ifdef linux
 	EXPECT_FALSE(directory.empty());
-#endif
 }

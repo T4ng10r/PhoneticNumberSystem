@@ -1,14 +1,20 @@
 #include "path_manager.h"
 #include <boost/filesystem.hpp>
+#ifdef __linux
+#include <unistd.h>
+#define PROC_PATH "/proc/self/exe"
+#endif
 
 std::string path_manager::executable_dir()
 {
 	std::string exec_path;
-#if UNIX
+#ifdef __linux
+	char path[65000]={0};
+  readlink(PROC_PATH, path, 6500);
+	exec_path=path;
 #endif
 
-
-	return std::string();
+	return exec_path;
 }
 std::string path_manager::current_dir()
 {
