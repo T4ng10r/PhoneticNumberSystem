@@ -11,13 +11,15 @@ include_directories($ENV{QTDIR})
 
 set(ENV{QTEST_COLORED} 1)
 
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
-
-	include_directories(${PhoneticNumberSystem_SOURCE_DIR})
-	include_directories(${PhoneticNumberSystem_Sources_SOURCE_DIR})
-	include_directories(${PNS_SOURCE_DIR}/include)
-	include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-	include_directories(${PhoneticNumberSystem_SOURCE_DIR}/Sources/Main)
+include_directories(${Boost_INCLUDE_DIR}
+                    ${PNS_SOURCE_DIR}/include
+										${gmock_SOURCE_DIR}/include
+										${gtest_SOURCE_DIR}/include
+                    ${PhoneticNumberSystem_SOURCE_DIR}
+                    ${PhoneticNumberSystem_Sources_SOURCE_DIR}
+                    ${CMAKE_CURRENT_SOURCE_DIR}
+                    ${PhoneticNumberSystem_SOURCE_DIR}/Sources/Main
+										)
 
 ####################
 
@@ -51,7 +53,7 @@ endif(WIN32)
 add_executable(UnitTest ${SOURCES_MAIN} ${SOURCES_MOC} 
 					${SOURCES_TEST_DATA} ${SOURCES_TEST_PLUGINS_DATA}
 )
-target_link_libraries(UnitTest ${QT_LIBRARIES} PhoneticNumberSystem_lib )
+target_link_libraries(UnitTest ${QT_LIBRARIES} PhoneticNumberSystem_lib gmock gtest)
 qt5_use_modules(UnitTest Widgets Core Xml Test)
 
 
@@ -65,6 +67,4 @@ add_custom_command(TARGET UnitTest POST_BUILD
 add_custom_command(TARGET UnitTest POST_BUILD 
 	 COMMAND ${CMAKE_COMMAND} -E copy ${PhoneticNumberSystem_SOURCE_DIR}/PhoneticNumberSystem.xml ${CMAKE_CURRENT_BINARY_DIR}/PhoneticNumberSystem.xml
 	 COMMAND ${CMAKE_COMMAND} -E copy ${PhoneticNumberSystem_SOURCE_DIR}/log4cpp.properties ${CMAKE_CURRENT_BINARY_DIR}/logs/log4cpp.properties )
-
-#add_test(UnitTest UnitTest)
-
+ADD_TEST(test1 UnitTest)

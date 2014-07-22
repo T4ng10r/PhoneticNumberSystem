@@ -4,6 +4,7 @@
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
+#include <boost/filesystem.hpp>
 
 #define CONFIGURATION_FILE std::string("PhoneticNumberSystem.xml")
 const std::string strConfigurationFileName("PhoneticNumberSystem.xml");
@@ -56,6 +57,7 @@ void CAppSettingsPrivate::loadSettings()
 	m_ptrSubstValConf = m_ptrPublic->get_child(CONSONANTS_SETTINGS);
 	printLog(eDebug, eDebugLogLevel, "AppSettings: loading settings from file finished");
 }
+
 void CAppSettingsPrivate::getDigitsConfiguration()
 {
 	using boost::property_tree::ptree;

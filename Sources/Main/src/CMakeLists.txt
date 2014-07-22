@@ -28,8 +28,10 @@ add_executable(PhoneticNumberSystem ${TMP_FILES} main.cpp  )
 
 add_library(PhoneticNumberSystem_lib STATIC ${TMP_FILES} )
 
-  target_link_libraries(PhoneticNumberSystem Qt5::Widgets Qt5::Core ${Boost_LIBRARIES} tools_lib log4cpp)
+  target_link_libraries(PhoneticNumberSystem ${Boost_LIBRARIES} tools_lib log4cpp)
   target_link_libraries(PhoneticNumberSystem_lib ${QT_LIBRARIES} ${Boost_LIBRARIES} tools_lib log4cpp)
+	qt5_use_modules(PhoneticNumberSystem Widgets Core Xml)
+	qt5_use_modules(PhoneticNumberSystem_lib Widgets Core Xml)
 	
 	add_custom_command(TARGET PhoneticNumberSystem POST_BUILD 
 		 COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/dict

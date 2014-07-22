@@ -35,6 +35,8 @@ bool bLoggersCreated(false);
 #define GUI_LOGGER			"gui"
 #define LOG_DIR				"logs"
 #define LOG_FILE(X)		str(boost::format("%1%%2%%3%.log") % LOG_DIR % SEPARATOR % X)
+#define LOG4CPP_PROPERTIES_FILE "logs/log4cpp.properties"
+
 
 void deleteFileIfExist(const std::string & filePath)
 {
@@ -51,6 +53,16 @@ void cleanupLogsDir()
 	deleteFileIfExist(LOG_FILE(GUI_LOGGER));
 	deleteFileIfExist(LOG_FILE(SLOTS_LOGGER));
 }
+
+void createLoggers_log4cpp()
+{
+	if (!boost::filesystem::exists(LOG4CPP_PROPERTIES_FILE))
+	{
+		std::cout<<"Not existing log4cpp properties file"<<std::endl;
+	}
+	log4cpp::PropertyConfigurator::configure(std::string(LOG4CPP_PROPERTIES_FILE));
+}
+
 void createLoggers(const std::string &strPluginLogName)
 {
 	cleanupLogsDir();
@@ -89,10 +101,13 @@ void createLoggers(const std::string &strPluginLogName)
 		LogManager::logger(DEBUG_LOGGER)->addAppender(p_FileNetworkAppender);
 	}
 #elif USE_LOG4CPP
-	std::string initFileName = "logs/log4cpp.properties";
-		log4cpp::PropertyConfigurator::configure(initFileName);
+	createLoggers_log4cpp();
 #endif
 	bLoggersCreated=true;
+	//
+	printLog(eDebug, eInfoLogLevel, "Log created");
+	printLog(eGUI, eInfoLogLevel, "Log created");
+	printLog(eSlots, eInfoLogLevel, "Log created");
 }
 
 void destroyLoggers()

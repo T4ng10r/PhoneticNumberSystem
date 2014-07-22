@@ -22,3 +22,12 @@ xx jesli wybiorę pozycję niech w ComboBox pojawi się kolorowy wpis, bez tagó
 xx usuń duplikaty z rozwijanej listy wpisów
 
 - kolorowanie wpisów w oknie z pełnymi wynikami
+
+- instalacja programu
+-- log4cpp.properties kopiowane do globalnej lokacji instalacji (readlink /proc/self/exe ||
+GetModuleFileName() with hModule = NULL)
+--- pliki z logami umieszczać w : LINUX=lokacja usera; WIN=lokacja instalacji
+-- PhoneticNumberSystem.xml skopiować domyślnie do lokacji instalacji
+--- podczas pierwszego uruchomienia jeśli nie będzie go w lokacji usera - przenieś tam
+- pathmanager?
+

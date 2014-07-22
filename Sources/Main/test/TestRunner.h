@@ -55,8 +55,8 @@ private:
     static char test_##className = TestRunner::Instance().RegisterTest<className>(#className);
  
 // Use this macro to execute all tests
-#define RUN_ALL_TESTS(argc, argv)\
-    TestRunner::Instance().RunAll(argc, argv);
+#define RUN_ALL_QTESTS(argc, argv)\
+    TestRunner::Instance().RunAll(argc, argv)
  
 #endif // TESTRUNNER_H
 
