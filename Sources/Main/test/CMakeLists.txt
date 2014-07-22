@@ -24,7 +24,7 @@ include_directories(${Boost_INCLUDE_DIR}
 ####################
 
 ####################
-FILE(GLOB SOURCES_TEST_DATA "TestCases/*")
+FILE(GLOB_RECURSE SOURCES_TEST_DATA "TestCases/*")
 
 SET ( SOURCES_MAIN
       main.cpp

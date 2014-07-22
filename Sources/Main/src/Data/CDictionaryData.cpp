@@ -10,8 +10,10 @@
 #include <boost/interprocess/mapped_region.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/format.hpp>
+#include <boost/filesystem.hpp>
 #include <iostream>
 #include <fstream>
+#include <Data/dictionaries/base_dictionary_warehouse.h>
 
 #define BUFSIZE  65536
 #define WINDOWS_EOF_1CHAR '\r'
@@ -22,74 +24,20 @@ const std::string file_dictionary_aff_ext(".aff");
 const std::string file_codepage_keyword("SET ");
 std::string emtpystring;
 
-class BaseDictionaryWarehouse
-{
-public:
-	virtual bool openFile(const std::string & filePath)=0;
-	virtual void loadFileContent()=0;
-	virtual void removeDictionary()=0;
-	virtual void close_file() = 0;
-	virtual std::string getWordByNdex(unsigned int index)=0;
-	std::string getFileCodepage( const std::string & filePath )
-	{
-		//if path contain '.dic'
-		QFile file;
-		size_t pos;
-		std::string affFilePath(filePath);
-		std::string fileCodepage;
-		if ((pos=affFilePath.find(file_dictionary_ext))!=std::string::npos)
-		{
-			affFilePath = affFilePath.substr(0,pos);
-			affFilePath.append(file_dictionary_aff_ext);
-		}
-		file.setFileName(affFilePath.c_str());
-		QTextStream stream(&file);
-		if (!file.open(QIODevice::ReadOnly))
-		{
-			printLog(eDebug, eWarningLogLevel,
-			    str(boost::format("CDictionaryData, can't open dictionary aff file %1%") % affFilePath));
-			return fileCodepage;
-		}
-		fileCodepage = stream.readLine().toStdString();
-		if ((pos=fileCodepage.find(file_codepage_keyword))!=std::string::npos)
-		{
-			fileCodepage = fileCodepage.substr(pos+file_codepage_keyword.size());
-		}
-		file.close();
-		fileCodepage.erase(std::remove(fileCodepage.begin(), fileCodepage.end(), '\n'), fileCodepage.end());
-		fileCodepage.erase(std::remove(fileCodepage.begin(), fileCodepage.end(), '\r'), fileCodepage.end());
-		return fileCodepage;
-	}		
-	std::ifstream::pos_type fileSize(const char* filename)
-	{
-		if (false==isFileExist(filename))
-			return 0;
-		std::ifstream in(filename, std::ifstream::in | std::ifstream::binary);
-		in.seekg(0, std::ifstream::end);
-		return in.tellg();
-	}
-	bool isFileExist(const char* filename)
-	{
-		return QFile::exists(filename);
-	}
-public:
-	char in[BUFSIZE + 50]; // input buffer
-	CDictionaryData *		m_ptrPublic;
-	std::string				fileCodepage;
-	unsigned int			wordsCount;
-};
-//////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////
 class CDictionaryDataFileMemoryMap : public BaseDictionaryWarehouse
 {
+public:
+	CDictionaryData * m_ptrPublic;
 public:
 	CDictionaryDataFileMemoryMap(CDictionaryData * ptrPublic)
 	{ m_ptrPublic = ptrPublic;}
 	~CDictionaryDataFileMemoryMap(){};
 	bool openFile(const std::string & filePath)
 	{
-		if (false==isFileExist(filePath.c_str()))
+		if (false==boost::filesystem::exists(filePath.c_str()))
 			return false;
-		dictionaryFileSize = fileSize(filePath.c_str());
+		dictionaryFileSize = boost::filesystem::file_size(filePath.c_str());
 		fileMapping = boost::interprocess::file_mapping
 			(filePath.c_str()
 			,boost::interprocess::read_only
@@ -191,13 +139,15 @@ public:
 class CDictionaryDataPrivate : public BaseDictionaryWarehouse
 {
 public:
+	CDictionaryData * m_ptrPublic;
+public:
      CDictionaryDataPrivate(CDictionaryData * ptrPublic);
      ~CDictionaryDataPrivate();
 	 bool openFile(const std::string & filePath);
 	 void loadFileContent();
 	 void close_file(){};
 	 void removeDictionary();
-	 std::string getFileCodepage( const std::string & filePath );
+	 std::string get_file_codepage( const std::string & filePath );
 public:
 	 FILE *					fileHandle;
 	 QFile					dict_file;
@@ -230,10 +180,8 @@ void CDictionaryDataPrivate::removeDictionary()
 bool CDictionaryDataPrivate::openFile( const std::string & filePath )
 {
 	dict_file.setFileName(filePath.c_str());
-	//dict_file.open(filePath.c_str());
-	//fileHandle = fopen(filePath.c_str(), "r");
 
-	if (false==QFile::exists(filePath.c_str()) || dict_file.open(QIODevice::ReadOnly))
+	if (false==boost::filesystem::exists(filePath.c_str()) || dict_file.open(QIODevice::ReadOnly))
 	{
 		printLog(eDebug, eWarningLogLevel,str(boost::format("CDictionaryData, can't open dictionary file %1%") %filePath));
 		dict_file.close();
@@ -291,7 +239,7 @@ CDictionaryData::~CDictionaryData(void){}
 bool CDictionaryData::loadDictionary(const std::string & filePath)
 {
 	printLog(eDebug, eInfoLogLevel, str(boost::format("Loading dictionary file %1%") % filePath));
-	privPart->fileCodepage = privPart->getFileCodepage( filePath );
+	privPart->fileCodepage = privPart->get_file_codepage( filePath );
 	if (privPart->openFile(filePath))
 	{
 		privPart->loadFileContent();
