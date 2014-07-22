@@ -5,11 +5,11 @@
 class path_manager
 {
 public:
-	std::string executable_dir();
-	std::string current_dir();
-	std::string user_dir();
-	std::string user_settings_dir();
-	std::string global_setttings_dir();
+	static std::string executable_dir();
+	static std::string current_dir();
+	static std::string user_dir();
+	static std::string user_settings_dir();
+	static std::string global_setttings_dir();
 };
 
 #endif //_CAPPSETTINGS_INCLUDE_

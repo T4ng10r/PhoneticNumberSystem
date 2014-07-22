@@ -4,7 +4,10 @@
 
 namespace constant
 {
+	const std::string ut_exe_name("UnitTest");
 }
+
+using namespace boost::filesystem;
 
 class ut_path_manager_test : public ::testing::Test
 {
@@ -12,17 +15,28 @@ public:
 	ut_path_manager_test()
 	{
 	}
-	path_manager uut;
 };
 
 TEST_F(ut_path_manager_test, current_program_path)
 {
-	std::string directory = uut.current_dir();
-	EXPECT_EQ(directory, boost::filesystem::current_path().string());
+	std::string directory = path_manager::current_dir();
+	EXPECT_EQ(directory, current_path().string());
 }
 
 TEST_F(ut_path_manager_test, executable_path)
 {
-	std::string directory = uut.executable_dir();
+	std::string directory = path_manager::executable_dir();
+	EXPECT_FALSE(directory.empty());
+	EXPECT_TRUE(is_directory(directory));
+	
+	path filepath(directory);
+	filepath/=constant::ut_exe_name;
+	EXPECT_TRUE(is_regular_file(filepath));
+	EXPECT_TRUE(exists(filepath));
+}
+
+TEST_F(ut_path_manager_test, user_home_dir)
+{
+	std::string directory = path_manager::user_dir();
 	EXPECT_FALSE(directory.empty());
 }
