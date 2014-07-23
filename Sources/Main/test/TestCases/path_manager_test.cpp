@@ -2,7 +2,7 @@
 #include <Data/path_manager.h>
 #include <boost/filesystem.hpp>
 
-namespace constant
+namespace constants
 {
 #ifdef __linux
 	const std::string ut_exe_name("UnitTest");
@@ -34,7 +34,7 @@ TEST_F(ut_path_manager_test, executable_path)
 	EXPECT_TRUE(is_directory(directory));
 	
 	path filepath(directory);
-	filepath/=constant::ut_exe_name;
+	filepath/=constants::ut_exe_name;
 	EXPECT_TRUE(is_regular_file(filepath));
 	EXPECT_TRUE(exists(filepath));
 }

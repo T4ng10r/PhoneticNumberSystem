@@ -1,14 +1,25 @@
 #include <gtest/gtest.h>
 #include <Data/dictionaries/base_dictionary_warehouse.cpp>
 
-namespace constant
+namespace constants
 {
 	const std::string test_filepath_1("testdir/testfile");
 	const std::string test_filepath_2("testdir/testfile.aff");
 	const std::string test_filepath_3("testdir/testfile.dic");
+	const std::string codepage_iso("ISO8859-2");
 }
 
 using namespace boost::filesystem;
+
+class base_dictonary_warehouse_tmp : public base_dictionary_warehouse
+{
+public:
+	bool openFile(const std::string & filePath) { return true; }
+	void loadFileContent(){}
+	void removeDictionary(){}
+	void close_file(){};
+	std::string getWordByNdex(unsigned int index){return std::string(); }
+};
 
 class ut_base_dictionary_warehouse_test : public ::testing::Test
 {
@@ -29,52 +40,101 @@ public:
 	{
 		remove(filepath);
 	}
+	void create_aff_file(const std::string & filepath)
+	{
+		create_file(filepath);
+		std::ofstream ofs(filepath.c_str(), std::ofstream::out);
+		ofs<<constants::file_codepage_keyword<<"    "<<constants::codepage_iso<<std::endl;
+		ofs.close();
+	}
+public:
+	base_dictonary_warehouse_tmp	uut;	
 };
 
 TEST_F(ut_base_dictionary_warehouse_test, prepare_aff_file_empty)
 {
-	std::string file_path;
-	EXPECT_TRUE(file_path.empty());
-	prepare_aff_file_path(file_path);
-	EXPECT_TRUE(file_path.empty());
+	//Given
+	std::string filepath;
+	EXPECT_TRUE(filepath.empty());
+	//When
+	prepare_aff_file_path(filepath);
+	//Then
+	EXPECT_TRUE(filepath.empty());
 }
 
 TEST_F(ut_base_dictionary_warehouse_test, prepare_aff_file_fake_path)
 {
-	create_file(constant::test_filepath_1);
-	std::string file_path(constant::test_filepath_1);
-	prepare_aff_file_path(file_path);
-	EXPECT_TRUE(file_path.empty());
-	delete_file(constant::test_filepath_1);
+	//Given
+	create_file(constants::test_filepath_1);
+	std::string filepath(constants::test_filepath_1);
+	//When
+	prepare_aff_file_path(filepath);
+	//Then
+	EXPECT_TRUE(filepath.empty());
+	delete_file(constants::test_filepath_1);
 }
 
 TEST_F(ut_base_dictionary_warehouse_test, prepare_aff_file_aff_path)
 {
-	create_file(constant::test_filepath_2);
-	std::string file_path(constant::test_filepath_2);
-	prepare_aff_file_path(file_path);
-	EXPECT_EQ(file_path, constant::test_filepath_2);
-	delete_file(constant::test_filepath_2);
+	//Given
+	create_file(constants::test_filepath_2);
+	std::string filepath(constants::test_filepath_2);
+	//When
+	prepare_aff_file_path(filepath);
+	//Then
+	EXPECT_EQ(filepath, constants::test_filepath_2);
+	delete_file(constants::test_filepath_2);
 }
 
 TEST_F(ut_base_dictionary_warehouse_test, prepare_aff_file_without_ext)
 {
-	create_file(constant::test_filepath_1);
-	create_file(constant::test_filepath_2);
-	std::string file_path(constant::test_filepath_1);
-	prepare_aff_file_path(file_path);
-	EXPECT_EQ(file_path, constant::test_filepath_2);
-	delete_file(constant::test_filepath_2);
-	delete_file(constant::test_filepath_1);
+	//Given
+	create_file(constants::test_filepath_1);
+	create_file(constants::test_filepath_2);
+	std::string filepath(constants::test_filepath_1);
+	//When
+	prepare_aff_file_path(filepath);
+	//Then
+	EXPECT_EQ(filepath, constants::test_filepath_2);
+	delete_file(constants::test_filepath_2);
+	delete_file(constants::test_filepath_1);
 }
 
 TEST_F(ut_base_dictionary_warehouse_test, prepare_aff_file_dic_ext)
 {
-	create_file(constant::test_filepath_2);
-	create_file(constant::test_filepath_3);
-	std::string file_path(constant::test_filepath_3);
-	prepare_aff_file_path(file_path);
-	EXPECT_EQ(file_path, constant::test_filepath_2);
-	delete_file(constant::test_filepath_2);
-	delete_file(constant::test_filepath_3);
+	//Given
+	create_file(constants::test_filepath_2);
+	create_file(constants::test_filepath_3);
+	std::string filepath(constants::test_filepath_3);
+	//When
+	prepare_aff_file_path(filepath);
+	//Then
+	EXPECT_EQ(filepath, constants::test_filepath_2);
+	delete_file(constants::test_filepath_2);
+	delete_file(constants::test_filepath_3);
+}
+
+TEST_F(ut_base_dictionary_warehouse_test, get_file_codepage_empty_path)
+{
+	//Given
+	std::string filepath;
+	//When
+	std::string file_codepage = uut.get_file_codepage(filepath);
+	//Then
+	EXPECT_TRUE(file_codepage.empty());
+}
+
+TEST_F(ut_base_dictionary_warehouse_test, get_file_codepage_proper_file)
+{
+	//Given
+	std::string filepath(constants::test_filepath_2);
+	create_file(constants::test_filepath_1);
+	create_aff_file(filepath);
+	//When
+	std::string file_codepage = uut.get_file_codepage(filepath);
+	//Then
+	EXPECT_FALSE(file_codepage.empty());
+	EXPECT_EQ(file_codepage, constants::codepage_iso);
+	delete_file(constants::test_filepath_1);
+	delete_file(constants::test_filepath_2);
 }

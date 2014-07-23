@@ -5,7 +5,7 @@
 #include <string>
 
 //class CDictionaryDataPrivate;
-class BaseDictionaryWarehouse;
+class base_dictionary_warehouse;
 
 // s³ownik
 class CDictionaryData
@@ -20,6 +20,6 @@ public:
    std::string get_file_codepage();
 protected:
 	//boost::scoped_ptr<CDictionaryDataPrivate> privPart;
-	boost::scoped_ptr<BaseDictionaryWarehouse> privPart;
+	boost::scoped_ptr<base_dictionary_warehouse> privPart;
 };
 #endif //_CDICTIONARYDATA_INCLUDE_

@@ -25,7 +25,7 @@ const std::string file_codepage_keyword("SET ");
 std::string emtpystring;
 
 /////////////////////////////////////////////////////////////////////////
-class CDictionaryDataFileMemoryMap : public BaseDictionaryWarehouse
+class CDictionaryDataFileMemoryMap : public base_dictionary_warehouse
 {
 public:
 	CDictionaryData * m_ptrPublic;
@@ -54,7 +54,7 @@ public:
 		}
 		if (*memAddr<endMemPos)
 		{
-			wordsCount = boost::lexical_cast<unsigned int>(std::string(startAddr,*memAddr-startAddr));
+			words_count = boost::lexical_cast<unsigned int>(std::string(startAddr,*memAddr-startAddr));
 		}
 	}
 	void moveTillEndOfLine(const char ** memAddr, const char * const endMemPos)
@@ -117,7 +117,7 @@ public:
 	}
 	std::string getWordByNdex(unsigned int index)
 	{
-		if (index >= wordsCount)
+		if (index >= words_count)
 		{
 			return std::string();
 		}
@@ -136,7 +136,7 @@ public:
 };
 
 //////////////////////////////////////////////////////////////////////////
-class CDictionaryDataPrivate : public BaseDictionaryWarehouse
+class CDictionaryDataPrivate : public base_dictionary_warehouse
 {
 public:
 	CDictionaryData * m_ptrPublic;
@@ -160,7 +160,7 @@ CDictionaryDataPrivate::CDictionaryDataPrivate(CDictionaryData * ptrPublic):line
 	//,dictionaryWordsArray(0)
 #endif
 {
-	wordsCount = 0;
+	words_count = 0;
 	m_ptrPublic = ptrPublic;
 	linenum = 0;
 }
@@ -197,17 +197,17 @@ void CDictionaryDataPrivate::loadFileContent()
 
 	QString qLine;// = fgets(in, BUFSIZE - 1, fileHandle);
 	//get words count
-	unsigned int wordsCount;// = qLine.toUInt();
-	stream >> wordsCount;
-	if (wordsCount<=0)
+	unsigned int words_count;// = qLine.toUInt();
+	stream >> words_count;
+	if (words_count<=0)
 		return;
 	int pos;
 	int index(0);
-	this->wordsCount = wordsCount;
+	this->words_count = words_count;
 #ifdef USE_STL_VECTOR
-	dictionaryWords.resize(wordsCount+2);
+	dictionaryWords.resize(words_count+2);
 #else
-	//dictionaryWordsArray = new std::string[wordsCount];
+	//dictionaryWordsArray = new std::string[words_count];
 #endif
 
 	//qLine = fgets(in, BUFSIZE - 1, fileHandle);
@@ -252,11 +252,11 @@ bool CDictionaryData::loadDictionary(const std::string & filePath)
 }
 unsigned int CDictionaryData::getWordsCount()
 {
-	return privPart->wordsCount;
+	return privPart->words_count;
 }
 std::string CDictionaryData::getWordByNdex(unsigned int index)
 {
-	if (index >= privPart->wordsCount)
+	if (index >= privPart->words_count)
 	{
 		printLog(eDebug, eWarningLogLevel, str(boost::format("CDictionaryData, incorrect index value (%1%)") % index));
 		return emtpystring;

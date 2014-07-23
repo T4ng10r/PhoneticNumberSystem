@@ -4,7 +4,7 @@
 
 #define BUFSIZE  65536
 
-class BaseDictionaryWarehouse
+class base_dictionary_warehouse
 {
 public:
 	virtual bool openFile(const std::string & filePath) = 0;
@@ -12,11 +12,11 @@ public:
 	virtual void removeDictionary() = 0;
 	virtual void close_file() = 0;
 	virtual std::string getWordByNdex(unsigned int index) = 0;
-	std::string get_file_codepage( const std::string & filePath );
+	unsigned int words_count();
+	std::string get_file_codepage(std::string filePath );
 	std::ifstream::pos_type fileSize(const char* filename);
-	bool isFileExist(const char* filename);
 public:
 	char in[BUFSIZE + 50]; // input buffer
 	std::string				fileCodepage;
-	unsigned int			wordsCount;
+	unsigned int			words_count;
 };

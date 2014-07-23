@@ -145,11 +145,11 @@ void CSubstituteSearch::startSearchForNumber(const std::string & number)
 	printLog(eDebug, eInfoLogLevel, str(boost::format("Searching substitute for number '%1%' started") % number));
 	privPart->clearSearchResult();
 	privPart->number = number;
-	unsigned int wordsCount = privPart->dictionaryWords->getWordsCount();
-	unsigned int notifyStepCount = wordsCount/100;
+	unsigned int words_count = privPart->dictionaryWords->getWordsCount();
+	unsigned int notifyStepCount = words_count/100;
 	unsigned int notifyStep = 0;
-	Q_EMIT searchProgress(0, wordsCount);
-	for(unsigned int index=0;index<wordsCount;index++,notifyStep++)
+	Q_EMIT searchProgress(0, words_count);
+	for(unsigned int index=0;index<words_count;index++,notifyStep++)
 	{
 		std::string word = privPart->dictionaryWords->getWordByNdex(index);
 		if (word.size()<2)
@@ -157,11 +157,11 @@ void CSubstituteSearch::startSearchForNumber(const std::string & number)
 		privPart->testWord(word);
 		if (notifyStep==notifyStepCount)
 		{
-			Q_EMIT searchProgress(index+1,wordsCount);
+			Q_EMIT searchProgress(index+1,words_count);
 			notifyStep=0;
 		}
 	}
-	Q_EMIT searchProgress(wordsCount,wordsCount);
+	Q_EMIT searchProgress(words_count,words_count);
 	privPart->buildSearchResultsTree();
 	Q_EMIT searchFinished(true);
 	printLog(eDebug, eInfoLogLevel, str(boost::format("Searching substitute for number '%1%' finished") % number));

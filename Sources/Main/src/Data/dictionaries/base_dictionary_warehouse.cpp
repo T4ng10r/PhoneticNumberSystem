@@ -1,20 +1,27 @@
 #include <Data/dictionaries/base_dictionary_warehouse.h>
 #include <string>
+#include <boost/format.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/algorithm/string.hpp>
+#include <Tools/loggers.h>
 
+namespace constants
+{
 const std::string dictionary_ext(".dic");
 const std::string aff_ext(".aff");
+const std::string file_codepage_keyword("SET ");
+}
 
 void prepare_aff_file_path(std::string & file_path)
 {
 	boost::filesystem::path file(file_path);
-	if (file.extension() == aff_ext && boost::filesystem::exists(file_path))
+	if (file.extension() == constants::aff_ext && boost::filesystem::exists(file_path))
 	{
 			return;
 	}
-	if (file.extension()==dictionary_ext)
+	if (file.extension()==constants::dictionary_ext)
 	{
-		file.replace_extension(aff_ext);
+		file.replace_extension(constants::aff_ext);
 		if (boost::filesystem::exists(file))
 		{
 			file_path = file.string();
@@ -24,65 +31,57 @@ void prepare_aff_file_path(std::string & file_path)
 
 	if (!file.has_extension())
 	{
-		file+=aff_ext;
+		file+=constants::aff_ext;
 		if (boost::filesystem::exists(file))
 		{
 			file_path = file.string();
 			return;
 		}
 	}
-
 	file_path.clear();
 }
 	
-
-std::string BaseDictionaryWarehouse::get_file_codepage( const std::string & file_path )
+std::string base_dictionary_warehouse::get_file_codepage(std::string file_path )
 {
-/*	if (!boost::filesystem::exists(file_path))
+	prepare_aff_file_path(file_path);
+	if (file_path.empty())
 	{
+			return std::string();
 	}
 
-	std::ifstream file(file_path, std::ifstream::in);
-
-
-	process_file_path();
-	size_t pos;
-	std::string affFilePath(file_path);
-	std::string fileCodepage;
-	boost::filesystem::path(file_path).extension()
-	if ((pos=affFilePath.find(file_dictionary_ext))!=std::string::npos)
-	{
-		affFilePath = affFilePath.substr(0,pos);
-		affFilePath.append(file_dictionary_aff_ext);
-	}
-	file.setFileName(affFilePath.c_str());
-	QTextStream stream(&file);
-	if (!file.open(QIODevice::ReadOnly))
+	std::ifstream ifs(file_path.c_str());
+  if (!ifs.good())
 	{
 		printLog(eDebug, eWarningLogLevel,
-		    str(boost::format("CDictionaryData, can't open dictionary aff file %1%") % affFilePath));
-		return fileCodepage;
+		    str(boost::format("CDictionaryData, can't open dictionary aff file %1%") % file_path));
+		return std::string();
 	}
-	fileCodepage = stream.readLine().toStdString();
-	if ((pos=fileCodepage.find(file_codepage_keyword))!=std::string::npos)
+	std::getline(ifs, fileCodepage);
+	std::size_t pos;
+	if ((pos=fileCodepage.find(constants::file_codepage_keyword))!=std::string::npos)
 	{
-		fileCodepage = fileCodepage.substr(pos+file_codepage_keyword.size());
+		fileCodepage = fileCodepage.substr(pos+constants::file_codepage_keyword.size());
+		boost::algorithm::trim(fileCodepage);
+	} else {
+		printLog(eDebug, eWarningLogLevel, str(boost::format("Lack of codepage definition")));
+		fileCodepage.clear();
 	}
-	file.close();
-	fileCodepage.erase(std::remove(fileCodepage.begin(), fileCodepage.end(), '\n'), fileCodepage.end());
-	fileCodepage.erase(std::remove(fileCodepage.begin(), fileCodepage.end(), '\r'), fileCodepage.end());*/
+	ifs.close();
 	return fileCodepage;
 }
 
-std::ifstream::pos_type fileSize(const char* filename)
+std::ifstream::pos_type base_dictionary_warehouse::fileSize(const char* filename)
 {
-	if (false == boost::filesystem::exists(filename))
+	return boost::filesystem::file_size(filename);
+/*	if (false == boost::filesystem::exists(filename))
 		return 0;
 		std::ifstream in(filename, std::ifstream::in | std::ifstream::binary);
 		in.seekg(0, std::ifstream::end);
-		return in.tellg();
-	}
-	bool isFileExist(const char* filename)
-	{
-		return boost::filesystem::exists(filename);
-	}
+		return in.tellg();*/
+}
+
+unsigned int base_dictionary_warehouse::words_count()
+{
+	return words_count;
+}
+
