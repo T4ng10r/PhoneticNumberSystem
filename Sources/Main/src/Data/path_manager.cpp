@@ -6,20 +6,28 @@
 	#define PROC_PATH "/proc/self/exe"
 	#define ENV_HOME_VAR "HOME"
 	#define USER_SETTINGS_FOLDER ".phoneticnumbersystem"
-#elif __win
+#elif _WINDOWS
+	#include <ShlObj.h>
+	#include <stdlib.h>
+	#include <comutil.h>
+	#include <Windows.h>
+	#pragma comment(lib, "comsuppw")
 	#define ENV_HOME_VAR "HOMEPATH"
-	#define USER_SETTINGS_FOLDER
+	#define USER_SETTINGS_FOLDER "PhoneticNumberSystem"
 #endif
+#define BUFSIZE 65000
 
 
 std::string path_manager::executable_dir()
 {
 	std::string exec_path;
+	char path[BUFSIZE] = { 0 };
 #ifdef __linux
-	char path[65000]={0};
-  readlink(PROC_PATH, path, 6500);
-	exec_path = boost::filesystem::path(path).parent_path().string();
+	readlink(PROC_PATH, path, BUFSIZE);
+#elif _WINDOWS
+	GetModuleFileName(NULL, path, BUFSIZE);
 #endif
+	exec_path = boost::filesystem::path(path).parent_path().string();
 	return exec_path;
 }
 std::string path_manager::current_dir()
@@ -30,10 +38,11 @@ std::string path_manager::user_dir()
 {
 #if __linux
 	return std::string(getenv(ENV_HOME_VAR));
-#elif __win
-	char path[65000]={0};
-	SHGetFolderPath(NULL, CSIDL_PROFILE, NULL,0, path);
-	return std::string(path);
+#elif _WINDOWS
+	PWSTR path = NULL;
+	SHGetKnownFolderPath(FOLDERID_Profile, 0, NULL, &path);
+	_bstr_t bstrPath(path);
+	return std::string((char*)bstrPath);
 #endif
 }
 std::string path_manager::user_settings_dir()

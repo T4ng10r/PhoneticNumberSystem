@@ -4,7 +4,11 @@
 
 namespace constant
 {
+#ifdef __linux
 	const std::string ut_exe_name("UnitTest");
+#elif _WINDOWS
+	const std::string ut_exe_name("UnitTest.exe");
+#endif
 }
 
 using namespace boost::filesystem;
