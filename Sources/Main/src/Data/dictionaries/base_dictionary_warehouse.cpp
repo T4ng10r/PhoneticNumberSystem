@@ -8,9 +8,9 @@ const std::string aff_ext(".aff");
 void prepare_aff_file_path(std::string & file_path)
 {
 	boost::filesystem::path file(file_path);
-	if (file.extension() == aff_ext && boost::filesystem::exists(file))
+	if (file.extension() == aff_ext && boost::filesystem::exists(file_path))
 	{
-		return;
+			return;
 	}
 /*	if (file.extension()==dictionary_ext)
 	{
@@ -20,7 +20,7 @@ void prepare_aff_file_path(std::string & file_path)
 			file_path = file.string();
 			return;
 		}
-	}
+	}*/
 
 /*	if (file.extension().string().empty())
 	{

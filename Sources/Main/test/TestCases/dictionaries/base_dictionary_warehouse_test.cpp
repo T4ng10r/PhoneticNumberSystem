@@ -18,6 +18,8 @@ public:
 
 	void create_file(const std::string & filepath)
 	{
+		path dir(filepath);
+		create_directory(dir.parent_path().string());
 		std::ofstream ofs(filepath.c_str(), std::ofstream::out);
 		ofs.close();
 	}
@@ -51,5 +53,5 @@ TEST_F(ut_base_dictionary_warehouse_test, prepare_aff_file_aff_path)
 	std::string file_path(constant::test_filepath_2);
 	prepare_aff_file_path(file_path);
 	EXPECT_EQ(file_path, constant::test_filepath_2);
-	delete_file(constant::test_filepath_2);
+	//delete_file(constant::test_filepath_2);
 }
