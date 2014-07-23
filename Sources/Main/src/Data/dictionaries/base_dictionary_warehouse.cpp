@@ -12,7 +12,7 @@ void prepare_aff_file_path(std::string & file_path)
 	{
 			return;
 	}
-/*	if (file.extension()==dictionary_ext)
+	if (file.extension()==dictionary_ext)
 	{
 		file.replace_extension(aff_ext);
 		if (boost::filesystem::exists(file))
@@ -20,9 +20,9 @@ void prepare_aff_file_path(std::string & file_path)
 			file_path = file.string();
 			return;
 		}
-	}*/
+	}
 
-/*	if (file.extension().string().empty())
+	if (!file.has_extension())
 	{
 		file+=aff_ext;
 		if (boost::filesystem::exists(file))
@@ -30,7 +30,7 @@ void prepare_aff_file_path(std::string & file_path)
 			file_path = file.string();
 			return;
 		}
-	}*/
+	}
 
 	file_path.clear();
 }

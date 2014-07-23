@@ -5,6 +5,7 @@ namespace constant
 {
 	const std::string test_filepath_1("testdir/testfile");
 	const std::string test_filepath_2("testdir/testfile.aff");
+	const std::string test_filepath_3("testdir/testfile.dic");
 }
 
 using namespace boost::filesystem;
@@ -53,5 +54,27 @@ TEST_F(ut_base_dictionary_warehouse_test, prepare_aff_file_aff_path)
 	std::string file_path(constant::test_filepath_2);
 	prepare_aff_file_path(file_path);
 	EXPECT_EQ(file_path, constant::test_filepath_2);
-	//delete_file(constant::test_filepath_2);
+	delete_file(constant::test_filepath_2);
+}
+
+TEST_F(ut_base_dictionary_warehouse_test, prepare_aff_file_without_ext)
+{
+	create_file(constant::test_filepath_1);
+	create_file(constant::test_filepath_2);
+	std::string file_path(constant::test_filepath_1);
+	prepare_aff_file_path(file_path);
+	EXPECT_EQ(file_path, constant::test_filepath_2);
+	delete_file(constant::test_filepath_2);
+	delete_file(constant::test_filepath_1);
+}
+
+TEST_F(ut_base_dictionary_warehouse_test, prepare_aff_file_dic_ext)
+{
+	create_file(constant::test_filepath_2);
+	create_file(constant::test_filepath_3);
+	std::string file_path(constant::test_filepath_3);
+	prepare_aff_file_path(file_path);
+	EXPECT_EQ(file_path, constant::test_filepath_2);
+	delete_file(constant::test_filepath_2);
+	delete_file(constant::test_filepath_3);
 }
