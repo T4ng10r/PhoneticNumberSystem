@@ -17,6 +17,6 @@ public:
 	std::ifstream::pos_type fileSize(const char* filename);
 public:
 	char in[BUFSIZE + 50]; // input buffer
-	std::string				fileCodepage;
-	unsigned int			words_count;
+	std::string    fileCodepage;
+	unsigned int   words_count_;
 };

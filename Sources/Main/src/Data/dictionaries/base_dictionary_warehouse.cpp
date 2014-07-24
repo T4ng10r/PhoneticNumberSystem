@@ -50,7 +50,7 @@ std::string base_dictionary_warehouse::get_file_codepage(std::string file_path )
 	}
 
 	std::ifstream ifs(file_path.c_str());
-  if (!ifs.good())
+	if (!ifs.good())
 	{
 		printLog(eDebug, eWarningLogLevel,
 		    str(boost::format("CDictionaryData, can't open dictionary aff file %1%") % file_path));
@@ -73,15 +73,10 @@ std::string base_dictionary_warehouse::get_file_codepage(std::string file_path )
 std::ifstream::pos_type base_dictionary_warehouse::fileSize(const char* filename)
 {
 	return boost::filesystem::file_size(filename);
-/*	if (false == boost::filesystem::exists(filename))
-		return 0;
-		std::ifstream in(filename, std::ifstream::in | std::ifstream::binary);
-		in.seekg(0, std::ifstream::end);
-		return in.tellg();*/
 }
 
 unsigned int base_dictionary_warehouse::words_count()
 {
-	return words_count;
+	return words_count_;
 }
 
