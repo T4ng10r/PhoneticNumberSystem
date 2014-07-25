@@ -151,7 +151,7 @@ void CSubstituteSearch::startSearchForNumber(const std::string & number)
 	Q_EMIT searchProgress(0, words_count);
 	for(unsigned int index=0;index<words_count;index++,notifyStep++)
 	{
-		std::string word = privPart->dictionaryWords->getWordByNdex(index);
+		std::string word = privPart->dictionaryWords->get_word_by_index(index);
 		if (word.size()<2)
 			continue;
 		privPart->testWord(word);

@@ -14,7 +14,7 @@ public:
 	~CDictionaryData(void);
 	bool loadDictionary(const std::string & filePath);
 	unsigned int getWordsCount();
-	std::string getWordByNdex(unsigned int index);
+	std::string get_word_by_index(unsigned int index);
 	std::string get_file_codepage();
 protected:
 	boost::scoped_ptr<base_dictionary_warehouse> privPart;

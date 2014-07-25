@@ -15,10 +15,10 @@ class base_dictonary_warehouse_tmp : public base_dictionary_warehouse
 {
 public:
 	bool openFile(const std::string & filePath) { return true; }
-	void loadFileContent(){}
+	void loadFileContent(const std::string &){}
 	void removeDictionary(){}
 	void close_file(){};
-	std::string getWordByNdex(unsigned int index){return std::string(); }
+	std::string get_word_by_index(unsigned int index){return std::string(); }
 };
 
 class ut_base_dictionary_warehouse_test : public ::testing::Test

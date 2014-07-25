@@ -17,12 +17,13 @@ public:
 	void parseLineWordCounts(const char ** memAddr, const char * const endMemPos);
 	void moveTillEndOfLine(const char ** memAddr, const char * const endMemPos);
 	void parseLineWithWord(const char ** memAddr, const char * const endMemPos);
-	void loadFileContent();
-	std::string getWordByNdex(unsigned int index);
+	void loadFileContent(const std::string & filePath);
+	std::string get_word_by_index(unsigned int index);
 	void removeDictionary();
+	void create_content_index_map();
 public:
 	std::size_t dictionaryFileSize;
-	boost::interprocess::file_mapping	fileMapping;
+	boost::interprocess::file_mapping   file_mapping;
 	boost::interprocess::mapped_region  fileMappedRegion;
 	//vector of pairs - offset and length of each word
 	std::vector< std::pair<const char *, long long int> >  dictionaryWords;
