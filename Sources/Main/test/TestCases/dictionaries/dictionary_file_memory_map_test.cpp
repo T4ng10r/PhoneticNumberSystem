@@ -45,7 +45,12 @@ TEST_F(ut_dictionary_file_memory_map_test, empty_file_path)
 TEST_F(ut_dictionary_file_memory_map_test, get_word)
 {
 	//Given
+	char buffer[] = "Testowy string z danymi";
 	std::string filepath("dictionaries/pl_PL.dic");
+	const char * memAddr = buffer;
+	const char * endMemPos = buffer + sizeof(buffer);
+	uut->parseLineWordCounts(&memAddr, endMemPos);
+
 	//When 
 	//uut->loadFileContent(filepath);
 	//Then
