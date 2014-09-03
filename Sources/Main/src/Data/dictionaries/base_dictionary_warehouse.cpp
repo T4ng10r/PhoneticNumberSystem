@@ -40,7 +40,9 @@ void prepare_aff_file_path(std::string & file_path)
 	}
 	file_path.clear();
 }
-	
+base_dictionary_warehouse::base_dictionary_warehouse() :words_count_(0)
+{
+}
 std::string base_dictionary_warehouse::get_file_codepage(std::string file_path )
 {
 	prepare_aff_file_path(file_path);

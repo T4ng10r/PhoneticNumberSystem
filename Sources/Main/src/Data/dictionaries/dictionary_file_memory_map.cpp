@@ -2,6 +2,7 @@
 #include <boost/format.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/lexical_cast.hpp>
+#include <Tools/loggers.h>
 
 #define WINDOWS_EOF_1CHAR '\r'
 #define WINDOWS_EOF_2CHAR '\n'
@@ -33,7 +34,14 @@ void dictionary_file_memory_map::parseLineWordCounts(const char ** memAddr, cons
 	}
 	if (*memAddr<endMemPos)
 	{
-		words_count_ = boost::lexical_cast<unsigned int>(std::string(startAddr,*memAddr-startAddr));
+		try 
+		{
+			words_count_ = boost::lexical_cast<unsigned int>(std::string(startAddr, *memAddr - startAddr));
+		}
+		catch (boost::bad_lexical_cast e)
+		{
+			printLog(eDebug, eErrorLogLevel, "Failed to convert word count");
+		}
 	}
 }
 //--------------------------------------------------------------------------------

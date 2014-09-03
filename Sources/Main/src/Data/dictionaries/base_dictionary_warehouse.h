@@ -6,7 +6,9 @@
 
 class base_dictionary_warehouse
 {
+
 public:
+	base_dictionary_warehouse();
 	virtual bool openFile(const std::string & filePath) = 0;
 	virtual void loadFileContent(const std::string & filePath) = 0;
 	virtual void removeDictionary() = 0;
