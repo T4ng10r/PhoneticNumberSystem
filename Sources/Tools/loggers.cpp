@@ -178,7 +178,7 @@ void printLog(eLoggerType loggerType, eLogLevel debugLevel, const std::string &s
 		createLoggers();
 
 	boost::optional<std::string> logger_name = get_logger_name(loggerType);
-	if (!!logger_name)
+	if (!logger_name)
 		return;
 
 #ifdef USE_LOG4QT
