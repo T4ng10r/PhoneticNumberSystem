@@ -1,7 +1,9 @@
 project(PhoneticNumberSystem)
 
-#dodajemy dane dotyczace QT - sciezki, biblioteki
+#Automatically link Qt executables to qtmain target on Windows.
 cmake_policy(SET CMP0020 NEW)
+#Ignore COMPILE_DEFINITIONS_<Config> properties
+cmake_policy(SET CMP0043 NEW)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 find_package(Qt5Widgets)
@@ -9,8 +11,7 @@ find_package(Qt5Core)
 find_package(Qt5Xml)
 include_directories($ENV{QTDIR} ${Qt5Widgets_INCLUDE_DIRS} ${Qt5Core_INCLUDE_DIRS})
 
-include_directories(${Boost_INCLUDE_DIR}
-                    ${CMAKE_CURRENT_SOURCE_DIR} )
+include_directories(${Boost_INCLUDE_DIR} )
 ADD_DEFINITIONS( "-DHAS_BOOST" )
 ADD_DEFINITIONS( "-DQT_NO_KEYWORDS" )
 

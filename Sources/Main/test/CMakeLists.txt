@@ -1,5 +1,6 @@
 
 project(UT_PNS)
+cmake_policy(SET CMP0043 NEW)
 
 #dodajemy dane dotyczace QT - sciezki, biblioteki
 find_package(Qt5Widgets)
