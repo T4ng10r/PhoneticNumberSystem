@@ -38,8 +38,8 @@ CAppSettingsPrivate::~CAppSettingsPrivate()
 }
 void CAppSettingsPrivate::saveSettings()
 {
-	boost::property_tree::xml_writer_settings<char> settings('\t', 1);
-	write_xml(CONFIGURATION_FILE, *(static_cast<boost::property_tree::ptree*>(m_ptrPublic)),std::locale(), settings);
+	boost::property_tree::xml_writer_settings<std::string> settings; ("\t", 1);
+	write_xml(CONFIGURATION_FILE, *(static_cast<boost::property_tree::ptree*>(m_ptrPublic)),std::locale()/*, settings*/);
 }
 void CAppSettingsPrivate::loadSettings()
 {

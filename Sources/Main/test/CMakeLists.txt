@@ -54,7 +54,7 @@ endif(WIN32)
 add_executable(UnitTest ${SOURCES_MAIN} ${SOURCES_MOC} 
 					${SOURCES_TEST_DATA} ${SOURCES_TEST_PLUGINS_DATA}
 )
-target_link_libraries(UnitTest ${QT_LIBRARIES} PhoneticNumberSystem_lib gmock gtest)
+target_link_libraries(UnitTest ${QT_LIBRARIES} PhoneticNumberSystem_lib gtest)
 qt5_use_modules(UnitTest Widgets Core Xml Test)
 
 
