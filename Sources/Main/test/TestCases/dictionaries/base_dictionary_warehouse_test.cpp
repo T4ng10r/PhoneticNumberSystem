@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+#include <boost/test/unit_test.hpp>
 #include <Data/dictionaries/base_dictionary_warehouse.cpp>
 
 namespace constants
@@ -21,7 +21,7 @@ public:
 	std::string get_word_by_index(unsigned int index){return std::string(); }
 };
 
-class ut_base_dictionary_warehouse_test : public ::testing::Test
+class ut_base_dictionary_warehouse_test //: public ::testing::Test
 {
 public:
 	ut_base_dictionary_warehouse_test()
@@ -51,18 +51,22 @@ public:
 	base_dictonary_warehouse_tmp	uut;	
 };
 
-TEST_F(ut_base_dictionary_warehouse_test, prepare_aff_file_empty)
+BOOST_FIXTURE_TEST_SUITE(dictionaries, ut_base_dictionary_warehouse_test)
+
+BOOST_AUTO_TEST_CASE(prepare_aff_file_empty)
+//TEST_F(ut_base_dictionary_warehouse_test, prepare_aff_file_empty)
 {
 	//Given
 	std::string filepath;
-	EXPECT_TRUE(filepath.empty());
+  BOOST_CHECK(filepath.empty());
 	//When
 	prepare_aff_file_path(filepath);
 	//Then
-	EXPECT_TRUE(filepath.empty());
+	BOOST_CHECK(filepath.empty());
 }
 
-TEST_F(ut_base_dictionary_warehouse_test, prepare_aff_file_fake_path)
+//TEST_F(ut_base_dictionary_warehouse_test, 
+BOOST_AUTO_TEST_CASE(prepare_aff_file_fake_path)
 {
 	//Given
 	create_file(constants::test_filepath_1);
@@ -70,11 +74,12 @@ TEST_F(ut_base_dictionary_warehouse_test, prepare_aff_file_fake_path)
 	//When
 	prepare_aff_file_path(filepath);
 	//Then
-	EXPECT_TRUE(filepath.empty());
+	BOOST_CHECK(filepath.empty());
 	delete_file(constants::test_filepath_1);
 }
 
-TEST_F(ut_base_dictionary_warehouse_test, prepare_aff_file_aff_path)
+//TEST_F(ut_base_dictionary_warehouse_test, 
+BOOST_AUTO_TEST_CASE(prepare_aff_file_aff_path)
 {
 	//Given
 	create_file(constants::test_filepath_2);
@@ -82,11 +87,12 @@ TEST_F(ut_base_dictionary_warehouse_test, prepare_aff_file_aff_path)
 	//When
 	prepare_aff_file_path(filepath);
 	//Then
-	EXPECT_EQ(filepath, constants::test_filepath_2);
+	BOOST_CHECK_EQUAL(filepath, constants::test_filepath_2);
 	delete_file(constants::test_filepath_2);
 }
 
-TEST_F(ut_base_dictionary_warehouse_test, prepare_aff_file_without_ext)
+//TEST_F(ut_base_dictionary_warehouse_test, 
+BOOST_AUTO_TEST_CASE(prepare_aff_file_without_ext)
 {
 	//Given
 	create_file(constants::test_filepath_1);
@@ -95,12 +101,13 @@ TEST_F(ut_base_dictionary_warehouse_test, prepare_aff_file_without_ext)
 	//When
 	prepare_aff_file_path(filepath);
 	//Then
-	EXPECT_EQ(filepath, constants::test_filepath_2);
+	BOOST_CHECK_EQUAL(filepath, constants::test_filepath_2);
 	delete_file(constants::test_filepath_2);
 	delete_file(constants::test_filepath_1);
 }
 
-TEST_F(ut_base_dictionary_warehouse_test, prepare_aff_file_dic_ext)
+//TEST_F(ut_base_dictionary_warehouse_test, 
+BOOST_AUTO_TEST_CASE(prepare_aff_file_dic_ext)
 {
 	//Given
 	create_file(constants::test_filepath_2);
@@ -109,22 +116,24 @@ TEST_F(ut_base_dictionary_warehouse_test, prepare_aff_file_dic_ext)
 	//When
 	prepare_aff_file_path(filepath);
 	//Then
-	EXPECT_EQ(filepath, constants::test_filepath_2);
+	BOOST_CHECK_EQUAL(filepath, constants::test_filepath_2);
 	delete_file(constants::test_filepath_2);
 	delete_file(constants::test_filepath_3);
 }
 
-TEST_F(ut_base_dictionary_warehouse_test, get_file_codepage_empty_path)
+//TEST_F(ut_base_dictionary_warehouse_test, 
+BOOST_AUTO_TEST_CASE(get_file_codepage_empty_path)
 {
 	//Given
 	std::string filepath;
 	//When
 	std::string file_codepage = uut.get_file_codepage(filepath);
 	//Then
-	EXPECT_TRUE(file_codepage.empty());
+	BOOST_CHECK(file_codepage.empty());
 }
 
-TEST_F(ut_base_dictionary_warehouse_test, get_file_codepage_proper_file)
+//TEST_F(ut_base_dictionary_warehouse_test, 
+BOOST_AUTO_TEST_CASE(get_file_codepage_proper_file)
 {
 	//Given
 	std::string filepath(constants::test_filepath_2);
@@ -133,8 +142,10 @@ TEST_F(ut_base_dictionary_warehouse_test, get_file_codepage_proper_file)
 	//When
 	std::string file_codepage = uut.get_file_codepage(filepath);
 	//Then
-	EXPECT_FALSE(file_codepage.empty());
-	EXPECT_EQ(file_codepage, constants::codepage_iso);
+	BOOST_CHECK(!file_codepage.empty());
+	BOOST_CHECK_EQUAL(file_codepage, constants::codepage_iso);
 	delete_file(constants::test_filepath_1);
 	delete_file(constants::test_filepath_2);
 }
+
+BOOST_AUTO_TEST_SUITE_END()

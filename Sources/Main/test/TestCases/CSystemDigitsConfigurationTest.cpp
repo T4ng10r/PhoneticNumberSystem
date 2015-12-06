@@ -20,8 +20,8 @@ void CSystemDigitsConfigurationTest::init()
 	for(SystemMap::const_iterator iter=systemDigitsConfiguration.mSystem.begin();
 		iter!=systemDigitsConfiguration.mSystem.end();iter++)
 	{
-		systemDigitsConfiguration.allConsonants.push_back(iter->second.first);
-		systemDigitsConfiguration.allConsonants.push_back(iter->second.second);
+		systemDigitsConfiguration.allConsonants.push_back(iter->first);
+		systemDigitsConfiguration.allConsonants.push_back(iter->second);
 	}
 }
 void CSystemDigitsConfigurationTest::cleanup()

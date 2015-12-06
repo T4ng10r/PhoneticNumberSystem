@@ -27,6 +27,7 @@ public:
 	std::string createCurrentDictionaryAffPath();
 	void setConnections();
 	void prepareDirectories();
+	boost::optional<QDir> get_dictionaries_directory();
 public:
 	CDataThread * publicPart;
 	boost::shared_ptr<CDictionaryData> dictionaryData;
@@ -42,9 +43,28 @@ CDataThreadPrivate::CDataThreadPrivate(CDataThread * ptrPublic):publicPart(ptrPu
 CDataThreadPrivate::~CDataThreadPrivate()
 {
 }
+
+
+boost::optional<QDir> CDataThreadPrivate::get_dictionaries_directory()
+{
+	boost::optional<QDir> result;
+	QString dirPath;
+	try
+	{
+		dirPath = gAppSettings->get<std::string>(DICTIONARIES_DIRECTORY).c_str();
+	}
+	catch (boost::property_tree::ptree_bad_path &e)
+	{
+		printLog(eDebug, eWarningLogLevel, str(boost::format("Error during gathering dictionaryFilesList '%1%'")
+			% e.what()));
+		return result;
+	}
+	return QDir(dirPath);
+}
+
 bool CDataThreadPrivate::checkCurrentAppDictionary()
 {
-	std::string currentAppDictPath = gAppSettings->getCurrentDictPath();
+	//std::string currentAppDictPath = gAppSettings->getCurrentDictPath();
 	return false;
 }
 std::string  CDataThreadPrivate::createCurrentDictionaryPath() 
@@ -125,21 +145,10 @@ WordsList CDataThread::getSearchResult(StartingIndex start_index)
 
 void CDataThread::onScanDirectoryForDictionaries()
 {
-	QString dirPath;
-	try
-	{
-		dirPath = gAppSettings->get<std::string>(DICTIONARIES_DIRECTORY).c_str();
-	}
-	catch (boost::property_tree::ptree_bad_path &e)
-	{
-		printLog(eDebug, eWarningLogLevel, str(boost::format("Error during gathering dictionaryFilesList '%1%'") 
-		    % e.what()));	
-	}
-
-	QDir directory(dirPath);
+	QDir directory(privPart->get_dictionaries_directory().get());
 	
-	QStringList fileFilters(QString("*.dic"));
-	QFileInfoList dictionaryFileList = directory.entryInfoList(fileFilters, QDir::Files | QDir::NoDotAndDotDot, QDir::Name);
+	//QStringList fileFilters(QString("*.dic"));
+	QFileInfoList dictionaryFileList = directory.entryInfoList(QStringList("*.dic"), QDir::Files | QDir::NoDotAndDotDot, QDir::Name);
 	if (dictionaryFileList.empty())
 		return;
 	try

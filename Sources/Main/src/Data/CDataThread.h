@@ -23,6 +23,9 @@ public:
   QTextCodec * get_current_codepage();
 public Q_SLOTS:
   void onScanDirectoryForDictionaries();
+
+  //void getDictionariesPath();
+
   void onSetDictionary();
   //initiate searching for substitute words
   void onNumberSearchStarted(const std::string & number);

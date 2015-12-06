@@ -149,11 +149,11 @@ const std::vector<CSingleSubstituteDigitsConfiguration> & CAppSettings::getDigit
 {
 	return m_ptrPriv->m_vDigitsConfiguration;
 }
-std::string CAppSettings::getCurrentDictPath()
-{
-	std::string strPath;
-	return strPath;
-}
+//std::string CAppSettings::getCurrentDictPath()
+//{
+//	std::string strPath;
+//	return strPath;
+//}
 void CAppSettings::on_set_selected_consonant_system(const QString &)
 {
 

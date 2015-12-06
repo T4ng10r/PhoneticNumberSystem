@@ -10,12 +10,6 @@
 
 class CAppSettingsPrivate;
 
-class CSubstituteDigitsConfiguration
-{
-	CSubstituteDigitsConfiguration();
-	std::map<std::string, CSingleSubstituteDigitsConfiguration>	substitutes;
-};
-
 // Set of consonants to use in substitution
 // set of possible substitute configurations
 class CSubstituteValuesConfiguration : public boost::property_tree::ptree
@@ -34,7 +28,7 @@ public:
 	void saveSettings();
 	const boost::property_tree::ptree & getSubstituteValuesConfiguration();
 	const std::vector<CSingleSubstituteDigitsConfiguration> & getDigitsConfiguraions();
-	std::string getCurrentDictPath();
+	//std::string getCurrentDictPath();
 public Q_SLOTS:
   void on_set_selected_consonant_system(const QString &);
 protected:

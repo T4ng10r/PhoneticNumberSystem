@@ -47,8 +47,8 @@ void CSubstituteValuesConfigurationDlgTest::createDigitsConfiguration()
   for(SystemMap::const_iterator iter=systemDigitsConfiguration.mSystem.begin();
     iter!=systemDigitsConfiguration.mSystem.end();iter++)
   {
-    systemDigitsConfiguration.allConsonants.push_back(iter->second.first);
-    systemDigitsConfiguration.allConsonants.push_back(iter->second.second);
+    systemDigitsConfiguration.allConsonants.push_back(iter->first);
+    systemDigitsConfiguration.allConsonants.push_back(iter->second);
   }
   systemDigitsConfiguration.createConsonantsDigitsMap();
   systemDigitsConfiguration.strName="basic";

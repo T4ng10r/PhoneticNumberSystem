@@ -6,9 +6,9 @@ cmake_policy(SET CMP0020 NEW)
 cmake_policy(SET CMP0043 NEW)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-find_package(Qt5Widgets)
-find_package(Qt5Core)
-find_package(Qt5Xml)
+find_package(Qt5Widgets REQUIRED)
+find_package(Qt5Core REQUIRED)
+find_package(Qt5Xml REQUIRED)
 include_directories($ENV{QTDIR} ${Qt5Widgets_INCLUDE_DIRS} ${Qt5Core_INCLUDE_DIRS})
 
 include_directories(${Boost_INCLUDE_DIR} )
@@ -29,10 +29,10 @@ add_executable(PhoneticNumberSystem ${TMP_FILES} main.cpp  )
 
 add_library(PhoneticNumberSystem_lib STATIC ${TMP_FILES} )
 
-  target_link_libraries(PhoneticNumberSystem ${Boost_LIBRARIES} tools_lib log4cpp)
-  target_link_libraries(PhoneticNumberSystem_lib ${QT_LIBRARIES} ${Boost_LIBRARIES} tools_lib log4cpp)
-	qt5_use_modules(PhoneticNumberSystem Widgets Core Xml)
-	qt5_use_modules(PhoneticNumberSystem_lib Widgets Core Xml)
+  target_link_libraries(PhoneticNumberSystem ${Boost_LIBRARIES} tools_lib log4cpp 
+                        Qt5::Widgets Qt5::Core Qt5::Xml)
+  target_link_libraries(PhoneticNumberSystem_lib ${Boost_LIBRARIES} tools_lib log4cpp 
+                        Qt5::Widgets Qt5::Core Qt5::Xml)
 	
 	add_custom_command(TARGET PhoneticNumberSystem POST_BUILD 
 		 COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/dict

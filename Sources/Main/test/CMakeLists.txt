@@ -14,8 +14,6 @@ set(ENV{QTEST_COLORED} 1)
 
 include_directories(${Boost_INCLUDE_DIR}
                     ${PNS_SOURCE_DIR}/include
-										${gmock_SOURCE_DIR}/include
-										${gtest_SOURCE_DIR}/include
                     ${PhoneticNumberSystem_SOURCE_DIR}
                     ${PhoneticNumberSystem_Sources_SOURCE_DIR}
                     ${CMAKE_CURRENT_SOURCE_DIR}
@@ -54,7 +52,11 @@ endif(WIN32)
 add_executable(UnitTest ${SOURCES_MAIN} ${SOURCES_MOC} 
 					${SOURCES_TEST_DATA} ${SOURCES_TEST_PLUGINS_DATA}
 )
-target_link_libraries(UnitTest ${QT_LIBRARIES} PhoneticNumberSystem_lib gtest)
+#target_link_libraries(UnitTest ${QT_LIBRARIES} PhoneticNumberSystem_lib gtest)
+target_link_libraries(UnitTest ${QT_LIBRARIES} PhoneticNumberSystem_lib
+                      ${Boost_FILESYSTEM_LIBRARY}
+                      ${Boost_SYSTEM_LIBRARY}
+                      ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
 qt5_use_modules(UnitTest Widgets Core Xml Test)
 
 

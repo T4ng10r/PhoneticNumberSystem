@@ -218,11 +218,12 @@ void CSubstituteValuesConfigurationDlgPrivate::setConnectionForConsonantAction( 
 }
 void CSubstituteValuesConfigurationDlgPrivate::fillGUIWithDigitsSystem(const CSingleSubstituteDigitsConfiguration & digitsSystem)
 {
-	for(SystemMap::const_iterator iter = digitsSystem.mSystem.begin();iter!=digitsSystem.mSystem.end();iter++)
+	int i = 0;
+	for(SystemMap::const_iterator iter = digitsSystem.mSystem.begin();iter!=digitsSystem.mSystem.end();iter++,i++)
 	{
-		EntryLine & entry = m_ptrDigitsEntries[iter->first];
-		selectConsonantActionByGivenConsonant(entry.m_ptrConsonantsActions1, iter->second.first);
-		selectConsonantActionByGivenConsonant(entry.m_ptrConsonantsActions2, iter->second.second);
+		EntryLine & entry = m_ptrDigitsEntries[i];
+		selectConsonantActionByGivenConsonant(entry.m_ptrConsonantsActions1, iter->first);
+		selectConsonantActionByGivenConsonant(entry.m_ptrConsonantsActions2, iter->second);
 	}
 }
 void CSubstituteValuesConfigurationDlgPrivate::selectConsonantActionByGivenConsonant( std::vector<QAction *>& actionsList, const char consonant) 

@@ -47,7 +47,7 @@ std::string path_manager::user_dir()
 }
 std::string path_manager::user_settings_dir()
 {
-	return std::string(user_dir()+USER_SETTINGS_FOLDER);
+	return std::string(user_dir()/*+USER_SETTINGS_FOLDER*/);
 }
 std::string path_manager::global_setttings_dir()
 {

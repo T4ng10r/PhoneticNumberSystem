@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+//#include <gtest/gtest.h>
 #include <Data/path_manager.h>
 #include <boost/filesystem.hpp>
 
@@ -12,7 +12,7 @@ namespace constants
 }
 
 using namespace boost::filesystem;
-
+/*
 class ut_path_manager_test : public ::testing::Test
 {
 public:
@@ -44,3 +44,4 @@ TEST_F(ut_path_manager_test, user_home_dir)
 	std::string directory = path_manager::user_dir();
 	EXPECT_FALSE(directory.empty());
 }
+*/

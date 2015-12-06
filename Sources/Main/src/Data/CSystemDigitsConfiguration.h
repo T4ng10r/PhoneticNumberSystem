@@ -2,9 +2,11 @@
 #define _CSINGLE_SUBSTITUTE_DIGITS_CONF_INCLUDE_
 
 #include <string>
+#include <vector>
 #include <map>
 
-typedef std::map<unsigned int, std::pair<char,char> > SystemMap;
+//
+typedef std::vector<std::pair<char,char> > SystemMap;
 typedef std::string AcceptableConsonants;
 typedef std::string ForbidenConsonants;
 typedef std::map<unsigned int, std::pair<AcceptableConsonants, ForbidenConsonants> > OneDigitConsonantsSet;
@@ -18,10 +20,12 @@ public:
 		mSystem.clear();
 		allConsonants.clear();
 		digitsConsonantsSetMap.clear();
+		mSystem.resize(10);
 	}
 	void create_empty_system()
 	{
 		std::pair<char,char>	stPair(' ',' ');
+		mSystem.resize(10);
 		for(int i=0;i<10;i++)
 		{
 			mSystem[i]=stPair;

@@ -1,8 +1,8 @@
-#include <gtest/gtest.h>
+//#include <gtest/gtest.h>
 #include <memory>
 #include <Data/dictionaries/dictionary_file_memory_map.cpp>
 #include <boost/filesystem.hpp>
-
+/*
 namespace constants
 {
 	const std::string dict_dir("dict");
@@ -110,4 +110,4 @@ TEST_F(ut_dictionary_file_memory_map_test, load_content_code_page)
 	EXPECT_EQ(uut->get_word_by_index(constants::code_page_word_idx_02), constants::code_page_word_02);
 	EXPECT_EQ(uut->get_word_by_index(constants::code_page_word_idx_03), constants::code_page_word_03);
 }
-
+*/
