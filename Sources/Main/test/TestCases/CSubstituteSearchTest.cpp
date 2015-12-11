@@ -64,8 +64,8 @@ void CSubstituteSearchTest::test_SubstituteSearch_WholeCorrectWord()
 	SuccessWord result = iter->second.front();
 	QCOMPARE(result.matchingLetters, matching_letters);
 	QCOMPARE(result.bFullCoverage, full_coverage);
-	QCOMPARE(result.coveragePairs.front().first, (unsigned int)start_index);
-	QCOMPARE(result.coveragePairs.front().second, (unsigned int)end_index);
+	QCOMPARE(result.coveragePairs.front().first, (StartingIndex)start_index);
+	QCOMPARE(result.coveragePairs.front().second, (StartingIndex)end_index);
 }
 void CSubstituteSearchTest::test_SubstituteSearch_WholeCorrectWord_01()
 {
@@ -77,8 +77,8 @@ void CSubstituteSearchTest::test_SubstituteSearch_WholeCorrectWord_01()
 	SuccessWord result = iter->second.front();
 	QCOMPARE(result.matchingLetters.c_str(), "P");
 	QCOMPARE(result.bFullCoverage, false);
-	QCOMPARE(result.coveragePairs.front().first, (unsigned int)0);
-	QCOMPARE(result.coveragePairs.front().second, (unsigned int)0);
+	QCOMPARE(result.coveragePairs.front().first, (StartingIndex)0);
+	QCOMPARE(result.coveragePairs.front().second, (StartingIndex)0);
 }
 void CSubstituteSearchTest::test_SubstituteSearch_WholeCorrectWord_02()
 {
@@ -90,8 +90,8 @@ void CSubstituteSearchTest::test_SubstituteSearch_WholeCorrectWord_02()
 	SuccessWord result = iter->second.front();
 	QCOMPARE(result.bFullCoverage, true);
 	QCOMPARE(result.matchingLetters.c_str(), "SMR");
-	QCOMPARE(result.coveragePairs.front().first, (unsigned int)0);
-	QCOMPARE(result.coveragePairs.front().second, (unsigned int)2);
+	QCOMPARE(result.coveragePairs.front().first, (StartingIndex)0);
+	QCOMPARE(result.coveragePairs.front().second, (StartingIndex)2);
 }
 void CSubstituteSearchTest::test_SubstituteSearch_WholeWordCoversPartOfNumber_01()
 {
@@ -103,8 +103,8 @@ void CSubstituteSearchTest::test_SubstituteSearch_WholeWordCoversPartOfNumber_01
 	SuccessWord result = iter->second.front();
 	QCOMPARE(result.matchingLetters.c_str(), "LRND");
 	QCOMPARE(result.bFullCoverage, false);
-	QCOMPARE(result.coveragePairs.front().first, (unsigned int)2);
-	QCOMPARE(result.coveragePairs.front().second, (unsigned int)5);
+	QCOMPARE(result.coveragePairs.front().first, (StartingIndex)2);
+	QCOMPARE(result.coveragePairs.front().second, (StartingIndex)5);
 }
 void CSubstituteSearchTest::test_SubstituteSearch_WholeWordCoversPartOfNumber_02()
 {
@@ -116,8 +116,8 @@ void CSubstituteSearchTest::test_SubstituteSearch_WholeWordCoversPartOfNumber_02
 	SuccessWord result = iter->second.front();
 	QCOMPARE(result.matchingLetters.c_str(), "TN");
 	QCOMPARE(result.bFullCoverage, false);
-	QCOMPARE(result.coveragePairs.front().first, (unsigned int)0);
-	QCOMPARE(result.coveragePairs.front().second, (unsigned int)1);
+	QCOMPARE(result.coveragePairs.front().first, (StartingIndex)0);
+	QCOMPARE(result.coveragePairs.front().second, (StartingIndex)1);
 }
 void CSubstituteSearchTest::test_SubstituteSearch_WholeNumberCoversPartOfWord()
 {

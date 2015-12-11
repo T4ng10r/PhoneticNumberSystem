@@ -2,6 +2,7 @@
 #include "base_dictionary_warehouse.h"
 #include <boost/interprocess/file_mapping.hpp>
 #include <boost/interprocess/mapped_region.hpp>
+#include <vector>
 
 class CDictionaryData;
 

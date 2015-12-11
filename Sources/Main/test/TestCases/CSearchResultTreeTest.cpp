@@ -114,21 +114,21 @@ void CSearchResultTreeNodeTest ::test_FindSecondLevel()
 	initialTreeForFindTests();
 	TreeNodesList foundNodes = root->find_node(3);
 	QCOMPARE(foundNodes.size(),(std::size_t)1);
-	QCOMPARE(foundNodes.front()->iCurrentIndex.get(),(unsigned int)3);
+	QCOMPARE(foundNodes.front()->iCurrentIndex.get(),(StartingIndex)3);
 }
 void CSearchResultTreeNodeTest ::test_FindOnDiffLevel_01()
 {
 	initialTreeForFindTests();
 	TreeNodesList foundNodes = root->find_node(4);
 	QCOMPARE(foundNodes.size(),(std::size_t)2);
-	QCOMPARE(foundNodes.front()->iCurrentIndex.get(),(unsigned int)4);
-	QCOMPARE(foundNodes.back()->iCurrentIndex.get(),(unsigned int)4);
+	QCOMPARE(foundNodes.front()->iCurrentIndex.get(),(StartingIndex)4);
+	QCOMPARE(foundNodes.back()->iCurrentIndex.get(),(StartingIndex)4);
 }
 void CSearchResultTreeNodeTest ::test_FindOnDiffLevel_02()
 {
 	initialTreeForFindTests();
 	TreeNodesList foundNodes = root->find_node(5);
 	QCOMPARE(foundNodes.size(),(std::size_t)3);
-	QCOMPARE(foundNodes.front()->iCurrentIndex.get(),(unsigned int)5);
-	QCOMPARE(foundNodes.back()->iCurrentIndex.get(),(unsigned int)5);
+	QCOMPARE(foundNodes.front()->iCurrentIndex.get(),(StartingIndex)5);
+	QCOMPARE(foundNodes.back()->iCurrentIndex.get(),(StartingIndex)5);
 }

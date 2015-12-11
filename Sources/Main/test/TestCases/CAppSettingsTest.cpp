@@ -43,7 +43,7 @@ void CAppSettingsTest::test_SubstituteValuesConfiguration_Consonants()
 	QCOMPARE(stConfSubst.get_child(COUNT_KEYWORD).get_value<int>(),20);
 	QCOMPARE(sConsonants.size(),std::size_t(20));
 	std::pair<ptree::assoc_iterator, ptree::assoc_iterator> consonants_set = stConfSubst.equal_range(CONSONANTS_KEYWORD);
-	QCOMPARE(std::distance(consonants_set.first, consonants_set.second),20);
+	QCOMPARE(std::distance(consonants_set.first, consonants_set.second),(long)20);
 	for(ptree::assoc_iterator iter = consonants_set.first; iter != consonants_set.second; ++iter)
 	{
 		char cChar = iter->second.data().at(0);
@@ -74,12 +74,12 @@ void CAppSettingsTest::test_SubstituteValuesConfiguration_PtreeConfiguration()
 {
 	CSubstituteValuesConfiguration	stConfSubst;
 	std::pair<ptree::assoc_iterator, ptree::assoc_iterator> digital_conf_set = stConfSubst.equal_range(DIGITAL_CONF_KEYWORD);
-	QCOMPARE(std::distance(digital_conf_set.first, digital_conf_set.second),1);
+	QCOMPARE(std::distance(digital_conf_set.first, digital_conf_set.second),(long)1);
 
 	ptree digit_conf = stConfSubst.get_child(DIGITAL_CONF_KEYWORD);
 	QCOMPARE(digit_conf.count(DIGIT_KEYWORD),ptree::size_type(10));
 	std::pair<ptree::assoc_iterator, ptree::assoc_iterator> digits_set = digit_conf.equal_range(DIGIT_KEYWORD);
-	QCOMPARE(std::distance(digits_set.first, digits_set.second),10);
+	QCOMPARE(std::distance(digits_set.first, digits_set.second),(long)10);
 	QCOMPARE(digit_conf.get_child("name").get_value<std::string>(),std::string("basic"));
 	ptree::assoc_iterator digits_iter = digits_set.first;
 	testSingleDigitEntry(digits_iter->second, digit_entry(0,'Z','S'));
