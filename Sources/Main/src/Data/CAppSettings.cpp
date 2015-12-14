@@ -5,6 +5,8 @@
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
 #include <boost/filesystem.hpp>
+#include <iostream>
+#include <sstream>
 
 #define CONFIGURATION_FILE std::string("PhoneticNumberSystem.xml")
 const std::string strConfigurationFileName("PhoneticNumberSystem.xml");
@@ -43,11 +45,13 @@ void CAppSettingsPrivate::saveSettings()
 }
 void CAppSettingsPrivate::loadSettings()
 {
-	printLog(eDebug, eInfoLogLevel, "Loading properties file");
+	printLog(eDebug, eInfoLogLevel, "Loading properties file ("+CONFIGURATION_FILE+")");
 	using boost::property_tree::ptree;
 	try
 	{
-		read_xml(CONFIGURATION_FILE, *(static_cast<boost::property_tree::ptree*>(m_ptrPublic)), boost::property_tree::xml_parser::trim_whitespace);
+    std::basic_ifstream<char> stream(CONFIGURATION_FILE);
+    boost::property_tree::ptree & tree = *m_ptrPublic;
+		read_xml(stream, tree);
 	}
 	catch (boost::property_tree::xml_parser::xml_parser_error const&  /*ex*/)
 	{
