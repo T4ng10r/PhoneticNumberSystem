@@ -1,5 +1,5 @@
 #include <GUI/Settings/DictionariesConfigurationDlg.h>
-#include <Data/CAppSettings.h>
+#include <Data/AppSettings.h>
 #include <Data/CAppSettingsKeywords.h>
 #include <Data/CDataThread.h>
 #include <Tools/loggers.h>

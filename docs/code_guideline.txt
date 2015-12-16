@@ -1,0 +1,16 @@
+
+
+2. Naming convention
+2.1 Names for classes
+- do not use C prefix
+- names should be selfexplaining
+- for smarrt pointers -> add suffix Handle or Ptr
+
+
+2.2 Variables names
+- use only lower case for variable names
+- use prefix _
+- 
+
+
+

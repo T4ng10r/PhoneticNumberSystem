@@ -21,6 +21,7 @@ public:
 	void loadCurrentlySetDictionary();
 	WordsList getSearchResult(StartingIndex start_index);
   QTextCodec * get_current_codepage();
+  
 public Q_SLOTS:
   void onScanDirectoryForDictionaries();
 

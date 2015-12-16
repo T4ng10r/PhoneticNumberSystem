@@ -1,5 +1,5 @@
 #include <GUI/Settings/SubstituteValuesConfigurationDlg.h>
-#include <Data/CAppSettings.h>
+#include <Data/AppSettings.h>
 #include <Data/CAppSettingsKeywords.h>
 #include <Data/CAppSettings_XMLKeywords.h>
 #include <QString>

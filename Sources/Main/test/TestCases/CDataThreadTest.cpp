@@ -1,6 +1,6 @@
 #include <Data/CDataThread.h>
 #include <TestCases/CDataThreadTest.h>
-#include <Data/CAppSettings.h>
+#include <Data/AppSettings.h>
 #include <Data/CAppSettingsKeywords.h>
 #include <string>
 

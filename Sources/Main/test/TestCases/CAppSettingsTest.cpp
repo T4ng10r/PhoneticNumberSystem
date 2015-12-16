@@ -1,5 +1,5 @@
 #include <TestCases/CAppSettingsTest.h>
-#include <Data/CAppSettings.h>
+#include <Data/AppSettings.h>
 #include <iterator>	 //for distance
 #include <set>
 #include <boost/foreach.hpp>

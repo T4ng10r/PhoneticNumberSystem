@@ -1,7 +1,7 @@
 #include <GUI/Settings/AppSettingsDlg.h>
 #include <GUI/Settings/SubstituteValuesConfigurationDlg.h>
 #include <GUI/Settings/DictionariesConfigurationDlg.h>
-#include <Data/CAppSettings.h>
+#include <Data/AppSettings.h>
 #include <Data/CAppSettingsKeywords.h>
 #include <Tools/loggers.h>
 #include <QBoxLayout>
@@ -62,7 +62,7 @@ void CAppSettingsDlgPrivate::setConnections()
   bResult = QObject::connect(substituteConfiguration.get(), SIGNAL(set_selected_consonant_system(const QString &)), 
     gAppSettings.get(), SLOT(on_set_selected_consonant_system(const QString &)));
   logConnection("CAppSettingsDlgPrivate::setConnections",
-    "'substituteConfiguration::set_selected_consonant_system' with 'CAppSettings::on_set_selected_consonant_system'", 
+    "'substituteConfiguration::set_selected_consonant_system' with 'AppSettings::on_set_selected_consonant_system'", 
     bResult);
 }
 //////////////////////////////////////////////////////////////////////////

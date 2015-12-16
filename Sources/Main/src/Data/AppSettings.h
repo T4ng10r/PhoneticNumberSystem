@@ -1,5 +1,5 @@
-#ifndef _CAPPSETTINGS_INCLUDE_
-#define _CAPPSETTINGS_INCLUDE_
+#ifndef _APPSETTINGS_INCLUDE_
+#define _APPSETTINGS_INCLUDE_
 
 #include <QtCore/QObject>
 #include <Data/CSystemDigitsConfiguration.h>
@@ -8,7 +8,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/property_tree/ptree.hpp>
 
-class CAppSettingsPrivate;
+class AppSettingsPrivate;
 
 // Set of consonants to use in substitution
 // set of possible substitute configurations
@@ -18,13 +18,15 @@ public:
 	CSubstituteValuesConfiguration();
 };
 
-class CAppSettings : public QObject, public boost::property_tree::ptree
+class AppSettings : public QObject, public boost::property_tree::ptree
 {
 	Q_OBJECT
-	friend class CAppSettingsPrivate;
+	friend class AppSettingsPrivate;
 public:
-	static boost::shared_ptr<CAppSettings> getInstance();
-	~CAppSettings();
+  typedef boost::shared_ptr<AppSettings> ptr;
+
+	static ptr instance();
+	~AppSettings();
 	void saveSettings();
 	const boost::property_tree::ptree & getSubstituteValuesConfiguration();
 	const std::vector<CSingleSubstituteDigitsConfiguration> & getDigitsConfiguraions();
@@ -32,10 +34,10 @@ public:
 public Q_SLOTS:
   void on_set_selected_consonant_system(const QString &);
 protected:
-	CAppSettings();
-	boost::scoped_ptr<CAppSettingsPrivate> m_ptrPriv;
-	static boost::shared_ptr<CAppSettings> pInstance_;
+	AppSettings();
+	boost::scoped_ptr<AppSettingsPrivate> pimpl;
+	static ptr _instance;
 };
-#define gAppSettings CAppSettings::getInstance() 
-#endif //_CAPPSETTINGS_INCLUDE_
+#define gAppSettings AppSettings::instance() 
+#endif //_APPSETTINGS_INCLUDE_
 
