@@ -13,13 +13,13 @@ struct digit_entry
 	char substitue_2;
 };
 
-class AppSettings;
+class Settings;
 
-class CAppSettingsTest : public QObject
+class CSettingsTest : public QObject
 {
     Q_OBJECT
 public:
-	AppSettings * m_ptrAppSettings;
+	Settings * m_ptrSettings;
 	void testSingleDigitEntry(boost::property_tree::ptree & digit_tree, const digit_entry & to_match);
 
 	private Q_SLOTS:
@@ -30,4 +30,4 @@ public:
 	void test_SubstituteValuesConfiguration_Configuration();
 };
 
-DECLARE_TEST(CAppSettingsTest)
+DECLARE_TEST(CSettingsTest)

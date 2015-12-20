@@ -1,7 +1,7 @@
 #include <GUI/Settings/SubstituteValuesConfigurationDlg.h>
-#include <Data/AppSettings.h>
-#include <Data/CAppSettingsKeywords.h>
-#include <Data/CAppSettings_XMLKeywords.h>
+#include <Data/Settings.h>
+#include <Data/CSettingsKeywords.h>
+#include <Data/CSettings_XMLKeywords.h>
 #include <QString>
 #include <QMenu>
 #include <QAction>
@@ -100,7 +100,7 @@ void CSubstituteValuesConfigurationDlgPrivate::setConfigurations()
 {
 	m_ptrSystemsCombo->disconnect(ptrPublic); 
 	m_ptrSystemsCombo->addItem(empty_system_name);
-	const std::vector<CSingleSubstituteDigitsConfiguration> & vDigitsConf = gAppSettings->getDigitsConfiguraions();
+	const std::vector<CSingleSubstituteDigitsConfiguration> & vDigitsConf = gSettings->getDigitsConfiguraions();
 	BOOST_FOREACH(const CSingleSubstituteDigitsConfiguration & digitsConf, vDigitsConf)
 		m_ptrSystemsCombo->addItem(digitsConf.strName.c_str());
   setConnections();

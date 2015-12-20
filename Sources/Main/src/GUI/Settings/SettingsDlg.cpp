@@ -1,37 +1,37 @@
-#include <GUI/Settings/AppSettingsDlg.h>
+#include <GUI/Settings/SettingsDlg.h>
 #include <GUI/Settings/SubstituteValuesConfigurationDlg.h>
 #include <GUI/Settings/DictionariesConfigurationDlg.h>
-#include <Data/AppSettings.h>
-#include <Data/CAppSettingsKeywords.h>
+#include <Data/Settings.h>
+#include <Data/CSettingsKeywords.h>
 #include <Tools/loggers.h>
 #include <QBoxLayout>
 #include <QTabWidget>
 #include <Tools/qtTools.h>
 
-class CAppSettingsDlgPrivate
+class CSettingsDlgPrivate
 {
 public:
-     CAppSettingsDlgPrivate(CAppSettingsDlg * ptrPublic);
-     ~CAppSettingsDlgPrivate();
+     CSettingsDlgPrivate(CSettingsDlg * ptrPublic);
+     ~CSettingsDlgPrivate();
 	 void setupUI();
 	 void setConnections();
 public:
-     CAppSettingsDlg *				m_ptrPublic;
+     CSettingsDlg *				m_ptrPublic;
 	 QVBoxLayout *					mainVerticalLayout;
 	 QTabWidget *					tabWidget;
 	 boost::shared_ptr<CSubstituteValuesConfigurationDlg>	substituteConfiguration;
 	 boost::shared_ptr<CDictionariesConfigurationDlg>		dictionariesConfiguration;
 };
 
-CAppSettingsDlgPrivate::CAppSettingsDlgPrivate(CAppSettingsDlg * ptrPublic):m_ptrPublic(ptrPublic)
+CSettingsDlgPrivate::CSettingsDlgPrivate(CSettingsDlg * ptrPublic):m_ptrPublic(ptrPublic)
 {
 	setupUI();
 	setConnections();
 }
-CAppSettingsDlgPrivate::~CAppSettingsDlgPrivate(){}
-void CAppSettingsDlgPrivate::setupUI()
+CSettingsDlgPrivate::~CSettingsDlgPrivate(){}
+void CSettingsDlgPrivate::setupUI()
 {
-	m_ptrPublic->setObjectName(QString::fromUtf8("AppSettingsDlg"));
+	m_ptrPublic->setObjectName(QString::fromUtf8("SettingsDlg"));
 	mainVerticalLayout = new QVBoxLayout(m_ptrPublic);
 	mainVerticalLayout->setObjectName(QString::fromUtf8("mainVerticalLayout"));
 
@@ -41,8 +41,8 @@ void CAppSettingsDlgPrivate::setupUI()
 	//CSubstituteValuesConfiguration  stSubstituteValuesConfiguration;
   CSubstituteValuesConfigurationDlgInit init_data = 
     { CSubstituteValuesConfiguration(), 
-    gAppSettings->getDigitsConfiguraions(), 
-    gAppSettings->get<std::string>(SELECTED_CONSONANTS_SYSTEM,"").c_str()
+    gSettings->getDigitsConfiguraions(), 
+    gSettings->get<std::string>(SELECTED_CONSONANTS_SYSTEM,"").c_str()
     };
 	substituteConfiguration.reset(new CSubstituteValuesConfigurationDlg(init_data));
 	tabWidget->addTab(substituteConfiguration.get(), "Consonants");
@@ -50,28 +50,28 @@ void CAppSettingsDlgPrivate::setupUI()
 	dictionariesConfiguration.reset(new CDictionariesConfigurationDlg);
 	tabWidget->addTab(dictionariesConfiguration.get(), "Dictionaries");
 }
-void CAppSettingsDlgPrivate::setConnections()
+void CSettingsDlgPrivate::setConnections()
 {
 	bool bResult = false;
 	bResult = QObject::connect(dictionariesConfiguration.get(), SIGNAL(dictionarySelected()), 
 		m_ptrPublic, SIGNAL(dictionarySelected()));
-	logConnection("CAppSettingsDlgPrivate::setConnections",
-		"'dictionariesConfiguration::dictionarySelected' with 'CAppSettingsDlg::dictionarySelected'", 
+	logConnection("CSettingsDlgPrivate::setConnections",
+		"'dictionariesConfiguration::dictionarySelected' with 'CSettingsDlg::dictionarySelected'", 
 		bResult);
   //////////////////////////////////////////////////////////////////////////
   bResult = QObject::connect(substituteConfiguration.get(), SIGNAL(set_selected_consonant_system(const QString &)), 
-    gAppSettings.get(), SLOT(on_set_selected_consonant_system(const QString &)));
-  logConnection("CAppSettingsDlgPrivate::setConnections",
-    "'substituteConfiguration::set_selected_consonant_system' with 'AppSettings::on_set_selected_consonant_system'", 
+    gSettings.get(), SLOT(on_set_selected_consonant_system(const QString &)));
+  logConnection("CSettingsDlgPrivate::setConnections",
+    "'substituteConfiguration::set_selected_consonant_system' with 'Settings::on_set_selected_consonant_system'", 
     bResult);
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
-CAppSettingsDlg::CAppSettingsDlg(QWidget * parent):QWidget(parent),
-	m_ptrPriv(new CAppSettingsDlgPrivate(this))
+CSettingsDlg::CSettingsDlg(QWidget * parent):QWidget(parent),
+	m_ptrPriv(new CSettingsDlgPrivate(this))
 {}
-CAppSettingsDlg::~CAppSettingsDlg(void){}
-void CAppSettingsDlg::performInitialUpdateAfterAllChildrenUpdate()
+CSettingsDlg::~CSettingsDlg(void){}
+void CSettingsDlg::performInitialUpdateAfterAllChildrenUpdate()
 {
 	m_ptrPriv->dictionariesConfiguration->updateInitialData();
 }

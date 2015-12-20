@@ -1,7 +1,7 @@
 #include <Data/DataThread.h>
 #include <GUI/MainWindow.h>
 #include <GUI/MainWindow_p.h>
-#include <GUI/Settings/AppSettingsDlg.h>
+#include <GUI/Settings/SettingsDlg.h>
 #include <QFileInfo>
 #include <QStatusBar>
 #include <QMenuBar>
@@ -24,7 +24,7 @@ void CMainWindow::closeEvent(QCloseEvent *)
 {
 	gDataThread->thread()->quit();
 }
-void CMainWindow::onShowAppSettingsConfigureDialog(bool)
+void CMainWindow::onShowSettingsConfigureDialog(bool)
 {
 	m_ptrPriv->appSettingsDlg->show();
 }

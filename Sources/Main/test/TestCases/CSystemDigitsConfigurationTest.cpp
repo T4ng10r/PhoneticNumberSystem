@@ -26,7 +26,7 @@ void CSystemDigitsConfigurationTest::init()
 }
 void CSystemDigitsConfigurationTest::cleanup()
 {
-	//m_ptrAppSettings.reset();
+	//m_ptrSettings.reset();
 }
 void CSystemDigitsConfigurationTest::test_CreateConsonantsDigits_data()
 {

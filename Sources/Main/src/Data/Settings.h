@@ -1,5 +1,5 @@
-#ifndef _APPSETTINGS_INCLUDE_
-#define _APPSETTINGS_INCLUDE_
+#ifndef _SETTINGS_INCLUDE_
+#define _SETTINGS_INCLUDE_
 
 #include <QtCore/QObject>
 #include <Data/CSystemDigitsConfiguration.h>
@@ -8,7 +8,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/property_tree/ptree.hpp>
 
-class AppSettingsPrivate;
+class SettingsPrivate;
 
 // Set of consonants to use in substitution
 // set of possible substitute configurations
@@ -18,15 +18,15 @@ public:
 	CSubstituteValuesConfiguration();
 };
 
-class AppSettings : public QObject, public boost::property_tree::ptree
+class Settings : public QObject, public boost::property_tree::ptree
 {
 	Q_OBJECT
-	friend class AppSettingsPrivate;
+	friend class SettingsPrivate;
 public:
-  typedef boost::shared_ptr<AppSettings> ptr;
+  typedef boost::shared_ptr<Settings> ptr;
 
 	static ptr instance();
-	~AppSettings();
+	~Settings();
 	void saveSettings();
 	const boost::property_tree::ptree & getSubstituteValuesConfiguration();
 	const std::vector<CSingleSubstituteDigitsConfiguration> & getDigitsConfiguraions();
@@ -34,10 +34,10 @@ public:
 public Q_SLOTS:
   void on_set_selected_consonant_system(const QString &);
 protected:
-	AppSettings();
-	boost::scoped_ptr<AppSettingsPrivate> pimpl;
+	Settings();
+	boost::scoped_ptr<SettingsPrivate> pimpl;
 	static ptr _instance;
 };
-#define gAppSettings AppSettings::instance() 
-#endif //_APPSETTINGS_INCLUDE_
+#define gSettings Settings::instance() 
+#endif //_SETTINGS_INCLUDE_
 

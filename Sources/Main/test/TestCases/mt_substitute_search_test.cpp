@@ -1,6 +1,6 @@
 #include <TestCases/mt_substitute_search_test.h>
 #include <Data/CSubstituteSearch.h>
-#include <Data/CAppSettingsKeywords.h>
+#include <Data/CSettingsKeywords.h>
 //#include <Data/CSubstituteSearch.cpp>
 #include <set>
 #include <boost/foreach.hpp>

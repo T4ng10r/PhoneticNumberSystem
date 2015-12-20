@@ -1,6 +1,6 @@
 #include <GUI/Settings/DictionariesConfigurationDlg.h>
-#include <Data/AppSettings.h>
-#include <Data/CAppSettingsKeywords.h>
+#include <Data/Settings.h>
+#include <Data/CSettingsKeywords.h>
 #include <Data/DataThread.h>
 #include <Tools/loggers.h>
 #include <Tools/qtTools.h>
@@ -169,7 +169,7 @@ void CDictionariesConfigurationDlgPrivate::setupUI_RefreshDictionariesFilesMenu(
 {
 	try
 	{
-		const boost::property_tree::ptree & dictFilesTree = gAppSettings->get_child(DICTIONARY_FILES_LIST);
+		const boost::property_tree::ptree & dictFilesTree = gSettings->get_child(DICTIONARY_FILES_LIST);
 		BOOST_FOREACH(const boost::property_tree::ptree::value_type & dictionaryFileItem, dictFilesTree)
 		{
 			QString actionText = dictionaryFileItem.second.data().c_str();
@@ -240,7 +240,7 @@ void CDictionariesConfigurationDlgPrivate::setDictionaryFilesMenuActionConnectio
 }
 void CDictionariesConfigurationDlgPrivate::setCurrentlySetDictionaryInMenu()
 {
-	QString dictDir = gAppSettings->get<std::string>(SELECTED_DICTIONARY,"").c_str();
+	QString dictDir = gSettings->get<std::string>(SELECTED_DICTIONARY,"").c_str();
 	if (dictDir.length()==0)
 		return;
 	Q_FOREACH(QAction * const action, dicionariesFilesMenu->actions())
@@ -261,24 +261,24 @@ m_ptrPriv(new CDictionariesConfigurationDlgPrivate(this))
 CDictionariesConfigurationDlg::~CDictionariesConfigurationDlg(void){}
 void CDictionariesConfigurationDlg::updateInitialData()
 {
-	m_ptrPriv->dictionaryDirectoryEdit->setText(gAppSettings->get<std::string>(DICTIONARIES_DIRECTORY,"").c_str());
+	m_ptrPriv->dictionaryDirectoryEdit->setText(gSettings->get<std::string>(DICTIONARIES_DIRECTORY,"").c_str());
 	Q_EMIT onDictionaryDirectoryChanged();
 	m_ptrPriv->setCurrentlySetDictionaryInMenu();
 }
 void CDictionariesConfigurationDlg::onSelectDictionaryDirectory()
 {
-	QString dictDir = gAppSettings->get<std::string>(DICTIONARIES_DIRECTORY).c_str();
+	QString dictDir = gSettings->get<std::string>(DICTIONARIES_DIRECTORY).c_str();
 	QString dir = QFileDialog::getExistingDirectory(this, tr("Select Dictionaries Directory"));
 	if (dir==dictDir)
 		return;
-	gAppSettings->put<std::string>(DICTIONARIES_DIRECTORY,dir.toStdString());
+	gSettings->put<std::string>(DICTIONARIES_DIRECTORY,dir.toStdString());
 	m_ptrPriv->dictionaryDirectoryEdit->setText(dir);
 	Q_EMIT onDictionaryDirectoryChanged();
 }
 void CDictionariesConfigurationDlg::onDictionariesFilesRefreshed()
 {
 	m_ptrPriv->dicionariesFilesMenu->clear();
-	QString dictDir = gAppSettings->get<std::string>(DICTIONARIES_DIRECTORY).c_str();
+	QString dictDir = gSettings->get<std::string>(DICTIONARIES_DIRECTORY).c_str();
 	m_ptrPriv->dictionaryDirectoryEdit->setText(dictDir);
 	m_ptrPriv->setupUI_RefreshDictionariesFilesMenu();
 }
@@ -294,7 +294,7 @@ void CDictionariesConfigurationDlg::onDictionaryFilesMenuActionToggled()
 	}
 	dictionaryName.remove(DICTIONARY_FILE_EXTENSION);
 	m_ptrPriv->changeDictionaryButton->setText(dictionaryName);
-	gAppSettings->put<std::string>(SELECTED_DICTIONARY,dictionaryName.toStdString());
-	gAppSettings->saveSettings();
+	gSettings->put<std::string>(SELECTED_DICTIONARY,dictionaryName.toStdString());
+	gSettings->saveSettings();
 	Q_EMIT dictionarySelected();
 }

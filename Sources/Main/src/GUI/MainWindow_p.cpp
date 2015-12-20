@@ -1,13 +1,13 @@
 #include <GUI/MainWindow.h>
 #include <GUI/MainWindow_p.h>
-#include <GUI/Settings/AppSettingsDlg.h>
+#include <GUI/Settings/SettingsDlg.h>
 #include <Data/DataThread.h>
 #include <QStatusBar>
 #include <QMenuBar>
 #include <QFileInfo>
 #include <Tools/loggers.h>
 #include <Tools/qtTools.h>
-#include <Data/AppSettings.h>
+#include <Data/Settings.h>
 #include <boost/scoped_ptr.hpp>
 
 const QSize ciSize(700,450);
@@ -31,7 +31,7 @@ void CMainWindowPrivate::setupUI()
 	mainLayout = new QVBoxLayout;
 	delete m_ptCentralWidget->layout();
 	m_ptCentralWidget->setLayout(mainLayout);
-	appSettingsDlg.reset(new CAppSettingsDlg);
+	appSettingsDlg.reset(new CSettingsDlg);
 
 	searchPhoneticRepresentations.reset(new CSearchPhoneticRepresentationsDlg);
 	mainLayout->addWidget(searchPhoneticRepresentations.get());
@@ -40,7 +40,7 @@ void CMainWindowPrivate::setConnections()
 {
 	bool bResult = false;
 	bResult = QObject::connect(m_actionConfiguration, SIGNAL(triggered(bool)), 
-		m_ptrPublic, SLOT(onShowAppSettingsConfigureDialog(bool)));
+		m_ptrPublic, SLOT(onShowSettingsConfigureDialog(bool)));
 	logConnection("CMainWindowPrivate::setConnections",
 		"'CMainWindowPrivate::triggered' with 'CMainWindow::onActionTrigger'", 
 		bResult);

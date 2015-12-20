@@ -1,5 +1,5 @@
-#include <Data/AppSettings.h>
-#include <Data/CAppSettingsKeywords.h>
+#include <Data/Settings.h>
+#include <Data/CSettingsKeywords.h>
 #include <Tools/loggers.h>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/foreach.hpp>
@@ -11,39 +11,39 @@
 #define CONFIGURATION_FILE std::string("PhoneticNumberSystem.xml")
 const std::string strConfigurationFileName("PhoneticNumberSystem.xml");
 
-AppSettings::ptr AppSettings::_instance;
+Settings::ptr Settings::_instance;
 
-class AppSettingsPrivate
+class SettingsPrivate
 {
 public:
-	AppSettingsPrivate(AppSettings * ptrPublic);
-	~AppSettingsPrivate();
+	SettingsPrivate(Settings * ptrPublic);
+	~SettingsPrivate();
 	void loadSettings();
 	void defaultValues();
 	void getDigitsConfiguration();
 	void saveSettings();
 public:
 	//boost::shared_ptr<CSubstituteValuesConfiguration>	m_ptrSubstValConf;
-	AppSettings *							m_ptrPublic;
+	Settings *							m_ptrPublic;
 	boost::property_tree::ptree				m_ptrSubstValConf;
 	std::vector<CSingleSubstituteDigitsConfiguration>	m_vDigitsConfiguration;
 };
 //////////////////////////////////////////////////////////////////////////
-AppSettingsPrivate::AppSettingsPrivate(AppSettings * ptrPublic):m_ptrPublic(ptrPublic)
+SettingsPrivate::SettingsPrivate(Settings * ptrPublic):m_ptrPublic(ptrPublic)
 {
 	loadSettings();
 	getDigitsConfiguration();
 	defaultValues();
 }
-AppSettingsPrivate::~AppSettingsPrivate()
+SettingsPrivate::~SettingsPrivate()
 {
 }
-void AppSettingsPrivate::saveSettings()
+void SettingsPrivate::saveSettings()
 {
 	boost::property_tree::xml_writer_settings<std::string> settings; ("\t", 1);
 	write_xml(CONFIGURATION_FILE, *(static_cast<boost::property_tree::ptree*>(m_ptrPublic)),std::locale()/*, settings*/);
 }
-void AppSettingsPrivate::loadSettings()
+void SettingsPrivate::loadSettings()
 {
 	printLog(eDebug, eInfoLogLevel, "Loading properties file ("+CONFIGURATION_FILE+")");
 	using boost::property_tree::ptree;
@@ -59,10 +59,10 @@ void AppSettingsPrivate::loadSettings()
 	}
 	printLog(eDebug, eInfoLogLevel, "Loading properties file finished");
 	m_ptrSubstValConf = m_ptrPublic->get_child(CONSONANTS_SETTINGS);
-	printLog(eDebug, eDebugLogLevel, "AppSettings: loading settings from file finished");
+	printLog(eDebug, eDebugLogLevel, "Settings: loading settings from file finished");
 }
 
-void AppSettingsPrivate::getDigitsConfiguration()
+void SettingsPrivate::getDigitsConfiguration()
 {
 	using boost::property_tree::ptree;
 	CSingleSubstituteDigitsConfiguration  stSystemDigitsConfiguration;
@@ -110,7 +110,7 @@ void AppSettingsPrivate::getDigitsConfiguration()
 		m_vDigitsConfiguration.push_back(stSystemDigitsConfiguration);
 	}
 }
-void AppSettingsPrivate::defaultValues()
+void SettingsPrivate::defaultValues()
 {
 	try
 	{
@@ -124,47 +124,47 @@ void AppSettingsPrivate::defaultValues()
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
-AppSettings::AppSettings():pimpl(new AppSettingsPrivate(this))
+Settings::Settings():pimpl(new SettingsPrivate(this))
 {
-	printLog(eDebug, eDebugLogLevel, "AppSettings created");
+	printLog(eDebug, eDebugLogLevel, "Settings created");
 }
-AppSettings::~AppSettings(){}
-const boost::property_tree::ptree &AppSettings::getSubstituteValuesConfiguration()
+Settings::~Settings(){}
+const boost::property_tree::ptree &Settings::getSubstituteValuesConfiguration()
 {
 	printLog(eDebug, eDebugLogLevel, "SubstituteValuesConfiguration provided");
 	return pimpl->m_ptrSubstValConf;
 }
-AppSettings::ptr AppSettings::instance()
+Settings::ptr Settings::instance()
 {
 	if(!_instance)
 	{
 		if(!_instance)
 		{
-			_instance.reset(new AppSettings());
+			_instance.reset(new Settings());
 		}
 	}
 	return _instance;
 }
-void AppSettings::saveSettings()
+void Settings::saveSettings()
 {
 	pimpl->saveSettings();
 }
-const std::vector<CSingleSubstituteDigitsConfiguration> & AppSettings::getDigitsConfiguraions()
+const std::vector<CSingleSubstituteDigitsConfiguration> & Settings::getDigitsConfiguraions()
 {
 	return pimpl->m_vDigitsConfiguration;
 }
-//std::string AppSettings::getCurrentDictPath()
+//std::string Settings::getCurrentDictPath()
 //{
 //	std::string strPath;
 //	return strPath;
 //}
-void AppSettings::on_set_selected_consonant_system(const QString &)
+void Settings::on_set_selected_consonant_system(const QString &)
 {
 
 }
 //////////////////////////////////////////////////////////////////////////
 CSubstituteValuesConfiguration::CSubstituteValuesConfiguration():
-boost::property_tree::ptree(gAppSettings->getSubstituteValuesConfiguration())
+boost::property_tree::ptree(gSettings->getSubstituteValuesConfiguration())
 {
 }
 

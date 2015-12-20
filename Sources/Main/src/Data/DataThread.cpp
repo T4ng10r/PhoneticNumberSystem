@@ -1,8 +1,8 @@
 #include <Data/DataThread.h>
 #include <QString>
 #include <QApplication>
-#include <Data/AppSettings.h>
-#include <Data/CAppSettingsKeywords.h>
+#include <Data/Settings.h>
+#include <Data/CSettingsKeywords.h>
 #include <Data/CDictionaryData.h>
 #include <Data/CSubstituteSearch.h>
 #include <QtCore/QDir>
@@ -51,7 +51,7 @@ boost::optional<QDir> DataThreadPrivate::get_dictionaries_directory()
 	QString dirPath;
 	try
 	{
-		dirPath = gAppSettings->get<std::string>(DICTIONARIES_DIRECTORY).c_str();
+		dirPath = gSettings->get<std::string>(DICTIONARIES_DIRECTORY).c_str();
 	}
 	catch (boost::property_tree::ptree_bad_path &e)
 	{
@@ -64,20 +64,20 @@ boost::optional<QDir> DataThreadPrivate::get_dictionaries_directory()
 
 bool DataThreadPrivate::checkCurrentAppDictionary()
 {
-	//std::string currentAppDictPath = gAppSettings->getCurrentDictPath();
+	//std::string currentAppDictPath = gSettings->getCurrentDictPath();
 	return false;
 }
 std::string  DataThreadPrivate::createCurrentDictionaryPath() 
 {
-	std::string dictionaryName = gAppSettings->get<std::string>(SELECTED_DICTIONARY,"");
-	std::string dictionaryDir = gAppSettings->get<std::string>(DICTIONARIES_DIRECTORY,"");
+	std::string dictionaryName = gSettings->get<std::string>(SELECTED_DICTIONARY,"");
+	std::string dictionaryDir = gSettings->get<std::string>(DICTIONARIES_DIRECTORY,"");
 	std::string dictionaryPath = dictionaryDir + QDir::separator().toLatin1() + dictionaryName+DICTIONARY_FILE_EXTENSION;
 	return dictionaryPath;
 }
 std::string  DataThreadPrivate::createCurrentDictionaryAffPath() 
 {
-	std::string dictionaryName = gAppSettings->get<std::string>(SELECTED_DICTIONARY,"");
-	std::string dictionaryDir = gAppSettings->get<std::string>(DICTIONARIES_DIRECTORY,"");
+	std::string dictionaryName = gSettings->get<std::string>(SELECTED_DICTIONARY,"");
+	std::string dictionaryDir = gSettings->get<std::string>(DICTIONARIES_DIRECTORY,"");
 	std::string dictionaryPath = dictionaryDir + QDir::separator().toLatin1() + dictionaryName+DICTIONARY_AFF_FILE_EXTENSION;
 	return dictionaryPath;
 }
@@ -99,7 +99,7 @@ void DataThreadPrivate::setConnections()
 }
 void DataThreadPrivate::prepareDirectories()
 {
-	std::string dictionaryDir = gAppSettings->get<std::string>(DICTIONARIES_DIRECTORY,"");
+	std::string dictionaryDir = gSettings->get<std::string>(DICTIONARIES_DIRECTORY,"");
 	//check if DICTIONARIES_DIRECTORY exist in settings
 	QDir dir;
 	if (false==dir.exists(dictionaryDir.c_str()))
@@ -117,7 +117,7 @@ _pimpl(new DataThreadPrivate(this))
 	this->moveToThread(thread);
 	thread->start();
 }
-boost::shared_ptr<DataThread> DataThread::instance()
+DataThread::ptr DataThread::instance()
 {
 	if(!_instance)
 	{
@@ -153,15 +153,15 @@ void DataThread::onScanDirectoryForDictionaries()
 		return;
 	try
 	{
-		gAppSettings->get_child(DICTIONARY_FILES_LIST).erase("file");
+		gSettings->get_child(DICTIONARY_FILES_LIST).erase("file");
 	}
 	catch (boost::property_tree::ptree_bad_path &/*e*/)
 	{
-		gAppSettings->put<std::string>(DICTIONARY_FILES_LIST,"");
+		gSettings->put<std::string>(DICTIONARY_FILES_LIST,"");
 	}
 	Q_FOREACH ( const QFileInfo & fileItem, dictionaryFileList )
 	{
-		gAppSettings->add(DICTIONARY_FILE_ITEM, fileItem.fileName().toStdString());
+		gSettings->add(DICTIONARY_FILE_ITEM, fileItem.fileName().toStdString());
 		//dodaj listê dostêpnych s³owników do appsettings
 	}
 	//sprawdz wszystkie podkatalogi pierwszego poziomu 
@@ -174,12 +174,12 @@ void DataThread::onSetDictionary()
 }
 void DataThread::onNumberSearchStarted(const std::string & number)
 {
-	if (gAppSettings->getDigitsConfiguraions().size()<=0)
+	if (gSettings->getDigitsConfiguraions().size()<=0)
 	{
 		Q_EMIT searchFinished(false);
 		return;
 	}
-	_pimpl->substituteSearch->setSubstituteDigitsConfiguration(gAppSettings->getDigitsConfiguraions()[0]);
+	_pimpl->substituteSearch->setSubstituteDigitsConfiguration(gSettings->getDigitsConfiguraions()[0]);
 	_pimpl->substituteSearch->setDictionaryWords(_pimpl->dictionaryData);
 	_pimpl->substituteSearch->startSearchForNumber(number);
 }

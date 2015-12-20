@@ -1,5 +1,5 @@
-#include <TestCases/CAppSettingsTest.h>
-#include <Data/AppSettings.h>
+#include <TestCases/CSettingsTest.h>
+#include <Data/Settings.h>
 #include <iterator>	 //for distance
 #include <set>
 #include <boost/foreach.hpp>
@@ -23,15 +23,15 @@ ptree getChildTree( ptree & item )
 	return item;
 }
 
-void CAppSettingsTest::init()
+void CSettingsTest::init()
 {
-	m_ptrAppSettings = gAppSettings.get();
+	m_ptrSettings = gSettings.get();
 }
-void CAppSettingsTest::cleanup()
+void CSettingsTest::cleanup()
 {
-	//m_ptrAppSettings.reset();
+	//m_ptrSettings.reset();
 }
-void CAppSettingsTest::test_SubstituteValuesConfiguration_Consonants()
+void CSettingsTest::test_SubstituteValuesConfiguration_Consonants()
 {
 	char tabConsonants[] = {'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 
 		'S', 'T', 'V', 'X', 'Z', 'W'};
@@ -52,7 +52,7 @@ void CAppSettingsTest::test_SubstituteValuesConfiguration_Consonants()
 	QCOMPARE(sConsonants.size(),std::size_t(0));
 }
 
-void CAppSettingsTest::testSingleDigitEntry( boost::property_tree::ptree & digit_tree, const digit_entry & to_match)
+void CSettingsTest::testSingleDigitEntry( boost::property_tree::ptree & digit_tree, const digit_entry & to_match)
 {
 	ptree child = getChildTree(digit_tree);
 	ptree::const_iterator iter = child.begin();
@@ -70,7 +70,7 @@ void CAppSettingsTest::testSingleDigitEntry( boost::property_tree::ptree & digit
 	if (val)
 		QCOMPARE(val.get(),to_match.substitue_2);
 }
-void CAppSettingsTest::test_SubstituteValuesConfiguration_PtreeConfiguration()
+void CSettingsTest::test_SubstituteValuesConfiguration_PtreeConfiguration()
 {
 	CSubstituteValuesConfiguration	stConfSubst;
 	std::pair<ptree::assoc_iterator, ptree::assoc_iterator> digital_conf_set = stConfSubst.equal_range(DIGITAL_CONF_KEYWORD);
@@ -104,9 +104,9 @@ void CAppSettingsTest::test_SubstituteValuesConfiguration_PtreeConfiguration()
 	testSingleDigitEntry(digits_iter->second, digit_entry(9,'P','B'));
 
 }
-void CAppSettingsTest::test_SubstituteValuesConfiguration_Configuration()
+void CSettingsTest::test_SubstituteValuesConfiguration_Configuration()
 {
-	const std::vector<CSingleSubstituteDigitsConfiguration> & vDigitsConf = gAppSettings->getDigitsConfiguraions();
+	const std::vector<CSingleSubstituteDigitsConfiguration> & vDigitsConf = gSettings->getDigitsConfiguraions();
 	QCOMPARE(vDigitsConf.size(), std::size_t(1));
 	const CSingleSubstituteDigitsConfiguration & digits_conf = vDigitsConf[0];
 	QCOMPARE(digits_conf.strName,std::string("basic"));

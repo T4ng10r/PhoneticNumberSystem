@@ -1,6 +1,6 @@
 #include "TestCases/CSubstituteValuesConfigurationDlgTest.h" 
 #include <GUI/Settings/SubstituteValuesConfigurationDlg.cpp> 
-#include <Data/CAppSettings_XMLKeywords.h>
+#include <Data/CSettings_XMLKeywords.h>
 //#include <QMetaType>
 #include <string>
 

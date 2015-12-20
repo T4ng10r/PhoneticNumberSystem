@@ -4,19 +4,19 @@
 #include <QWidget>
 #include <boost/scoped_ptr.hpp>
 
-class CAppSettingsDlgPrivate;
+class CSettingsDlgPrivate;
 
-class CAppSettingsDlg : public QWidget
+class CSettingsDlg : public QWidget
 {
      Q_OBJECT
-     friend class AppSettingsDlgPrivate;
+     friend class SettingsDlgPrivate;
 public:
-     CAppSettingsDlg(QWidget * parent = NULL);
-     ~CAppSettingsDlg(void);
+     CSettingsDlg(QWidget * parent = NULL);
+     ~CSettingsDlg(void);
 	 void performInitialUpdateAfterAllChildrenUpdate();
 Q_SIGNALS:
 	 void dictionarySelected();
 protected:
-     boost::scoped_ptr<CAppSettingsDlgPrivate> m_ptrPriv;
+     boost::scoped_ptr<CSettingsDlgPrivate> m_ptrPriv;
 };
 #endif //_APPSETTINGSDLG_INCLUDE_

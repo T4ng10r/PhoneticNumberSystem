@@ -1,7 +1,7 @@
 #include <Data/DataThread.h>
 #include <TestCases/CDataThreadTest.h>
-#include <Data/AppSettings.h>
-#include <Data/CAppSettingsKeywords.h>
+#include <Data/Settings.h>
+#include <Data/CSettingsKeywords.h>
 #include <string>
 
 const std::string short_dict("pl_PL_short");
@@ -14,15 +14,15 @@ const unsigned int timeouts_count(5); //in s
 void CDataThreadTest::initTestCase()
 {
 	gDataThread;
-	gAppSettings->put(SELECTED_DICTIONARY,"");
-	gAppSettings->put(DICTIONARIES_DIRECTORY,"");
+	gSettings->put(SELECTED_DICTIONARY,"");
+	gSettings->put(DICTIONARIES_DIRECTORY,"");
 }
 
 void CDataThreadTest::test_serching_short_dict()
 {
 	int iCount =0;
-	gAppSettings->put(SELECTED_DICTIONARY,short_dict);
-	gAppSettings->put(DICTIONARIES_DIRECTORY,dict_directory);
+	gSettings->put(SELECTED_DICTIONARY,short_dict);
+	gSettings->put(DICTIONARIES_DIRECTORY,dict_directory);
 
 	QSignalSpy  dictionary_loaded_spy(gDataThread.get(), SIGNAL(dictionaryLoaded(bool)));
 	gDataThread->onSetDictionary();

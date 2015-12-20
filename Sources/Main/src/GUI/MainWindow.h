@@ -14,7 +14,7 @@ public:
 	CMainWindow();
 	~CMainWindow();
 public Q_SLOTS:
-	void onShowAppSettingsConfigureDialog(bool);
+	void onShowSettingsConfigureDialog(bool);
 protected:
 	void closeEvent(QCloseEvent *);
 	QString strippedName(const QString &fullFileName);

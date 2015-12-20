@@ -1,6 +1,6 @@
 #include <Tools/loggers.h>
 #include <Data/CSubstituteSearch.h>
-#include <Data/AppSettings.h>
+#include <Data/Settings.h>
 #include <Data/SearchResultTreeNode.h>
 #include <boost/algorithm/string.hpp>	//boost::to_upper_copy
 #include <boost/foreach.hpp>
