@@ -1,7 +1,7 @@
 #include <GUI/ComposeSubstituteSentenceWidget.h>
 #include <GUI/SubstituteSearchResultComboDelegate.h>
 #include <GUI/SubstituteSearchResultComboBox.h>
-#include <Data/CDataThread.h>
+#include <Data/DataThread.h>
 #include <Tools/loggers.h>
 #include <Tools/qtTools.h>
 #include <boost/format.hpp>
@@ -83,7 +83,7 @@ void ComposeSubstituteSentenceWidgetPrivate::fill_combo_box(const WordsList & li
 	//combo_id
 	combo_box->addItem("");
 
-	QTextCodec * codec = CDataThread::getInstance()->get_current_codepage();
+	QTextCodec * codec = DataThread::getInstance()->get_current_codepage();
 	for (const SuccessWord & word : list)
 	{
 		QString q_word = process_word(word, codec);
@@ -130,7 +130,7 @@ ComposeSubstituteSentenceWidget::~ComposeSubstituteSentenceWidget(void){}
 void ComposeSubstituteSentenceWidget::initialize_after_success_search()
 {
 	priv_part->reset();
-	WordsList result = CDataThread::getInstance()->getSearchResult(0);
+	WordsList result = DataThread::getInstance()->getSearchResult(0);
 	result.sort(cmp_success_words);
 	priv_part->fill_combo_box(result, 0);
 }
@@ -150,7 +150,7 @@ void ComposeSubstituteSentenceWidget::on_word_selected(int selected_index)
 	std::size_t node_id = success_word.coveragePairs.front().second+1;
 
 	printLog(eDebug, eInfoLogLevel, str(boost::format("node id %1%") % node_id));
-	WordsList result = CDataThread::getInstance()->getSearchResult(node_id);
+	WordsList result = DataThread::getInstance()->getSearchResult(node_id);
 	if (result.size())
 	{
 		result.sort(cmp_success_words);

@@ -1,7 +1,7 @@
 #include <GUI/MainWindow.h>
 #include <GUI/MainWindow_p.h>
 #include <GUI/Settings/AppSettingsDlg.h>
-#include <Data/CDataThread.h>
+#include <Data/DataThread.h>
 #include <QStatusBar>
 #include <QMenuBar>
 #include <QFileInfo>
@@ -16,7 +16,7 @@ CMainWindowPrivate::CMainWindowPrivate(CMainWindow * ptrPublic):m_ptrPublic(ptrP
 {
 	setupUI();
 	setupActions();
-	CDataThread::getInstance();
+	DataThread::getInstance();
 	setConnections();
 	appSettingsDlg->performInitialUpdateAfterAllChildrenUpdate();
 	m_ptrPublic->statusBar()->showMessage("Ready");
@@ -46,21 +46,21 @@ void CMainWindowPrivate::setConnections()
 		bResult);
 
 	bResult = QObject::connect(searchPhoneticRepresentations.get(), SIGNAL(performSearch(const std::string & )),
-		CDataThread::getInstance().get(), SLOT(onNumberSearchStarted(const std::string & )) );
+		DataThread::getInstance().get(), SLOT(onNumberSearchStarted(const std::string & )) );
 	logConnection("CMainWindowPrivate::setConnections",
-		"'CDataThread::searchProgess' with 'searchPhoneticRepresentations::onSearchProgess'", 
+		"'DataThread::searchProgess' with 'searchPhoneticRepresentations::onSearchProgess'", 
 		bResult);
 
-	bResult = QObject::connect(CDataThread::getInstance().get(), SIGNAL(searchProgress(int, int)), 
+	bResult = QObject::connect(DataThread::getInstance().get(), SIGNAL(searchProgress(int, int)), 
 		searchPhoneticRepresentations.get(), SLOT(onSearchProgress(int, int )));
 	logConnection("CMainWindowPrivate::setConnections",
-		"'CDataThread::searchProgess' with 'searchPhoneticRepresentations::onSearchProgess'", 
+		"'DataThread::searchProgess' with 'searchPhoneticRepresentations::onSearchProgess'", 
 		bResult);
 
-	bResult = QObject::connect(CDataThread::getInstance().get(), SIGNAL(searchFinished(bool)),
+	bResult = QObject::connect(DataThread::getInstance().get(), SIGNAL(searchFinished(bool)),
 		searchPhoneticRepresentations.get(), SLOT(searchFinished(bool)) );
 	logConnection("CMainWindowPrivate::setConnections",
-		"'CDataThread::searchFinished' with 'searchPhoneticRepresentations::searchFinished'", 
+		"'DataThread::searchFinished' with 'searchPhoneticRepresentations::searchFinished'", 
 		bResult);
 
 	bResult = QObject::connect(appSettingsDlg.get(), SIGNAL(dictionarySelected()),
@@ -69,10 +69,10 @@ void CMainWindowPrivate::setConnections()
 		"'appSettingsDlg::dictionarySelected' with 'searchPhoneticRepresentations::disableSearchButton'", 
 		bResult);
 
-	bResult = QObject::connect(CDataThread::getInstance().get(), SIGNAL(dictionaryLoaded(bool)),
+	bResult = QObject::connect(DataThread::getInstance().get(), SIGNAL(dictionaryLoaded(bool)),
 		searchPhoneticRepresentations.get(), SLOT(enableSearchButton()) );
 	logConnection("CMainWindowPrivate::setConnections",
-		"'CDataThread::dictionaryLoaded' with 'searchPhoneticRepresentations::enableSearchButton'", 
+		"'DataThread::dictionaryLoaded' with 'searchPhoneticRepresentations::enableSearchButton'", 
 		bResult);
 }
 void CMainWindowPrivate::setupActions()

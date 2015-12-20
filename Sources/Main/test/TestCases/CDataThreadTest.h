@@ -1,7 +1,7 @@
 #include <QtTest/QtTest>
 #include <TestRunner.h>
 
-class CDataThread;
+class DataThread;
 
 class CDataThreadTest : public QObject
 {

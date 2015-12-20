@@ -1,7 +1,7 @@
 #include <GUI/Settings/DictionariesConfigurationDlg.h>
 #include <Data/AppSettings.h>
 #include <Data/CAppSettingsKeywords.h>
-#include <Data/CDataThread.h>
+#include <Data/DataThread.h>
 #include <Tools/loggers.h>
 #include <Tools/qtTools.h>
 #include <boost/foreach.hpp>

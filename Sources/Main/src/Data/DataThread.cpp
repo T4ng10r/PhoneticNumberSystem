@@ -1,4 +1,4 @@
-#include <Data/CDataThread.h>
+#include <Data/DataThread.h>
 #include <QString>
 #include <QApplication>
 #include <Data/AppSettings.h>
@@ -14,14 +14,14 @@
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
 
-boost::shared_ptr<CDataThread> CDataThread::pInstance_;
+boost::shared_ptr<DataThread> DataThread::pInstance_;
 enum { MaxRecentFiles = 5 };
 
-class CDataThreadPrivate
+class DataThreadPrivate
 {
 public:
-	CDataThreadPrivate(CDataThread * ptrPublic);
-	~CDataThreadPrivate();
+	DataThreadPrivate(DataThread * ptrPublic);
+	~DataThreadPrivate();
 	bool checkCurrentAppDictionary();
 	std::string createCurrentDictionaryPath();
 	std::string createCurrentDictionaryAffPath();
@@ -29,23 +29,23 @@ public:
 	void prepareDirectories();
 	boost::optional<QDir> get_dictionaries_directory();
 public:
-	CDataThread * publicPart;
+	DataThread * publicPart;
 	boost::shared_ptr<CDictionaryData> dictionaryData;
 	boost::shared_ptr<CSubstituteSearch> substituteSearch;
 };
 
-CDataThreadPrivate::CDataThreadPrivate(CDataThread * ptrPublic):publicPart(ptrPublic), 
+DataThreadPrivate::DataThreadPrivate(DataThread * ptrPublic):publicPart(ptrPublic), 
 	dictionaryData(new CDictionaryData()), substituteSearch(new CSubstituteSearch())
 {
 	setConnections();
 	prepareDirectories();
 }
-CDataThreadPrivate::~CDataThreadPrivate()
+DataThreadPrivate::~DataThreadPrivate()
 {
 }
 
 
-boost::optional<QDir> CDataThreadPrivate::get_dictionaries_directory()
+boost::optional<QDir> DataThreadPrivate::get_dictionaries_directory()
 {
 	boost::optional<QDir> result;
 	QString dirPath;
@@ -62,42 +62,42 @@ boost::optional<QDir> CDataThreadPrivate::get_dictionaries_directory()
 	return QDir(dirPath);
 }
 
-bool CDataThreadPrivate::checkCurrentAppDictionary()
+bool DataThreadPrivate::checkCurrentAppDictionary()
 {
 	//std::string currentAppDictPath = gAppSettings->getCurrentDictPath();
 	return false;
 }
-std::string  CDataThreadPrivate::createCurrentDictionaryPath() 
+std::string  DataThreadPrivate::createCurrentDictionaryPath() 
 {
 	std::string dictionaryName = gAppSettings->get<std::string>(SELECTED_DICTIONARY,"");
 	std::string dictionaryDir = gAppSettings->get<std::string>(DICTIONARIES_DIRECTORY,"");
 	std::string dictionaryPath = dictionaryDir + QDir::separator().toLatin1() + dictionaryName+DICTIONARY_FILE_EXTENSION;
 	return dictionaryPath;
 }
-std::string  CDataThreadPrivate::createCurrentDictionaryAffPath() 
+std::string  DataThreadPrivate::createCurrentDictionaryAffPath() 
 {
 	std::string dictionaryName = gAppSettings->get<std::string>(SELECTED_DICTIONARY,"");
 	std::string dictionaryDir = gAppSettings->get<std::string>(DICTIONARIES_DIRECTORY,"");
 	std::string dictionaryPath = dictionaryDir + QDir::separator().toLatin1() + dictionaryName+DICTIONARY_AFF_FILE_EXTENSION;
 	return dictionaryPath;
 }
-void CDataThreadPrivate::setConnections()
+void DataThreadPrivate::setConnections()
 {
 	bool bResult = false;
 	bResult = QObject::connect(substituteSearch.get(), SIGNAL(searchProgress(int,int)), 
 		publicPart, SIGNAL(searchProgress(int,int)));
-	logConnection("CDataThreadPrivate::setConnections",
-		"'substituteSearch::searchProgress' with 'CDataThread::onSearchProgress'", 
+	logConnection("DataThreadPrivate::setConnections",
+		"'substituteSearch::searchProgress' with 'DataThread::onSearchProgress'", 
 		bResult);
 
 	bResult = QObject::connect(substituteSearch.get(), SIGNAL(searchFinished(bool)), 
 		publicPart, SIGNAL(searchFinished(bool)));
-	logConnection("CDataThreadPrivate::setConnections",
-		"'substituteSearch::searchFinished' with 'CDataThread::searchFinished'", 
+	logConnection("DataThreadPrivate::setConnections",
+		"'substituteSearch::searchFinished' with 'DataThread::searchFinished'", 
 		bResult);
 
 }
-void CDataThreadPrivate::prepareDirectories()
+void DataThreadPrivate::prepareDirectories()
 {
 	std::string dictionaryDir = gAppSettings->get<std::string>(DICTIONARIES_DIRECTORY,"");
 	//check if DICTIONARIES_DIRECTORY exist in settings
@@ -110,40 +110,40 @@ void CDataThreadPrivate::prepareDirectories()
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////// 
-CDataThread::CDataThread(void):
-privPart(new CDataThreadPrivate(this))
+DataThread::DataThread(void):
+privPart(new DataThreadPrivate(this))
 {
 	QThread* thread = new QThread;
 	this->moveToThread(thread);
 	thread->start();
 }
-boost::shared_ptr<CDataThread> CDataThread::getInstance()
+boost::shared_ptr<DataThread> DataThread::getInstance()
 {
 	if(!pInstance_)
 	{
 		if(!pInstance_)
 		{
-			pInstance_.reset(new CDataThread());
+			pInstance_.reset(new DataThread());
 		}
 	}
 	return pInstance_;
 }
-CDataThread::~CDataThread(void)
+DataThread::~DataThread(void)
 {
 }
-void CDataThread::loadCurrentlySetDictionary()
+void DataThread::loadCurrentlySetDictionary()
 {
 	if (false==privPart->checkCurrentAppDictionary())
 	{
 		return;
 	}
 }
-WordsList CDataThread::getSearchResult(StartingIndex start_index)
+WordsList DataThread::getSearchResult(StartingIndex start_index)
 {
 	return privPart->substituteSearch->getSearchResult(start_index);
 }
 
-void CDataThread::onScanDirectoryForDictionaries()
+void DataThread::onScanDirectoryForDictionaries()
 {
 	QDir directory(privPart->get_dictionaries_directory().get());
 	
@@ -167,12 +167,12 @@ void CDataThread::onScanDirectoryForDictionaries()
 	//sprawdz wszystkie podkatalogi pierwszego poziomu 
 	Q_EMIT onDictionariesFilesRefreshed();
 }
-void CDataThread::onSetDictionary()
+void DataThread::onSetDictionary()
 {
 	std::string dicionaryPath = privPart->createCurrentDictionaryPath();
 	Q_EMIT dictionaryLoaded(privPart->dictionaryData->loadDictionary(dicionaryPath));
 }
-void CDataThread::onNumberSearchStarted(const std::string & number)
+void DataThread::onNumberSearchStarted(const std::string & number)
 {
 	if (gAppSettings->getDigitsConfiguraions().size()<=0)
 	{
@@ -183,7 +183,7 @@ void CDataThread::onNumberSearchStarted(const std::string & number)
 	privPart->substituteSearch->setDictionaryWords(privPart->dictionaryData);
 	privPart->substituteSearch->startSearchForNumber(number);
 }
-QTextCodec * CDataThread::get_current_codepage()
+QTextCodec * DataThread::get_current_codepage()
 {
 	std::string codepage = privPart->dictionaryData->get_file_codepage();
 	QTextCodec * codec = QTextCodec::codecForName(codepage.c_str());

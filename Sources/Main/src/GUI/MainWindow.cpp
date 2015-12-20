@@ -1,4 +1,4 @@
-#include <Data/CDataThread.h>
+#include <Data/DataThread.h>
 #include <GUI/MainWindow.h>
 #include <GUI/MainWindow_p.h>
 #include <GUI/Settings/AppSettingsDlg.h>

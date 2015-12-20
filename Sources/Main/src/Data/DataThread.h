@@ -6,17 +6,17 @@
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 
-class CDataThreadPrivate;
+class DataThreadPrivate;
 
-class CDataThread : public QObject
+class DataThread : public QObject
 {
 	Q_OBJECT
-	friend class CDataThreadPrivate;
-	CDataThread(void);
-	static boost::shared_ptr<CDataThread> pInstance_;
+	friend class DataThreadPrivate;
+	DataThread(void);
+	static boost::shared_ptr<DataThread> pInstance_;
 public:
-	~CDataThread(void);
-	static boost::shared_ptr<CDataThread> getInstance();
+	~DataThread(void);
+	static boost::shared_ptr<DataThread> getInstance();
   //currently not used
 	void loadCurrentlySetDictionary();
 	WordsList getSearchResult(StartingIndex start_index);
@@ -36,10 +36,10 @@ Q_SIGNALS:
 	void searchProgress(int current, int max);
 	void searchFinished(bool);
 protected:
-	boost::scoped_ptr<CDataThreadPrivate> privPart;
+	boost::scoped_ptr<DataThreadPrivate> privPart;
 };
 
-#define gDataThread CDataThread::getInstance() 
+#define gDataThread DataThread::getInstance() 
 
 
 #endif //_CAF_DATA_THREAD_INCLUDE_

@@ -1,4 +1,4 @@
-#include <Data/CDataThread.h>
+#include <Data/DataThread.h>
 #include <GUI/SearchPhoneticRepresentationsDlg.h>
 #include <GUI/ComposeSubstituteSentenceWidget.h>
 #include <GUI/SearchNumberLineEdit.h>
@@ -97,8 +97,8 @@ void CSearchPhoneticRepresentationsDlgPrivate::moveSearchResultIntoModel()
 {
 	searchResultsModel.clear();
 	searchResultsModel.setColumnCount(1);
-	const WordsList & result = CDataThread::getInstance()->getSearchResult(0);
-	QTextCodec * codec = CDataThread::getInstance()->get_current_codepage();
+	const WordsList & result = DataThread::getInstance()->getSearchResult(0);
+	QTextCodec * codec = DataThread::getInstance()->get_current_codepage();
 	for(SuccessWord success_word : result)
 	{
 		if (false==success_word.bFullCoverage)
@@ -114,7 +114,7 @@ void CSearchPhoneticRepresentationsDlgPrivate::moveSearchResultIntoModel()
 void CSearchPhoneticRepresentationsDlgPrivate::moveSearchResultIntoSubstituteComposer()
 {
 	composeSubstituteSentenceWidget->initialize_after_success_search();
-	WordsList result = CDataThread::getInstance()->getSearchResult(0);
+	WordsList result = DataThread::getInstance()->getSearchResult(0);
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
