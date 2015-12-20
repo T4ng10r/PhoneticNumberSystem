@@ -16,7 +16,7 @@ CMainWindowPrivate::CMainWindowPrivate(CMainWindow * ptrPublic):m_ptrPublic(ptrP
 {
 	setupUI();
 	setupActions();
-	DataThread::getInstance();
+	gDataThread;
 	setConnections();
 	appSettingsDlg->performInitialUpdateAfterAllChildrenUpdate();
 	m_ptrPublic->statusBar()->showMessage("Ready");
@@ -46,18 +46,18 @@ void CMainWindowPrivate::setConnections()
 		bResult);
 
 	bResult = QObject::connect(searchPhoneticRepresentations.get(), SIGNAL(performSearch(const std::string & )),
-		DataThread::getInstance().get(), SLOT(onNumberSearchStarted(const std::string & )) );
+		gDataThread.get(), SLOT(onNumberSearchStarted(const std::string & )) );
 	logConnection("CMainWindowPrivate::setConnections",
 		"'DataThread::searchProgess' with 'searchPhoneticRepresentations::onSearchProgess'", 
 		bResult);
 
-	bResult = QObject::connect(DataThread::getInstance().get(), SIGNAL(searchProgress(int, int)), 
+	bResult = QObject::connect(gDataThread.get(), SIGNAL(searchProgress(int, int)), 
 		searchPhoneticRepresentations.get(), SLOT(onSearchProgress(int, int )));
 	logConnection("CMainWindowPrivate::setConnections",
 		"'DataThread::searchProgess' with 'searchPhoneticRepresentations::onSearchProgess'", 
 		bResult);
 
-	bResult = QObject::connect(DataThread::getInstance().get(), SIGNAL(searchFinished(bool)),
+	bResult = QObject::connect(gDataThread.get(), SIGNAL(searchFinished(bool)),
 		searchPhoneticRepresentations.get(), SLOT(searchFinished(bool)) );
 	logConnection("CMainWindowPrivate::setConnections",
 		"'DataThread::searchFinished' with 'searchPhoneticRepresentations::searchFinished'", 
@@ -69,7 +69,7 @@ void CMainWindowPrivate::setConnections()
 		"'appSettingsDlg::dictionarySelected' with 'searchPhoneticRepresentations::disableSearchButton'", 
 		bResult);
 
-	bResult = QObject::connect(DataThread::getInstance().get(), SIGNAL(dictionaryLoaded(bool)),
+	bResult = QObject::connect(gDataThread.get(), SIGNAL(dictionaryLoaded(bool)),
 		searchPhoneticRepresentations.get(), SLOT(enableSearchButton()) );
 	logConnection("CMainWindowPrivate::setConnections",
 		"'DataThread::dictionaryLoaded' with 'searchPhoneticRepresentations::enableSearchButton'", 

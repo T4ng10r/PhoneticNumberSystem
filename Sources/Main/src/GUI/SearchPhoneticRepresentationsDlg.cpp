@@ -97,8 +97,8 @@ void CSearchPhoneticRepresentationsDlgPrivate::moveSearchResultIntoModel()
 {
 	searchResultsModel.clear();
 	searchResultsModel.setColumnCount(1);
-	const WordsList & result = DataThread::getInstance()->getSearchResult(0);
-	QTextCodec * codec = DataThread::getInstance()->get_current_codepage();
+	const WordsList & result = gDataThread->getSearchResult(0);
+	QTextCodec * codec = gDataThread->get_current_codepage();
 	for(SuccessWord success_word : result)
 	{
 		if (false==success_word.bFullCoverage)
@@ -114,7 +114,7 @@ void CSearchPhoneticRepresentationsDlgPrivate::moveSearchResultIntoModel()
 void CSearchPhoneticRepresentationsDlgPrivate::moveSearchResultIntoSubstituteComposer()
 {
 	composeSubstituteSentenceWidget->initialize_after_success_search();
-	WordsList result = DataThread::getInstance()->getSearchResult(0);
+	WordsList result = gDataThread->getSearchResult(0);
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////

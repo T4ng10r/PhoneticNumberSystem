@@ -12,11 +12,11 @@ class DataThread : public QObject
 {
 	Q_OBJECT
 	friend class DataThreadPrivate;
-	DataThread(void);
-	static boost::shared_ptr<DataThread> pInstance_;
 public:
+  typedef boost::shared_ptr<DataThread> ptr;
+
 	~DataThread(void);
-	static boost::shared_ptr<DataThread> getInstance();
+	static ptr instance();
   //currently not used
 	void loadCurrentlySetDictionary();
 	WordsList getSearchResult(StartingIndex start_index);
@@ -36,10 +36,12 @@ Q_SIGNALS:
 	void searchProgress(int current, int max);
 	void searchFinished(bool);
 protected:
-	boost::scoped_ptr<DataThreadPrivate> privPart;
+	boost::scoped_ptr<DataThreadPrivate> _pimpl;
+private:  
+	DataThread(void);
+	static ptr _instance;
 };
 
-#define gDataThread DataThread::getInstance() 
-
+#define gDataThread DataThread::instance() 
 
 #endif //_CAF_DATA_THREAD_INCLUDE_

@@ -14,7 +14,7 @@
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
 
-boost::shared_ptr<DataThread> DataThread::pInstance_;
+DataThread::ptr DataThread::_instance;
 enum { MaxRecentFiles = 5 };
 
 class DataThreadPrivate
@@ -111,41 +111,41 @@ void DataThreadPrivate::prepareDirectories()
 //////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////// 
 DataThread::DataThread(void):
-privPart(new DataThreadPrivate(this))
+_pimpl(new DataThreadPrivate(this))
 {
 	QThread* thread = new QThread;
 	this->moveToThread(thread);
 	thread->start();
 }
-boost::shared_ptr<DataThread> DataThread::getInstance()
+boost::shared_ptr<DataThread> DataThread::instance()
 {
-	if(!pInstance_)
+	if(!_instance)
 	{
-		if(!pInstance_)
+		if(!_instance)
 		{
-			pInstance_.reset(new DataThread());
+			_instance.reset(new DataThread());
 		}
 	}
-	return pInstance_;
+	return _instance;
 }
 DataThread::~DataThread(void)
 {
 }
 void DataThread::loadCurrentlySetDictionary()
 {
-	if (false==privPart->checkCurrentAppDictionary())
+	if (false==_pimpl->checkCurrentAppDictionary())
 	{
 		return;
 	}
 }
 WordsList DataThread::getSearchResult(StartingIndex start_index)
 {
-	return privPart->substituteSearch->getSearchResult(start_index);
+	return _pimpl->substituteSearch->getSearchResult(start_index);
 }
 
 void DataThread::onScanDirectoryForDictionaries()
 {
-	QDir directory(privPart->get_dictionaries_directory().get());
+	QDir directory(_pimpl->get_dictionaries_directory().get());
 	
 	//QStringList fileFilters(QString("*.dic"));
 	QFileInfoList dictionaryFileList = directory.entryInfoList(QStringList("*.dic"), QDir::Files | QDir::NoDotAndDotDot, QDir::Name);
@@ -169,8 +169,8 @@ void DataThread::onScanDirectoryForDictionaries()
 }
 void DataThread::onSetDictionary()
 {
-	std::string dicionaryPath = privPart->createCurrentDictionaryPath();
-	Q_EMIT dictionaryLoaded(privPart->dictionaryData->loadDictionary(dicionaryPath));
+	std::string dicionaryPath = _pimpl->createCurrentDictionaryPath();
+	Q_EMIT dictionaryLoaded(_pimpl->dictionaryData->loadDictionary(dicionaryPath));
 }
 void DataThread::onNumberSearchStarted(const std::string & number)
 {
@@ -179,13 +179,13 @@ void DataThread::onNumberSearchStarted(const std::string & number)
 		Q_EMIT searchFinished(false);
 		return;
 	}
-	privPart->substituteSearch->setSubstituteDigitsConfiguration(gAppSettings->getDigitsConfiguraions()[0]);
-	privPart->substituteSearch->setDictionaryWords(privPart->dictionaryData);
-	privPart->substituteSearch->startSearchForNumber(number);
+	_pimpl->substituteSearch->setSubstituteDigitsConfiguration(gAppSettings->getDigitsConfiguraions()[0]);
+	_pimpl->substituteSearch->setDictionaryWords(_pimpl->dictionaryData);
+	_pimpl->substituteSearch->startSearchForNumber(number);
 }
 QTextCodec * DataThread::get_current_codepage()
 {
-	std::string codepage = privPart->dictionaryData->get_file_codepage();
+	std::string codepage = _pimpl->dictionaryData->get_file_codepage();
 	QTextCodec * codec = QTextCodec::codecForName(codepage.c_str());
 	return codec;
 }
