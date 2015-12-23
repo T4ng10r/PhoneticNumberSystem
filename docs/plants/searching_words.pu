@@ -1,0 +1,8 @@
+@startuml SearchResult - class diagram.png
+title ComponentFront::run
+class SearchResult { 
+  + count
+}
+
+@enduml
+

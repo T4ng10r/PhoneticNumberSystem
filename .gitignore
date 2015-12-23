@@ -5,4 +5,5 @@ tags
 /.project
 /.settings/language.settings.xml
 build/*
-/.ycm_extra_conf.pyc
+.ycm_extra_conf.pyc
+docs/uml/*

@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 2.8.12)
 ENABLE_TESTING()
 
 project(PhoneticNumberSystem_PROJECT)
+add_subdirectory(docs)
 add_subdirectory(include)  #to add PNS_include identificator
 
 #generate compile commands for YCM
