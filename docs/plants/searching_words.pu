@@ -1,8 +1,17 @@
 @startuml SearchResult - class diagram.png
-title ComponentFront::run
-class SearchResult { 
+namespace Search {
+class Result { 
+  + matchingWord[1...] : MatchingWord
   + count
 }
 
+class MatchingWord {
+  + matchingLetters: string
+  + matchingPairs: pair<uint,uint>[]
+}
+
+
+MatchingWord -> Result
+}
 @enduml
 
