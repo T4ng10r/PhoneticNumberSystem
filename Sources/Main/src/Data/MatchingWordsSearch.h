@@ -5,21 +5,21 @@
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 #include <Data/CDictionaryData.h>
-#include <Data/CSubstituteSearchTypes.h>
+#include <Data/MatchingWordsSearchTypes.h>
 #include <Data/CSystemDigitsConfiguration.h>
 
-class CSubstituteSearchPrivate;
+class MatchingWordsSearchPrivate;
 
-class CSubstituteSearch : public QObject
-//execute "!find . \( -name '*.h' -o -name '*.cpp' \) -exec sed 's|\\bCSubstituteSearch\\b|MatchingWordsSearch|g' {} \\;"
+class MatchingWordsSearch : public QObject
+//MatchingWordsSearch
 
                           
 {
      Q_OBJECT
-     friend class CSubstituteSearchPrivate;
+     friend class MatchingWordsSearchPrivate;
 public:
-    CSubstituteSearch();
-    ~CSubstituteSearch(void);
+    MatchingWordsSearch();
+    ~MatchingWordsSearch(void);
     void setSubstituteDigitsConfiguration(CSingleSubstituteDigitsConfiguration conf);
     void setDictionaryWords(boost::shared_ptr<CDictionaryData>);
     void startSearchForNumber(const std::string & number);
@@ -29,6 +29,6 @@ Q_SIGNALS:
     void searchProgress(int current, int max);
     void searchFinished(bool);
 protected:
-    boost::scoped_ptr<CSubstituteSearchPrivate> privPart;
+    boost::scoped_ptr<MatchingWordsSearchPrivate> privPart;
 };
 #endif //_CSUBSTITUTESEARCH_INCLUDE_

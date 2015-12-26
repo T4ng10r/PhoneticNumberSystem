@@ -1,7 +1,7 @@
 #include <TestCases/mt_substitute_search_test.h>
-#include <Data/CSubstituteSearch.h>
+#include <Data/MatchingWordsSearch.h>
 #include <Data/CSettingsKeywords.h>
-//#include <Data/CSubstituteSearch.cpp>
+//#include <Data/MatchingWordsSearch.cpp>
 #include <set>
 #include <boost/foreach.hpp>
 Q_DECLARE_METATYPE(std::string);
@@ -43,7 +43,7 @@ void mt_substitute_search_test::initTestCase()
 
 void mt_substitute_search_test::init()
 {
-	substitute_search.reset(new CSubstituteSearch());
+	substitute_search.reset(new MatchingWordsSearch());
 	substitute_search->setSubstituteDigitsConfiguration(single_substitute_digits_configuration);
 	substitute_search->setDictionaryWords(dictionary_data);
 }

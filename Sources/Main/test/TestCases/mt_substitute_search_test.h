@@ -3,14 +3,14 @@
 #include <Data/CSystemDigitsConfiguration.h>
 #include <TestRunner.h>
 
-class CSubstituteSearch;
+class MatchingWordsSearch;
 class CDictionaryData;
 
 class mt_substitute_search_test : public QObject
 {
 	Q_OBJECT
 	CSingleSubstituteDigitsConfiguration  single_substitute_digits_configuration;
-	boost::shared_ptr<CSubstituteSearch>	substitute_search;
+	boost::shared_ptr<MatchingWordsSearch>	substitute_search;
 	boost::shared_ptr<CDictionaryData>	dictionary_data;
 private:
 	void create_system_digits_configuration();

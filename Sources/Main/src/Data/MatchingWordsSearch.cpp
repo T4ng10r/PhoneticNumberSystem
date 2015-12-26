@@ -1,5 +1,5 @@
 #include <Tools/loggers.h>
-#include <Data/CSubstituteSearch.h>
+#include <Data/MatchingWordsSearch.h>
 #include <Data/Settings.h>
 #include <Data/SearchResultTreeNode.h>
 #include <boost/algorithm/string.hpp>  //boost::to_upper_copy
@@ -7,18 +7,18 @@
 #include <boost/bind.hpp>
 #include <boost/format.hpp>
 
-class CSubstituteSearchPrivate
+class MatchingWordsSearchPrivate
 {
 public:
-  CSubstituteSearchPrivate(CSubstituteSearch * ptrPublic);
-  ~CSubstituteSearchPrivate();
+  MatchingWordsSearchPrivate(MatchingWordsSearch * ptrPublic);
+  ~MatchingWordsSearchPrivate();
   bool testWord(const std::string &);
   void buildSearchResultsTree();
 
   void clearSearchResult();
   void prepareSearchResults();
 public:
-  CSubstituteSearch *                    m_ptrPublic;
+  MatchingWordsSearch *                    m_ptrPublic;
   boost::shared_ptr<CDictionaryData>     dictionaryWords;
   std::string                            number;
   WordsList                              searchResult;
@@ -28,12 +28,12 @@ public:
   CSingleSubstituteDigitsConfiguration   digits_conf;
 };
 
-CSubstituteSearchPrivate::CSubstituteSearchPrivate(CSubstituteSearch * ptrPublic):m_ptrPublic(ptrPublic),
+MatchingWordsSearchPrivate::MatchingWordsSearchPrivate(MatchingWordsSearch * ptrPublic):m_ptrPublic(ptrPublic),
   searchResultTreeRoot(new SearchResultTreeNode(0))
 {
 }
-CSubstituteSearchPrivate::~CSubstituteSearchPrivate(){}
-bool CSubstituteSearchPrivate::testWord( const std::string & wordToTest)
+MatchingWordsSearchPrivate::~MatchingWordsSearchPrivate(){}
+bool MatchingWordsSearchPrivate::testWord( const std::string & wordToTest)
 {
   SuccessWord  result;
   MatchingPair matchingPair;
@@ -98,13 +98,13 @@ bool CSubstituteSearchPrivate::testWord( const std::string & wordToTest)
   }
   return false;
 }
-void CSubstituteSearchPrivate::clearSearchResult() 
+void MatchingWordsSearchPrivate::clearSearchResult() 
 {
   searchResult.clear();
   searchResultTreeRoot->clear();
   searchResultTreeRoot->iCurrentIndex=0;
 }
-void CSubstituteSearchPrivate::buildSearchResultsTree()
+void MatchingWordsSearchPrivate::buildSearchResultsTree()
 {
   clearSearchResult();
 
@@ -118,7 +118,7 @@ void CSubstituteSearchPrivate::buildSearchResultsTree()
       boost::bind(&SearchResultTreeNode::addNode, searchResultTreeRoot, start,end, _1));
   }
 }
-void CSubstituteSearchPrivate::prepareSearchResults()
+void MatchingWordsSearchPrivate::prepareSearchResults()
 {
   printLog(eDebug, eInfoLogLevel, "Building tree of search results");
   buildSearchResultsTree();
@@ -127,20 +127,20 @@ void CSubstituteSearchPrivate::prepareSearchResults()
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
-CSubstituteSearch::CSubstituteSearch():privPart(new CSubstituteSearchPrivate(this))
+MatchingWordsSearch::MatchingWordsSearch():privPart(new MatchingWordsSearchPrivate(this))
 {
 }
-CSubstituteSearch::~CSubstituteSearch(void){}
-void CSubstituteSearch::setSubstituteDigitsConfiguration(CSingleSubstituteDigitsConfiguration conf)
+MatchingWordsSearch::~MatchingWordsSearch(void){}
+void MatchingWordsSearch::setSubstituteDigitsConfiguration(CSingleSubstituteDigitsConfiguration conf)
 {
   privPart->digits_conf = conf;
 }
-void CSubstituteSearch::setDictionaryWords(boost::shared_ptr<CDictionaryData> dictionaryWords)
+void MatchingWordsSearch::setDictionaryWords(boost::shared_ptr<CDictionaryData> dictionaryWords)
 {
   privPart->searchResultMap.clear();
   privPart->dictionaryWords = dictionaryWords;
 }
-void CSubstituteSearch::startSearchForNumber(const std::string & number)
+void MatchingWordsSearch::startSearchForNumber(const std::string & number)
 {
   printLog(eDebug, eInfoLogLevel, str(boost::format("Searching substitute for number '%1%' started") % number));
   privPart->clearSearchResult();
@@ -166,7 +166,7 @@ void CSubstituteSearch::startSearchForNumber(const std::string & number)
   Q_EMIT searchFinished(true);
   printLog(eDebug, eInfoLogLevel, str(boost::format("Searching substitute for number '%1%' finished") % number));
 }
-WordsList CSubstituteSearch::getSearchResult(StartingIndex start_index)
+WordsList MatchingWordsSearch::getSearchResult(StartingIndex start_index)
 {
   WordsList searchResult;
   TreeNodesList nodes_list = privPart->searchResultTreeRoot->find_node(start_index);

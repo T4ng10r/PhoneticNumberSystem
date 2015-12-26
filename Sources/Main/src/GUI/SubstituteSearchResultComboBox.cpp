@@ -3,7 +3,7 @@
 #include <QtWidgets/QStylePainter>
 #include <Tools/loggers.h>
 #include <QtWidgets/QApplication>
-#include <Data/CSubstituteSearchTypes.h>
+#include <Data/MatchingWordsSearchTypes.h>
 #include <QtWidgets/QStyle>
 Q_DECLARE_METATYPE(SuccessWord);
 #include <GUI/CustomComboBox_tools.h>
