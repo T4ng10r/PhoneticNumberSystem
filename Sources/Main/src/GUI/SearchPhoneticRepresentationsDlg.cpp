@@ -99,7 +99,7 @@ void CSearchPhoneticRepresentationsDlgPrivate::moveSearchResultIntoModel()
 	searchResultsModel.setColumnCount(1);
 	const WordsList & result = gDataThread->getSearchResult(0);
 	QTextCodec * codec = gDataThread->get_current_codepage();
-	for(SuccessWord success_word : result)
+	for(MatchingWord success_word : result)
 	{
 		if (false==success_word.bFullCoverage)
 			continue;

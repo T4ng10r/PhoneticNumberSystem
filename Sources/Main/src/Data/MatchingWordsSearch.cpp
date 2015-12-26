@@ -35,7 +35,7 @@ MatchingWordsSearchPrivate::MatchingWordsSearchPrivate(MatchingWordsSearch * ptr
 MatchingWordsSearchPrivate::~MatchingWordsSearchPrivate(){}
 bool MatchingWordsSearchPrivate::testWord( const std::string & wordToTest)
 {
-  SuccessWord  result;
+  MatchingWord  result;
   MatchingPair matchingPair;
   std::string  coveredDigits;
   size_t searchStartPos(0);

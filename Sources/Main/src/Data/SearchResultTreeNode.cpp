@@ -47,10 +47,10 @@ WordsList SearchResultTreeNode::parseDFS( StartingIndex endIndex )
             BOOST_FOREACH(const std::string & word , wordsOnEdge)
             //for(const std::string & word : wordsOnEdge)
 			{
-                BOOST_FOREACH(const SuccessWord & childWord, childWords)
-                //for(SuccessWord & childWord : childWords)
+                BOOST_FOREACH(const MatchingWord & childWord, childWords)
+                //for(MatchingWord & childWord : childWords)
 				{
-					SuccessWord newWord(word);
+					MatchingWord newWord(word);
 					std::copy(childWord.words.begin(),childWord.words.end(),back_inserter(newWord.words));
 					result.push_back(newWord);
 				}
@@ -58,7 +58,7 @@ WordsList SearchResultTreeNode::parseDFS( StartingIndex endIndex )
 	}
 	return result;
 }
-void SearchResultTreeNode::addNode( StartingIndex startInd, StartingIndex endInd, SuccessWord word )
+void SearchResultTreeNode::addNode( StartingIndex startInd, StartingIndex endInd, MatchingWord word )
 {
 	TreeNodesList startNodesList = find_node(startInd);
 	TreeNodesList targetNodesList = find_node(endInd+1);

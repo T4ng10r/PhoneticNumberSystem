@@ -61,7 +61,7 @@ void MatchingWordsSearchTest::test_SubstituteSearch_WholeCorrectWord()
 	FittingWordsMap::const_iterator iter = substituteSearchPrivate->searchResultMap.find(MatchingPair(start_index,end_index));
 	QVERIFY(iter!=substituteSearchPrivate->searchResultMap.end());
 	QCOMPARE(iter->second.size(), (std::size_t)size);
-	SuccessWord result = iter->second.front();
+	MatchingWord result = iter->second.front();
 	QCOMPARE(result.matchingLetters, matching_letters);
 	QCOMPARE(result.bFullCoverage, full_coverage);
 	QCOMPARE(result.coveragePairs.front().first, (StartingIndex)start_index);
@@ -74,7 +74,7 @@ void MatchingWordsSearchTest::test_SubstituteSearch_WholeCorrectWord_01()
 	FittingWordsMap::const_iterator iter = substituteSearchPrivate->searchResultMap.find(MatchingPair(0,0));
 	QVERIFY(iter!=substituteSearchPrivate->searchResultMap.end());
 	QCOMPARE(iter->second.size(), (std::size_t)1);
-	SuccessWord result = iter->second.front();
+	MatchingWord result = iter->second.front();
 	QCOMPARE(result.matchingLetters.c_str(), "P");
 	QCOMPARE(result.bFullCoverage, false);
 	QCOMPARE(result.coveragePairs.front().first, (StartingIndex)0);
@@ -87,7 +87,7 @@ void MatchingWordsSearchTest::test_SubstituteSearch_WholeCorrectWord_02()
 	FittingWordsMap::const_iterator iter = substituteSearchPrivate->searchResultMap.find(MatchingPair(0,2));
 	QVERIFY(iter!=substituteSearchPrivate->searchResultMap.end());
 	QCOMPARE(iter->second.size(), (std::size_t)1);
-	SuccessWord result = iter->second.front();
+	MatchingWord result = iter->second.front();
 	QCOMPARE(result.bFullCoverage, true);
 	QCOMPARE(result.matchingLetters.c_str(), "SMR");
 	QCOMPARE(result.coveragePairs.front().first, (StartingIndex)0);
@@ -100,7 +100,7 @@ void MatchingWordsSearchTest::test_SubstituteSearch_WholeWordCoversPartOfNumber_
 	FittingWordsMap::const_iterator iter = substituteSearchPrivate->searchResultMap.find(MatchingPair(2,5));
 	QVERIFY(iter!=substituteSearchPrivate->searchResultMap.end());
 	QCOMPARE(iter->second.size(), (std::size_t)1);
-	SuccessWord result = iter->second.front();
+	MatchingWord result = iter->second.front();
 	QCOMPARE(result.matchingLetters.c_str(), "LRND");
 	QCOMPARE(result.bFullCoverage, false);
 	QCOMPARE(result.coveragePairs.front().first, (StartingIndex)2);
@@ -113,7 +113,7 @@ void MatchingWordsSearchTest::test_SubstituteSearch_WholeWordCoversPartOfNumber_
 	FittingWordsMap::const_iterator iter = substituteSearchPrivate->searchResultMap.find(MatchingPair(0,1));
 	QVERIFY(iter!=substituteSearchPrivate->searchResultMap.end());
 	QCOMPARE(iter->second.size(), (std::size_t)1);
-	SuccessWord result = iter->second.front();
+	MatchingWord result = iter->second.front();
 	QCOMPARE(result.matchingLetters.c_str(), "TN");
 	QCOMPARE(result.bFullCoverage, false);
 	QCOMPARE(result.coveragePairs.front().first, (StartingIndex)0);

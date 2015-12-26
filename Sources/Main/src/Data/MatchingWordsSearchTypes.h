@@ -25,17 +25,17 @@ struct MatchingPair : public UnsignedPair
 	}
 };
 
-struct SuccessWord;
-//typedef std::list< SuccessWord >				WordsList;
-typedef std::list<SuccessWord>	WordsList;
+struct MatchingWord;
+//typedef std::list< MatchingWord >				WordsList;
+typedef std::list<MatchingWord>	WordsList;
 
 typedef std::map<unsigned int, WordsList>				WordSearchResultMap;
 
-struct SuccessWord  
+struct MatchingWord  
 {
 public:
-	SuccessWord(){}
-	SuccessWord(std::string word)
+	MatchingWord(){}
+	MatchingWord(std::string word)
 	{
 		words.push_back(word);
 	}
@@ -45,7 +45,7 @@ public:
 	}
 	operator std::string() const		{ return words.front(); }
 	const std::string &getWord() const	{ return words.front(); }
-	bool operator==(const SuccessWord & other)
+	bool operator==(const MatchingWord & other)
 	{
 		if (getWord()==other.getWord())
 			return true;

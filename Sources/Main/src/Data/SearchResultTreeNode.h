@@ -31,7 +31,7 @@ public:
 	SearchResultTreeNode(){}
 	SearchResultTreeNode(StartingIndex index):iCurrentIndex(index){}
 	void clear();
-	void addNode(StartingIndex startInd, StartingIndex endInd, SuccessWord word);
+	void addNode(StartingIndex startInd, StartingIndex endInd, MatchingWord word);
 	TreeNodesList find_node(StartingIndex searchedNode);
 	std::size_t getChildrenCount() { return children.size(); }
 
