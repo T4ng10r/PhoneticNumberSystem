@@ -1,12 +1,12 @@
-#include <TestCases/CSubstituteSearchTest.h>
-#include <Data/CSubstituteSearch.h>
-#include <Data/CSubstituteSearch.cpp>
+#include <TestCases/MatchingWordsSearchTest.h>
+#include <Data/MatchingWordsSearch.h>
+#include <Data/MatchingWordsSearch.cpp>
 #include <set>
 #include <boost/foreach.hpp>
 Q_DECLARE_METATYPE(std::string);
 
-void CSubstituteSearchTest::createSystemDigitsConfiguration(){}
-void CSubstituteSearchTest::initTestCase()
+void MatchingWordsSearchTest::createSystemDigitsConfiguration(){}
+void MatchingWordsSearchTest::initTestCase()
 {
 	singleSubstituteDigitsConfiguration.digitsConsonantsSetMap.clear();
 	singleSubstituteDigitsConfiguration.digitsConsonantsSetMap[0]=std::make_pair("ZS","TDN M R L J KGFWPB");
@@ -22,14 +22,14 @@ void CSubstituteSearchTest::initTestCase()
 	singleSubstituteDigitsConfiguration.allConsonants="ZSTDN M R L J KGFWPB";
 }
 
-void CSubstituteSearchTest::init()
+void MatchingWordsSearchTest::init()
 {
-	substituteSearchPrivate.reset(new CSubstituteSearchPrivate(NULL));
+	substituteSearchPrivate.reset(new MatchingWordsSearchPrivate(NULL));
 	substituteSearchPrivate->digits_conf = singleSubstituteDigitsConfiguration;
 }
-void CSubstituteSearchTest::cleanup(){}
+void MatchingWordsSearchTest::cleanup(){}
 
-void CSubstituteSearchTest::test_SubstituteSearch_WholeCorrectWord_data()
+void MatchingWordsSearchTest::test_SubstituteSearch_WholeCorrectWord_data()
 {
 	QTest::addColumn<std::string>("number_to_search");
 	QTest::addColumn<std::string>("test_word");
@@ -46,7 +46,7 @@ void CSubstituteSearchTest::test_SubstituteSearch_WholeCorrectWord_data()
 	QTest::newRow("partial_02") << std::string("123") << std::string("ACETON") << size_t(0) << size_t(1) << size_t(1) << std::string("TN") << false;
 }
 
-void CSubstituteSearchTest::test_SubstituteSearch_WholeCorrectWord()
+void MatchingWordsSearchTest::test_SubstituteSearch_WholeCorrectWord()
 {
 	QFETCH(std::string, number_to_search);
 	QFETCH(std::string, test_word);
@@ -61,65 +61,65 @@ void CSubstituteSearchTest::test_SubstituteSearch_WholeCorrectWord()
 	FittingWordsMap::const_iterator iter = substituteSearchPrivate->searchResultMap.find(MatchingPair(start_index,end_index));
 	QVERIFY(iter!=substituteSearchPrivate->searchResultMap.end());
 	QCOMPARE(iter->second.size(), (std::size_t)size);
-	SuccessWord result = iter->second.front();
+	MatchingWord result = iter->second.front();
 	QCOMPARE(result.matchingLetters, matching_letters);
 	QCOMPARE(result.bFullCoverage, full_coverage);
 	QCOMPARE(result.coveragePairs.front().first, (StartingIndex)start_index);
 	QCOMPARE(result.coveragePairs.front().second, (StartingIndex)end_index);
 }
-void CSubstituteSearchTest::test_SubstituteSearch_WholeCorrectWord_01()
+void MatchingWordsSearchTest::test_SubstituteSearch_WholeCorrectWord_01()
 {
 	substituteSearchPrivate->number = "99";
 	QVERIFY(substituteSearchPrivate->testWord("AAP"));
 	FittingWordsMap::const_iterator iter = substituteSearchPrivate->searchResultMap.find(MatchingPair(0,0));
 	QVERIFY(iter!=substituteSearchPrivate->searchResultMap.end());
 	QCOMPARE(iter->second.size(), (std::size_t)1);
-	SuccessWord result = iter->second.front();
+	MatchingWord result = iter->second.front();
 	QCOMPARE(result.matchingLetters.c_str(), "P");
 	QCOMPARE(result.bFullCoverage, false);
 	QCOMPARE(result.coveragePairs.front().first, (StartingIndex)0);
 	QCOMPARE(result.coveragePairs.front().second, (StartingIndex)0);
 }
-void CSubstituteSearchTest::test_SubstituteSearch_WholeCorrectWord_02()
+void MatchingWordsSearchTest::test_SubstituteSearch_WholeCorrectWord_02()
 {
 	substituteSearchPrivate->number = "034";
 	QVERIFY(substituteSearchPrivate->testWord("SMAR"));
 	FittingWordsMap::const_iterator iter = substituteSearchPrivate->searchResultMap.find(MatchingPair(0,2));
 	QVERIFY(iter!=substituteSearchPrivate->searchResultMap.end());
 	QCOMPARE(iter->second.size(), (std::size_t)1);
-	SuccessWord result = iter->second.front();
+	MatchingWord result = iter->second.front();
 	QCOMPARE(result.bFullCoverage, true);
 	QCOMPARE(result.matchingLetters.c_str(), "SMR");
 	QCOMPARE(result.coveragePairs.front().first, (StartingIndex)0);
 	QCOMPARE(result.coveragePairs.front().second, (StartingIndex)2);
 }
-void CSubstituteSearchTest::test_SubstituteSearch_WholeWordCoversPartOfNumber_01()
+void MatchingWordsSearchTest::test_SubstituteSearch_WholeWordCoversPartOfNumber_01()
 {
 	substituteSearchPrivate->number = "885421866";
 	QVERIFY(substituteSearchPrivate->testWord("LERNED"));
 	FittingWordsMap::const_iterator iter = substituteSearchPrivate->searchResultMap.find(MatchingPair(2,5));
 	QVERIFY(iter!=substituteSearchPrivate->searchResultMap.end());
 	QCOMPARE(iter->second.size(), (std::size_t)1);
-	SuccessWord result = iter->second.front();
+	MatchingWord result = iter->second.front();
 	QCOMPARE(result.matchingLetters.c_str(), "LRND");
 	QCOMPARE(result.bFullCoverage, false);
 	QCOMPARE(result.coveragePairs.front().first, (StartingIndex)2);
 	QCOMPARE(result.coveragePairs.front().second, (StartingIndex)5);
 }
-void CSubstituteSearchTest::test_SubstituteSearch_WholeWordCoversPartOfNumber_02()
+void MatchingWordsSearchTest::test_SubstituteSearch_WholeWordCoversPartOfNumber_02()
 {
 	substituteSearchPrivate->number = "123";
 	QVERIFY(substituteSearchPrivate->testWord("ACETON"));
 	FittingWordsMap::const_iterator iter = substituteSearchPrivate->searchResultMap.find(MatchingPair(0,1));
 	QVERIFY(iter!=substituteSearchPrivate->searchResultMap.end());
 	QCOMPARE(iter->second.size(), (std::size_t)1);
-	SuccessWord result = iter->second.front();
+	MatchingWord result = iter->second.front();
 	QCOMPARE(result.matchingLetters.c_str(), "TN");
 	QCOMPARE(result.bFullCoverage, false);
 	QCOMPARE(result.coveragePairs.front().first, (StartingIndex)0);
 	QCOMPARE(result.coveragePairs.front().second, (StartingIndex)1);
 }
-void CSubstituteSearchTest::test_SubstituteSearch_WholeNumberCoversPartOfWord()
+void MatchingWordsSearchTest::test_SubstituteSearch_WholeNumberCoversPartOfWord()
 {
 	//substituteSearchPrivate->number = "233";
 	//QCOMPARE(substituteSearchPrivate->testWord("ANEMIA",singleSubstituteDigitsConfiguration), false);

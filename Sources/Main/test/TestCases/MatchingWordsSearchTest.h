@@ -3,13 +3,13 @@
 #include <Data/CSystemDigitsConfiguration.h>
 #include <TestRunner.h>
 
-class CSubstituteSearchPrivate;
+class MatchingWordsSearchPrivate;
 
-class CSubstituteSearchTest : public QObject
+class MatchingWordsSearchTest : public QObject
 {
 	Q_OBJECT
 	CSingleSubstituteDigitsConfiguration  singleSubstituteDigitsConfiguration;
-	boost::shared_ptr<CSubstituteSearchPrivate>	substituteSearchPrivate;
+	boost::shared_ptr<MatchingWordsSearchPrivate>	substituteSearchPrivate;
 public:
 private:
 	void createSystemDigitsConfiguration();
@@ -25,4 +25,4 @@ private Q_SLOTS:
 		void test_SubstituteSearch_WholeWordCoversPartOfNumber_02();
 		void test_SubstituteSearch_WholeNumberCoversPartOfWord();
 };
-DECLARE_TEST(CSubstituteSearchTest)
+DECLARE_TEST(MatchingWordsSearchTest)

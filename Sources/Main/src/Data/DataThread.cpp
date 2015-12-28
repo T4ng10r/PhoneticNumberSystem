@@ -4,7 +4,7 @@
 #include <Data/Settings.h>
 #include <Data/CSettingsKeywords.h>
 #include <Data/CDictionaryData.h>
-#include <Data/CSubstituteSearch.h>
+#include <Data/MatchingWordsSearch.h>
 #include <QtCore/QDir>
 #include <QtCore/QThread>
 
@@ -31,11 +31,11 @@ public:
 public:
 	DataThread * publicPart;
 	boost::shared_ptr<CDictionaryData> dictionaryData;
-	boost::shared_ptr<CSubstituteSearch> substituteSearch;
+	boost::shared_ptr<MatchingWordsSearch> substituteSearch;
 };
 
 DataThreadPrivate::DataThreadPrivate(DataThread * ptrPublic):publicPart(ptrPublic), 
-	dictionaryData(new CDictionaryData()), substituteSearch(new CSubstituteSearch())
+	dictionaryData(new CDictionaryData()), substituteSearch(new MatchingWordsSearch())
 {
 	setConnections();
 	prepareDirectories();

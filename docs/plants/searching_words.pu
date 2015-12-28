@@ -1,13 +1,23 @@
 @startuml SearchResult - class diagram.png
 namespace Search {
 class Result { 
+<<<<<<< HEAD
   + matchingWord[1...] : MatchingWord
+=======
+  + matchingWords[1...] : MatchingWord
+>>>>>>> aafbd1646bafe8a2c1b8df5db80c500c4a3fc61a
   + count
 }
 
 class MatchingWord {
+<<<<<<< HEAD
   + matchingLetters: string
   + matchingPairs: pair<uint,uint>[]
+=======
+  + word_id
+  + matching_letters: string
+  + matching_pairs: pair<uint,uint>[1...]
+>>>>>>> aafbd1646bafe8a2c1b8df5db80c500c4a3fc61a
 }
 
 

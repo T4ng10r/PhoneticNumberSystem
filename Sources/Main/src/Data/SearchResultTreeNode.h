@@ -5,7 +5,7 @@
 #include <boost/optional.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/enable_shared_from_this.hpp>
-#include <Data/CSubstituteSearchTypes.h>
+#include <Data/MatchingWordsSearchTypes.h>
 
 struct SearchResultTreeNode;
 //starting index of range
@@ -31,7 +31,7 @@ public:
 	SearchResultTreeNode(){}
 	SearchResultTreeNode(StartingIndex index):iCurrentIndex(index){}
 	void clear();
-	void addNode(StartingIndex startInd, StartingIndex endInd, SuccessWord word);
+	void addNode(StartingIndex startInd, StartingIndex endInd, MatchingWord word);
 	TreeNodesList find_node(StartingIndex searchedNode);
 	std::size_t getChildrenCount() { return children.size(); }
 

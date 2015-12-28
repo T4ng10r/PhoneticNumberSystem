@@ -9,9 +9,9 @@
 #include <QComboBox>
 #include <QBoxLayout>
 #include <algorithm>
-//Q_DECLARE_METATYPE(SuccessWord);
+//Q_DECLARE_METATYPE(MatchingWord);
 
-bool cmp_success_words(const SuccessWord & first, const SuccessWord & second)
+bool cmp_success_words(const MatchingWord & first, const MatchingWord & second)
 {
 	if (first.matchingLetters.size()>second.matchingLetters.size())
 		return true;
@@ -31,7 +31,7 @@ public:
 	void fill_combo_box(const WordsList & list, StartingIndex combo_id);
 	void reset(std::size_t starting_index = 1);
 	void set_connections();
-	QString process_word(SuccessWord word, QTextCodec * codec);
+	QString process_word(MatchingWord word, QTextCodec * codec);
 
 public:
 	ComposeSubstituteSentenceWidget * public_part;
@@ -84,7 +84,7 @@ void ComposeSubstituteSentenceWidgetPrivate::fill_combo_box(const WordsList & li
 	combo_box->addItem("");
 
 	QTextCodec * codec = gDataThread->get_current_codepage();
-	for (const SuccessWord & word : list)
+	for (const MatchingWord & word : list)
 	{
 		QString q_word = process_word(word, codec);
 		combo_box->addItem(q_word,QVariant::fromValue(word));
@@ -112,7 +112,7 @@ void ComposeSubstituteSentenceWidgetPrivate::set_connections()
 	//	"'CMainWindowPrivate::triggered' with 'CMainWindow::onActionTrigger'", 
 	//	bResult);
 }
-QString ComposeSubstituteSentenceWidgetPrivate::process_word(SuccessWord word, QTextCodec * codec)
+QString ComposeSubstituteSentenceWidgetPrivate::process_word(MatchingWord word, QTextCodec * codec)
 {
 	QString style_word;
 	if (codec)
@@ -146,7 +146,7 @@ void ComposeSubstituteSentenceWidget::on_word_selected(int selected_index)
 			break;
 	}
 	priv_part->reset(combo_box_starting_index);
-	SuccessWord success_word = sender_->itemData(selected_index).value<SuccessWord>();
+	MatchingWord success_word = sender_->itemData(selected_index).value<MatchingWord>();
 	std::size_t node_id = success_word.coveragePairs.front().second+1;
 
 	printLog(eDebug, eInfoLogLevel, str(boost::format("node id %1%") % node_id));

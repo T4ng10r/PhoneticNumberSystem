@@ -5,8 +5,8 @@
 #include <QtGui/QPainter>
 #include <QtWidgets/QApplication>
 #include <Tools/loggers.h>
-#include <Data/CSubstituteSearchTypes.h>
-Q_DECLARE_METATYPE(SuccessWord);
+#include <Data/MatchingWordsSearchTypes.h>
+Q_DECLARE_METATYPE(MatchingWord);
 #include <GUI/CustomComboBox_tools.h>
 
 class SubstituteSearchResultComboDelegate : public QItemDelegate
@@ -17,7 +17,7 @@ public:
 		const QModelIndex &index ) const
 	{
 		QString text = index.model()->data(index).toString();
-		SuccessWord success_word = index.model()->data(index,Qt::UserRole).value<SuccessWord>();
+		MatchingWord success_word = index.model()->data(index,Qt::UserRole).value<MatchingWord>();
 		QStyleOptionViewItemV4 myOption = option;
 		QFontMetrics font_metric(myOption.font);
 

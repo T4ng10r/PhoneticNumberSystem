@@ -3,9 +3,9 @@
 #include <QtWidgets/QStylePainter>
 #include <Tools/loggers.h>
 #include <QtWidgets/QApplication>
-#include <Data/CSubstituteSearchTypes.h>
+#include <Data/MatchingWordsSearchTypes.h>
 #include <QtWidgets/QStyle>
-Q_DECLARE_METATYPE(SuccessWord);
+Q_DECLARE_METATYPE(MatchingWord);
 #include <GUI/CustomComboBox_tools.h>
 
 void SubstituteSearchResultComboBox::paintEvent(QPaintEvent * event)
@@ -27,7 +27,7 @@ void SubstituteSearchResultComboBox::paintEvent(QPaintEvent * event)
 
 	QModelIndex index = model()->index(currentIndex(),0);
 	QString text = model()->data(index).toString();
-	SuccessWord success_word = model()->data(index,Qt::UserRole).value<SuccessWord>();
+	MatchingWord success_word = model()->data(index,Qt::UserRole).value<MatchingWord>();
 
 	QPen standard_pen = painter.pen();
 	standard_pen.setColor(palette().color(QPalette::WindowText));
