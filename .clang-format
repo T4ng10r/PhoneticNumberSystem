@@ -1,6 +1,6 @@
 AllowShortIfStatementsOnASingleLine : false
 AllowShortBlocksOnASingleLine : false
-AllowShortFunctionsOnASingleLine : Empty
+AllowShortFunctionsOnASingleLine : true
 AlignConsecutiveAssignments : true
 AlignAfterOpenBracket : true
 # doesn't work with clang 3.7
@@ -8,17 +8,18 @@ AlignConsecutiveDeclarations : true
 AlwaysBreakTemplateDeclarations : true
 BreakConstructorInitializersBeforeComma : true
 # doesn't work with clang 3.7
-# BraceWrapping :
-#     AfterClass : true
-#     AfterControlStatement : true
-#     AfterEnum : true
-#     AfterFunction : true
-#     AfterNamespace : false
-#     AfterStruct : true
-#     AfterUnion : true
-#     BeforeCatch : true
-#     BeforeElse : true
-#     IndentBraces : false
+BreakBeforeBraces : Linux
+BraceWrapping :
+    AfterClass : true
+    AfterControlStatement : true
+    AfterEnum : true
+    AfterFunction : true
+    AfterNamespace : false
+    AfterStruct : true
+    AfterUnion : true
+    BeforeCatch : true
+    BeforeElse : true
+    IndentBraces : false
 ColumnLimit : 120
 IndentWidth : 4
 IndentCaseLabels : false

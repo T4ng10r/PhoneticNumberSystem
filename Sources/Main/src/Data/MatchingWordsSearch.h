@@ -11,9 +11,6 @@
 class MatchingWordsSearchPrivate;
 
 class MatchingWordsSearch : public QObject
-//MatchingWordsSearch
-
-                          
 {
      Q_OBJECT
      friend class MatchingWordsSearchPrivate;
