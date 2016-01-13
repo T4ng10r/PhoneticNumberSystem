@@ -1,0 +1,5 @@
+@startuml
+:User: -> (Search for words substiting provided number)
+:User: -> (Look through list of previous searches)
+:User: -> (Modify settings)
+@enduml
