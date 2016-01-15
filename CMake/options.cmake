@@ -5,6 +5,8 @@ find_package(Qt5Core)
 find_package(Qt5Xml)
 find_package(Qt5Test)
 
+set(ENV{QTEST_COLORED} 1)
+
 #boost build with bjam threading=multi runtime-link=static
 #bjam link=static,shared threading=single,multi
 SET(Boost_USE_MULTITHREADED ON)

@@ -50,4 +50,4 @@ add_custom_command(TARGET ModuleTest POST_BUILD
 add_custom_command(TARGET ModuleTest POST_BUILD 
 	 COMMAND ${CMAKE_COMMAND} -E copy ${PhoneticNumberSystem_SOURCE_DIR}/PhoneticNumberSystem.xml ${CMAKE_CURRENT_BINARY_DIR}/PhoneticNumberSystem.xml
 	 COMMAND ${CMAKE_COMMAND} -E copy ${PhoneticNumberSystem_SOURCE_DIR}/log4cpp.properties ${CMAKE_CURRENT_BINARY_DIR}/logs/log4cpp.properties )
-ADD_TEST(test1 ModuleTest)
+ADD_TEST(MT ModuleTest)
