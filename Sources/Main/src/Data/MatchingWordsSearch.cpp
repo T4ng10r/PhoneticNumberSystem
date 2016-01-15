@@ -6,13 +6,14 @@
 #include <boost/bind.hpp>
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
+#include <boost/optional.hpp>
 
 class MatchingWordsSearchPrivate
 {
   public:
     MatchingWordsSearchPrivate(MatchingWordsSearch* ptrPublic);
     ~MatchingWordsSearchPrivate();
-    bool testWord(const std::string&);
+    boost::optional<MatchingWord> testWord(const std::string& tested_word, const std::string & searched_number);
     void buildSearchResultsTree();
 
     void clearSearchResult();
@@ -37,18 +38,18 @@ MatchingWordsSearchPrivate::MatchingWordsSearchPrivate(MatchingWordsSearch* ptrP
 
 MatchingWordsSearchPrivate::~MatchingWordsSearchPrivate() {}
 
-bool MatchingWordsSearchPrivate::testWord(const std::string& wordToTest)
+boost::optional<MatchingWord> MatchingWordsSearchPrivate::testWord(const std::string& tested_word, const std::string & searched_number)
 {
     MatchingWord  result;
     MatchingPair  matchingPair;
     std::string   coveredDigits;
     size_t        searchStartPos(0);
     StartingIndex digitIndex(0);
-    std::string   word   = boost::to_upper_copy(wordToTest);
+    std::string   word   = boost::to_upper_copy(tested_word);
     result.bFullCoverage = true;
     size_t acceptPos;
-    for (; digitIndex < number.size(); digitIndex++) {
-        unsigned int digit = number[digitIndex] - '0';
+    for (; digitIndex < searched_number.size(); digitIndex++) {
+        unsigned int digit = searched_number[digitIndex] - '0';
         // test
         OneDigitConsonantsSet::const_iterator iter = digits_conf.digitsConsonantsSetMap.find(digit);
         acceptPos                                  = word.find_first_of(iter->second.first, searchStartPos);
@@ -71,29 +72,29 @@ bool MatchingWordsSearchPrivate::testWord(const std::string& wordToTest)
             if (result.matchingLetters.empty())
                 matchingPair.first = digitIndex;
             result.matchingLetters.push_back(word.at(acceptPos));
-            coveredDigits.push_back(number[digitIndex]);
+            coveredDigits.push_back(searched_number[digitIndex]);
             searchStartPos = acceptPos + 1;
         }
     }
-    result.bFullCoverage = (coveredDigits == number);
+    result.bFullCoverage = (coveredDigits == searched_number);
     if (word.find_first_of(digits_conf.allConsonants, searchStartPos) == std::string::npos && coveredDigits.size()) {
-        result.words.push_back(wordToTest);
-        if (digitIndex >= number.size())
-            digitIndex      = number.size() - 1;
+        result.words.push_back(tested_word);
+        if (digitIndex >= searched_number.size())
+            digitIndex      = searched_number.size() - 1;
         matchingPair.second = digitIndex;
         result.coveragePairs.push_back(matchingPair);
         searchResultMap[matchingPair].push_back(result);
         if (!result.bFullCoverage) {
-            while ((acceptPos = number.find(coveredDigits, matchingPair.second + 1)) != std::string::npos) {
+            while ((acceptPos = searched_number.find(coveredDigits, matchingPair.second + 1)) != std::string::npos) {
                 matchingPair.first           = acceptPos;
                 matchingPair.second          = acceptPos + coveredDigits.size();
                 result.coveragePairs.front() = matchingPair;
                 searchResultMap[matchingPair].push_back(result);
             }
         }
-        return true;
+        return boost::optional<MatchingWord>(result);
     }
-    return false;
+    return boost::optional<MatchingWord>();
 }
 
 void MatchingWordsSearchPrivate::clearSearchResult()
@@ -157,7 +158,7 @@ void MatchingWordsSearch::startSearchForNumber(const std::string& number)
         std::string word = privPart->dictionaryWords->get_word_by_index(index);
         if (word.size() < 2)
             continue;
-        privPart->testWord(word);
+        privPart->testWord(word, number);
         if (notifyStep == notifyStepCount) {
             Q_EMIT searchProgress(index + 1, words_count);
             notifyStep = 0;
