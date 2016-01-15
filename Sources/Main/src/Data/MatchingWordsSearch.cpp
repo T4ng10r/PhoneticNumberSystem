@@ -13,7 +13,7 @@ class MatchingWordsSearchPrivate
   public:
     MatchingWordsSearchPrivate(MatchingWordsSearch* ptrPublic);
     ~MatchingWordsSearchPrivate();
-    boost::optional<MatchingWord> testWord(const std::string& tested_word, const std::string & searched_number);
+    boost::optional<MatchingWord> testWord(const std::string& tested_word, const std::string& searched_number);
     void buildSearchResultsTree();
 
     void clearSearchResult();
@@ -38,7 +38,8 @@ MatchingWordsSearchPrivate::MatchingWordsSearchPrivate(MatchingWordsSearch* ptrP
 
 MatchingWordsSearchPrivate::~MatchingWordsSearchPrivate() {}
 
-boost::optional<MatchingWord> MatchingWordsSearchPrivate::testWord(const std::string& tested_word, const std::string & searched_number)
+boost::optional<MatchingWord> MatchingWordsSearchPrivate::testWord(const std::string& tested_word,
+                                                                   const std::string& searched_number)
 {
     MatchingWord  result;
     MatchingPair  matchingPair;
@@ -47,13 +48,12 @@ boost::optional<MatchingWord> MatchingWordsSearchPrivate::testWord(const std::st
     StartingIndex digitIndex(0);
     std::string   word   = boost::to_upper_copy(tested_word);
     result.bFullCoverage = true;
-    size_t acceptPos;
     for (; digitIndex < searched_number.size(); digitIndex++) {
         unsigned int digit = searched_number[digitIndex] - '0';
         // test
-        OneDigitConsonantsSet::const_iterator iter = digits_conf.digitsConsonantsSetMap.find(digit);
-        acceptPos                                  = word.find_first_of(iter->second.first, searchStartPos);
-        size_t forbPos                             = word.find_first_of(iter->second.second, searchStartPos);
+        OneDigitConsonantsSet::const_iterator iter      = digits_conf.digitsConsonantsSetMap.find(digit);
+        size_t                                acceptPos = word.find_first_of(iter->second.acceptable, searchStartPos);
+        size_t                                forbPos   = word.find_first_of(iter->second.forbiden, searchStartPos);
         // if both result are end - we reached end of word or no chars in
         if (acceptPos == std::string::npos && forbPos == std::string::npos) {
             digitIndex--;
@@ -85,6 +85,7 @@ boost::optional<MatchingWord> MatchingWordsSearchPrivate::testWord(const std::st
         result.coveragePairs.push_back(matchingPair);
         searchResultMap[matchingPair].push_back(result);
         if (!result.bFullCoverage) {
+            size_t acceptPos;
             while ((acceptPos = searched_number.find(coveredDigits, matchingPair.second + 1)) != std::string::npos) {
                 matchingPair.first           = acceptPos;
                 matchingPair.second          = acceptPos + coveredDigits.size();

@@ -12,7 +12,7 @@ void CSingleSubstituteDigitsConfiguration::createConsonantsDigitsMap()
 		acceptableConsonants.push_back(digitChars.second);
 		for (unsigned int i = 0; i < acceptableConsonants.length(); ++i)
 			forbidenConsonants.erase (std::remove(forbidenConsonants.begin(), forbidenConsonants.end(), acceptableConsonants[i]), forbidenConsonants.end());
-
-		digitsConsonantsSetMap[iDigit]=make_pair(acceptableConsonants,forbidenConsonants);
+    ConsonantsForDigit consonats = {acceptableConsonants, forbidenConsonants};
+		digitsConsonantsSetMap[iDigit]=consonats;
 	}
 }
