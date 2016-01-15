@@ -1,12 +1,12 @@
-#include <TestCases/MatchingWordsSearchTest.h>
+#include <ut_matching_words_search.h>
 #include <Data/MatchingWordsSearch.h>
 #include <Data/MatchingWordsSearch.cpp>
 #include <set>
 #include <boost/foreach.hpp>
 Q_DECLARE_METATYPE(std::string);
 
-void MatchingWordsSearchTest::createSystemDigitsConfiguration(){}
-void MatchingWordsSearchTest::initTestCase()
+void ut_matching_words_search::createSystemDigitsConfiguration(){}
+void ut_matching_words_search::initTestCase()
 {
 	singleSubstituteDigitsConfiguration.digitsConsonantsSetMap.clear();
 	singleSubstituteDigitsConfiguration.digitsConsonantsSetMap[0]=std::make_pair("ZS","TDN M R L J KGFWPB");
@@ -22,14 +22,14 @@ void MatchingWordsSearchTest::initTestCase()
 	singleSubstituteDigitsConfiguration.allConsonants="ZSTDN M R L J KGFWPB";
 }
 
-void MatchingWordsSearchTest::init()
+void ut_matching_words_search::init()
 {
 	substituteSearchPrivate.reset(new MatchingWordsSearchPrivate(NULL));
 	substituteSearchPrivate->digits_conf = singleSubstituteDigitsConfiguration;
 }
-void MatchingWordsSearchTest::cleanup(){}
+void ut_matching_words_search::cleanup(){}
 
-void MatchingWordsSearchTest::test_SubstituteSearch_WholeCorrectWord_data()
+void ut_matching_words_search::test_SubstituteSearch_WholeCorrectWord_data()
 {
 	QTest::addColumn<std::string>("number_to_search");
 	QTest::addColumn<std::string>("test_word");
@@ -46,7 +46,7 @@ void MatchingWordsSearchTest::test_SubstituteSearch_WholeCorrectWord_data()
 	QTest::newRow("partial_02") << std::string("123") << std::string("ACETON") << size_t(0) << size_t(1) << size_t(1) << std::string("TN") << false;
 }
 
-void MatchingWordsSearchTest::test_SubstituteSearch_WholeCorrectWord()
+void ut_matching_words_search::test_SubstituteSearch_WholeCorrectWord()
 {
 	QFETCH(std::string, number_to_search);
 	QFETCH(std::string, test_word);
@@ -67,7 +67,7 @@ void MatchingWordsSearchTest::test_SubstituteSearch_WholeCorrectWord()
 	QCOMPARE(result.coveragePairs.front().first, (StartingIndex)start_index);
 	QCOMPARE(result.coveragePairs.front().second, (StartingIndex)end_index);
 }
-void MatchingWordsSearchTest::test_SubstituteSearch_WholeCorrectWord_01()
+void ut_matching_words_search::test_SubstituteSearch_WholeCorrectWord_01()
 {
 	substituteSearchPrivate->number = "99";
 	QVERIFY(substituteSearchPrivate->testWord("AAP"));
@@ -80,7 +80,7 @@ void MatchingWordsSearchTest::test_SubstituteSearch_WholeCorrectWord_01()
 	QCOMPARE(result.coveragePairs.front().first, (StartingIndex)0);
 	QCOMPARE(result.coveragePairs.front().second, (StartingIndex)0);
 }
-void MatchingWordsSearchTest::test_SubstituteSearch_WholeCorrectWord_02()
+void ut_matching_words_search::test_SubstituteSearch_WholeCorrectWord_02()
 {
 	substituteSearchPrivate->number = "034";
 	QVERIFY(substituteSearchPrivate->testWord("SMAR"));
@@ -93,7 +93,7 @@ void MatchingWordsSearchTest::test_SubstituteSearch_WholeCorrectWord_02()
 	QCOMPARE(result.coveragePairs.front().first, (StartingIndex)0);
 	QCOMPARE(result.coveragePairs.front().second, (StartingIndex)2);
 }
-void MatchingWordsSearchTest::test_SubstituteSearch_WholeWordCoversPartOfNumber_01()
+void ut_matching_words_search::test_SubstituteSearch_WholeWordCoversPartOfNumber_01()
 {
 	substituteSearchPrivate->number = "885421866";
 	QVERIFY(substituteSearchPrivate->testWord("LERNED"));
@@ -106,7 +106,7 @@ void MatchingWordsSearchTest::test_SubstituteSearch_WholeWordCoversPartOfNumber_
 	QCOMPARE(result.coveragePairs.front().first, (StartingIndex)2);
 	QCOMPARE(result.coveragePairs.front().second, (StartingIndex)5);
 }
-void MatchingWordsSearchTest::test_SubstituteSearch_WholeWordCoversPartOfNumber_02()
+void ut_matching_words_search::test_SubstituteSearch_WholeWordCoversPartOfNumber_02()
 {
 	substituteSearchPrivate->number = "123";
 	QVERIFY(substituteSearchPrivate->testWord("ACETON"));
@@ -119,7 +119,7 @@ void MatchingWordsSearchTest::test_SubstituteSearch_WholeWordCoversPartOfNumber_
 	QCOMPARE(result.coveragePairs.front().first, (StartingIndex)0);
 	QCOMPARE(result.coveragePairs.front().second, (StartingIndex)1);
 }
-void MatchingWordsSearchTest::test_SubstituteSearch_WholeNumberCoversPartOfWord()
+void ut_matching_words_search::test_SubstituteSearch_WholeNumberCoversPartOfWord()
 {
 	//substituteSearchPrivate->number = "233";
 	//QCOMPARE(substituteSearchPrivate->testWord("ANEMIA",singleSubstituteDigitsConfiguration), false);

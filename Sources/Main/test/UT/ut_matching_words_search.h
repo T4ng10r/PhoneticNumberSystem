@@ -5,7 +5,7 @@
 
 class MatchingWordsSearchPrivate;
 
-class MatchingWordsSearchTest : public QObject
+class ut_matching_words_search : public QObject
 {
 	Q_OBJECT
 	CSingleSubstituteDigitsConfiguration  singleSubstituteDigitsConfiguration;
@@ -25,4 +25,4 @@ private Q_SLOTS:
 		void test_SubstituteSearch_WholeWordCoversPartOfNumber_02();
 		void test_SubstituteSearch_WholeNumberCoversPartOfWord();
 };
-DECLARE_TEST(MatchingWordsSearchTest)
+DECLARE_TEST(ut_matching_words_search)
