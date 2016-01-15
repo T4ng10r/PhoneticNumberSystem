@@ -8,18 +8,13 @@ Q_DECLARE_METATYPE(std::string);
 void ut_matching_words_search::createSystemDigitsConfiguration(){}
 void ut_matching_words_search::initTestCase()
 {
-	singleSubstituteDigitsConfiguration.digitsConsonantsSetMap.clear();
-	singleSubstituteDigitsConfiguration.digitsConsonantsSetMap[0]=std::make_pair("ZS","TDN M R L J KGFWPB");
-	singleSubstituteDigitsConfiguration.digitsConsonantsSetMap[1]=std::make_pair("TD","ZSN M R L J KGFWPB");
-	singleSubstituteDigitsConfiguration.digitsConsonantsSetMap[2]=std::make_pair("N ","ZSTDMRLJKGFWPB");
-	singleSubstituteDigitsConfiguration.digitsConsonantsSetMap[3]=std::make_pair("M ","ZSTDNRLJKGFWPB");
-	singleSubstituteDigitsConfiguration.digitsConsonantsSetMap[4]=std::make_pair("R ","ZSTDNMLJKGFWPB");
-	singleSubstituteDigitsConfiguration.digitsConsonantsSetMap[5]=std::make_pair("L ","ZSTDNMRJKGFWPB");
-	singleSubstituteDigitsConfiguration.digitsConsonantsSetMap[6]=std::make_pair("J ","ZSTDNMRLKGFWPB");
-	singleSubstituteDigitsConfiguration.digitsConsonantsSetMap[7]=std::make_pair("KG","ZSTDN M R L J FWPB");
-	singleSubstituteDigitsConfiguration.digitsConsonantsSetMap[8]=std::make_pair("FW","ZSTDN M R L J KGPB");
-	singleSubstituteDigitsConfiguration.digitsConsonantsSetMap[9]=std::make_pair("PB","ZSTDN M R L J KGFW");
-	singleSubstituteDigitsConfiguration.allConsonants="ZSTDN M R L J KGFWPB";
+  std::string consonants("ZSTDN M R L J KGFWPB");
+  for(int i=0;i<10;i++)
+  {
+    std::string temp(consonants);
+    temp.erase(i*2,2);
+  	singleSubstituteDigitsConfiguration.digitsConsonantsSetMap[i] = std::make_pair(consonants.substr(i*2,2),temp);
+  }
 }
 
 void ut_matching_words_search::init()
