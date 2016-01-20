@@ -5,24 +5,29 @@
 #include <map>
 
 typedef std::size_t StartingIndex;
-typedef std::pair<StartingIndex,StartingIndex> UnsignedPair;
+//typedef std::pair<StartingIndex,StartingIndex> UnsignedPair;
 
-struct MatchingPair : public UnsignedPair
+struct MatchingPair
 {
-	MatchingPair(){}
-	MatchingPair(UnsignedPair::first_type firstVal, UnsignedPair::second_type secondVal){
-		first = firstVal;
-		second = secondVal;
-	}
-
-	bool operator()(const MatchingPair& rightVal)
-	{
-		if (first<rightVal.first)
+  MatchingPair():startIndex(std::string::npos),endIndex(std::string::npos){}
+  bool operator<(const MatchingPair& other) const
+  {
+		if (startIndex<other.startIndex)
 			return true;
-		if (first==rightVal.first && second<rightVal.second)
+		if (startIndex==other.startIndex && endIndex<other.endIndex)
+			return true;
+		return false;
+  }
+	bool operator()(const MatchingPair& other)
+	{
+		if (startIndex<other.startIndex)
+			return true;
+		if (startIndex==other.startIndex && endIndex<other.endIndex)
 			return true;
 		return false;
 	}
+  StartingIndex startIndex;
+  StartingIndex endIndex;
 };
 
 struct MatchingWord;
@@ -57,7 +62,7 @@ public:
 	//which and how many digits it can cover
 	//each pair is a start and length value
 	std::string  matchingLetters;
-	std::list< MatchingPair > coveragePairs;
+	std::list< MatchingPair > coveredDigitsIndices;
 	std::list<std::string>  words;
 };
 

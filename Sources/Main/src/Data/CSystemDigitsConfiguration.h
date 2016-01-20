@@ -36,7 +36,7 @@ struct CSingleSubstituteDigitsConfiguration {
     }
     std::string           strName;
     SystemMap             mSystem;
-    std::string           allConsonants;
+    std::string           allConsonants; //all acceptable consonants
     OneDigitConsonantsSet digitsConsonantsSetMap;
 
   public:

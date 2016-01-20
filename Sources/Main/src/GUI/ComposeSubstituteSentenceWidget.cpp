@@ -147,7 +147,7 @@ void ComposeSubstituteSentenceWidget::on_word_selected(int selected_index)
 	}
 	priv_part->reset(combo_box_starting_index);
 	MatchingWord success_word = sender_->itemData(selected_index).value<MatchingWord>();
-	std::size_t node_id = success_word.coveragePairs.front().second+1;
+	std::size_t node_id = success_word.coveredDigitsIndices.front().endIndex+1;
 
 	printLog(eDebug, eInfoLogLevel, str(boost::format("node id %1%") % node_id));
 	WordsList result = gDataThread->getSearchResult(node_id);

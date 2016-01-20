@@ -19,10 +19,6 @@ include_directories(${Boost_INCLUDE_DIR}
                     ${CMAKE_CURRENT_SOURCE_DIR}
                     ${PhoneticNumberSystem_SOURCE_DIR}/Sources/Main
 										)
-
-
-                  add_subdirectory(UT)
-                  add_subdirectory(MT)                  
 ####################
 
 ####################
