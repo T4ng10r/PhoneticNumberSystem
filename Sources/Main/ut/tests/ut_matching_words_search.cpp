@@ -37,12 +37,12 @@ void ut_matching_words_search::test_MatchingWordSearch_data()
 
 
     match_indices indices;
-   /* //Failing cases
+    //Failing cases
     indices.clear();
     QTest::newRow("fail_01") << std::string("123") << std::string("NERKA") << false << indices 
                               << std::string("") << false << (StartingIndex)0;
 
-    indices.clear();
+    /*indices.clear();
     indices.push_back(std::make_pair(0,1));
     QTest::newRow("whole_01") << std::string("99") << std::string("BABCIA") << true << indices 
                               << std::string("BB") << true << (StartingIndex)1;
@@ -64,13 +64,13 @@ void ut_matching_words_search::test_MatchingWordSearch_data()
    */
     indices.clear();
     indices.push_back(std::make_pair(0,0));
+    QTest::newRow("partial_01") << std::string("9") << std::string("AAP") << true << indices
+                                << std::string("P") << true << (StartingIndex)0;
+    indices.clear();
+    indices.push_back(std::make_pair(0,0));
     indices.push_back(std::make_pair(1,1));
     QTest::newRow("partial_03") << std::string("99") << std::string("AAP") << true << indices
                                 << std::string("P") << false << (StartingIndex)0;
-    indices.clear();
-    indices.push_back(std::make_pair(0,0));
-    QTest::newRow("partial_01") << std::string("9") << std::string("AAP") << true << indices
-                                << std::string("P") << true << (StartingIndex)0;
 }
 
 void ut_matching_words_search::test_MatchingWordSearch()
@@ -83,7 +83,6 @@ void ut_matching_words_search::test_MatchingWordSearch()
     QFETCH(bool,full_coverage);
     QFETCH(size_t,size);
 
-    // substituteSearchPrivate->number = number_to_search;
     boost::optional<MatchingWord> result = substituteSearchPrivate->testWord(test_word, number_to_search);
     QCOMPARE((bool)result, testing_result);
     if (!testing_result)

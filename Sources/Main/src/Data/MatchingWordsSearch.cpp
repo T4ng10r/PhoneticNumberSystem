@@ -79,50 +79,57 @@ boost::optional<MatchingWord> MatchingWordsSearchPrivate::testWord(const std::st
     std::string   word   = boost::to_upper_copy(tested_word);
     result.bFullCoverage = true;
     result.coveredDigitsIndices.push_back(MatchingPair());
-    for (std::string::const_iterator digitIter = searched_number.begin();
-        digitIter != searched_number.end(); digitIter++,digitIndex++) {
-        //; digitIndex < searched_number.size(); digitIndex++) {
-        //unsigned int digit = searched_number[digitIndex] - '0';
-        unsigned int digit = *digitIter - '0';
-        // test
-        ConsonantsPos pos = getConsonatsPos(word, digit, searchStartPos);
-        // if both result are end - we reached end of word or no chars in
-        if (pos.acceptable == std::string::npos && pos.forbiden == std::string::npos) {
-            if (result.coveredDigitsIndices.back().startIndex == std::string::npos)
+    do
+    {
+      result.matchingLetters.clear();
+      coveredDigits.clear();
+      for (; digitIndex < searched_number.size(); digitIndex++) {
+          unsigned int digit = searched_number[digitIndex] - '0';
+          // test
+          ConsonantsPos pos = getConsonatsPos(word, digit, searchStartPos);
+          // if both result are end - we reached end of word or no chars in
+          if (pos.acceptable == std::string::npos && pos.forbiden == std::string::npos) {
+              if (result.coveredDigitsIndices.back().startIndex == std::string::npos)
+                result.coveredDigitsIndices.pop_back();
+              else
+              {
+                setEndDigitIndex(result,digitIndex-1);
+                result.coveredDigitsIndices.push_back(MatchingPair());
+                searchStartPos=0;
+              }
+              break;
+          }
+          // if forbidden char is before accept char - we have rejection candidate
+          else if (pos.acceptable > pos.forbiden) {
+              setEndDigitIndex(result,digitIndex);
+              result.matchingLetters.clear();
+              coveredDigits.clear();
+              result.bFullCoverage = false;
+          }
+          // ok, expect subset char found
+          else if (pos.acceptable  < pos.forbiden) {
+              //if (result.matchingLetters.empty())
+              //    matchingPair.startIndex = digitIndex;
+              setStartDigitIndex(result, digitIndex);
+              result.matchingLetters.push_back(word.at(pos.acceptable));
+              coveredDigits.push_back(searched_number[digitIndex]);
+              searchStartPos = pos.acceptable + 1;
+          }
+          if (digitIndex+1 == searched_number.size())
+          {
+            //if this is last tested digit - check if in word appear any more of acceptable consontant
+            if (tested_word.find_first_of(digits_conf.allConsonants, searchStartPos) == std::string::npos)
+              result.coveredDigitsIndices.back().endIndex=digitIndex;
+            else
               result.coveredDigitsIndices.pop_back();
-            //result.coveredDigitsIndices.back().endIndex=
-            //result.coveredDigitsIndices.push
-            digitIndex--;
-            break;
-        }
-        // if forbidden char is before accept char - we have rejection candidate
-        else if (pos.acceptable > pos.forbiden) {
-            setEndDigitIndex(result,digitIndex);
-            result.matchingLetters.clear();
-            coveredDigits.clear();
-            result.bFullCoverage = false;
-            //
-            //matchingPair = MatchingPair();
-        }
-        // ok, expect subset char found
-        else if (pos.acceptable  < pos.forbiden) {
-            //if (result.matchingLetters.empty())
-            //    matchingPair.startIndex = digitIndex;
-            setStartDigitIndex(result, digitIndex);
-            result.matchingLetters.push_back(word.at(pos.acceptable));
-            coveredDigits.push_back(searched_number[digitIndex]);
-            searchStartPos = pos.acceptable + 1;
-        }
-        if (std::next(digitIter) == searched_number.end())
-        {
-          //if this is last tested digit - check if in word appear any more of acceptable consontant
-          if (tested_word.find_first_of(digits_conf.allConsonants, searchStartPos) == std::string::npos)
-            result.coveredDigitsIndices.back().endIndex=digitIndex;
-          else
-            result.coveredDigitsIndices.pop_back();
-        }
-    }
+          }
+      }
+      }
+    while(digitIndex<searched_number.size());
     result.bFullCoverage = (coveredDigits == searched_number);
+    if (coveredDigits.size()==0)
+      return boost::optional<MatchingWord>();
+
     /*
     if (word.find_first_of(digits_conf.allConsonants, searchStartPos) == std::string::npos && coveredDigits.size()) {
         result.words.push_back(tested_word);
