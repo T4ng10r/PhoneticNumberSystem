@@ -1,4 +1,3 @@
-//#include <gtest/gtest.h>
 #include <memory>
 #include <Data/dictionaries/dictionary_file_memory_map.cpp>
 #include <boost/filesystem.hpp>

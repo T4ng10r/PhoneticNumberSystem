@@ -15,7 +15,10 @@ private Q_SLOTS:
 		void initTestCase();
 		void init();
 		void cleanup();
-		void test_MatchingWordSearch_data();
-		void test_MatchingWordSearch();
+		void test_test_word_data();
+		void test_test_word();
+    //void test_add_matching_word_data();
+    void test_add_matching_word_1();
+    void test_add_matching_word_2();
 };
 DECLARE_TEST(ut_matching_words_search)

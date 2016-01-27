@@ -2,14 +2,14 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <TestRunner.h>
-#include <Data/CDictionaryData.h>
+#include <Data/DictionaryData.h>
 #include <memory>
 
 class CDictionaryDataTest : public QObject
 {
     Q_OBJECT
 public:
-	std::unique_ptr<CDictionaryData> test_obj;
+	std::unique_ptr<DictionaryData> test_obj;
 
 private Q_SLOTS:
 	void init();

@@ -1,8 +1,10 @@
 #include "ut_matching_words_search.h"
 #include <Data/MatchingWordsSearch.cpp>
 #include <vector>
+#include <boost/assign/list_of.hpp>
 
-typedef std::vector<std::pair<StartingIndex, StartingIndex> > match_indices;
+typedef std::pair<StartingIndex, StartingIndex> mindices;
+typedef std::vector<mindices> match_indices;
 Q_DECLARE_METATYPE(std::string);
 Q_DECLARE_METATYPE(match_indices);
 
@@ -25,7 +27,7 @@ void ut_matching_words_search::init()
 }
 void ut_matching_words_search::cleanup() {}
 
-void ut_matching_words_search::test_MatchingWordSearch_data()
+void ut_matching_words_search::test_test_word_data()
 {
     QTest::addColumn<std::string>("number_to_search");
     QTest::addColumn<std::string>("test_word");
@@ -36,6 +38,7 @@ void ut_matching_words_search::test_MatchingWordSearch_data()
     QTest::addColumn<size_t>("size");
 
 
+    using namespace boost::assign;
     match_indices indices;
     //Failing cases
     indices.clear();
@@ -43,19 +46,19 @@ void ut_matching_words_search::test_MatchingWordSearch_data()
                               << std::string("") << false << (StartingIndex)0;
 
     indices.clear();
+    QTest::newRow("fail_02") << std::string("6922298548")  << std::string("jaworowianin") << false << indices 
+                                << std::string("JW") << false << (StartingIndex)0;
+
+    indices.clear();
     indices.push_back(std::make_pair(0,1));
     QTest::newRow("whole_01") << std::string("99") << std::string("BABCIA") << true << indices 
                               << std::string("BB") << true << (StartingIndex)1;
 
     indices.clear();
-    indices.push_back(std::make_pair(0,2));
+    indices.push_back(std::pair<StartingIndex, StartingIndex>(0,2));
     QTest::newRow("whole_02") << std::string("034") << std::string("SMAR") << true << indices 
                               << std::string("SMR") << true << (StartingIndex)1;
 
-    indices.clear();
-    indices.push_back(std::make_pair(0,1));
-    QTest::newRow("partial_03") << std::string("123") << std::string("ACETON") << true << indices
-                                << std::string("TN") << false << (StartingIndex)0;
     indices.clear();
     indices.push_back(std::make_pair(0,0));
     QTest::newRow("partial_01") << std::string("9") << std::string("AAP") << true << indices
@@ -66,14 +69,20 @@ void ut_matching_words_search::test_MatchingWordSearch_data()
     QTest::newRow("partial_02") << std::string("885421866") << std::string("LERNED") << true << indices 
                                 << std::string("LRND") << false << (StartingIndex)5;
     indices.clear();
+    indices.push_back(std::make_pair(0,1));
+    QTest::newRow("partial_03") << std::string("123") << std::string("ACETON") << true << indices
+                                << std::string("TN") << false << (StartingIndex)0;
+    indices.clear();
     indices.push_back(std::make_pair(0,0));
     indices.push_back(std::make_pair(1,1));
     QTest::newRow("partial_two_times") << std::string("99") << std::string("AAP") << true << indices
                                 << std::string("P") << false << (StartingIndex)0;
+
 }
 
-void ut_matching_words_search::test_MatchingWordSearch()
+void ut_matching_words_search::test_test_word()
 {
+    //Given
     QFETCH(std::string,number_to_search);
     QFETCH(std::string,test_word);
     QFETCH(bool,testing_result);
@@ -81,15 +90,12 @@ void ut_matching_words_search::test_MatchingWordSearch()
     QFETCH(std::string,matching_letters);
     QFETCH(bool,full_coverage);
     QFETCH(size_t,size);
-
+    //When
     boost::optional<MatchingWord> result = substituteSearchPrivate->testWord(test_word, number_to_search);
+    //Then
     QCOMPARE((bool)result, testing_result);
     if (!testing_result)
       return;
-    // FittingWordsMap::const_iterator iter =
-    // substituteSearchPrivate->searchResultMap.find(MatchingPair(start_index,end_index));
-    // QVERIFY(iter!=substituteSearchPrivate->searchResultMap.end());
-    // QCOMPARE(iter->second.size(), (std::size_t)size);
     QCOMPARE(result->matchingLetters.c_str(), matching_letters.c_str());
     QCOMPARE(result->bFullCoverage, full_coverage);
     std::list<MatchingPair>::const_iterator iter = result->coveredDigitsIndices.begin();
@@ -99,4 +105,37 @@ void ut_matching_words_search::test_MatchingWordSearch()
       QCOMPARE(iter->endIndex, indices[i].second);
       iter++;
     }
+}
+
+void ut_matching_words_search::test_add_matching_word_1()
+{
+  //Given
+  StartingIndex startIdx(0);
+  MatchingWord word;
+  word.coveredDigitsIndices.push_back(MatchingPair(startIdx,startIdx));
+  word.words.push_back("test_word_1");
+  QCOMPARE(substituteSearchPrivate->searchResult.size(),(size_t)0);
+  //When
+  substituteSearchPrivate->addMatchingWord(word);
+  //Then
+  QCOMPARE(substituteSearchPrivate->searchResult.size(),(size_t)1);
+  QCOMPARE(substituteSearchPrivate->searchResult.count(startIdx),(size_t)1);
+}
+
+void ut_matching_words_search::test_add_matching_word_2()
+{
+  //Given
+  StartingIndex startIdx1(0);
+  StartingIndex startIdx2(3);
+  MatchingWord word;
+  word.coveredDigitsIndices.push_back(MatchingPair(startIdx1,startIdx2));
+  word.coveredDigitsIndices.push_back(MatchingPair(startIdx2,startIdx2));
+  word.words.push_back("test_word_1");
+  QCOMPARE(substituteSearchPrivate->searchResult.size(),(size_t)0);
+  //When
+  substituteSearchPrivate->addMatchingWord(word);
+  //Then
+  QCOMPARE(substituteSearchPrivate->searchResult.size(),(size_t)2);
+  QCOMPARE(substituteSearchPrivate->searchResult.count(startIdx1),(size_t)1);
+  QCOMPARE(substituteSearchPrivate->searchResult.count(startIdx2),(size_t)1);
 }

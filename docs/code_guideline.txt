@@ -4,7 +4,7 @@
 2.1 Names for classes
 - do not use C prefix
 - names should be selfexplaining
-- for smarrt pointers -> add suffix Handle or Ptr
+- for smart pointers -> add typedef inside class definition
 
 
 2.2 Variables names

@@ -1,4 +1,4 @@
-#include "CDictionaryDataTest.h"
+#include "ut_dictionary_data.h"
 
 const unsigned int single_timeout(1000); //in s
 const unsigned int timeouts_count(5); //in s
@@ -10,7 +10,7 @@ const std::string non_existing_dict("aaa");
 
 void CDictionaryDataTest::init()
 {
-	test_obj.reset(new CDictionaryData);
+	test_obj.reset(new DictionaryData);
 }
 void CDictionaryDataTest::cleanup()
 {

@@ -37,7 +37,7 @@ void mt_substitute_search_test::create_dictionary_data()
 void mt_substitute_search_test::initTestCase()
 {
 	create_system_digits_configuration();
-	dictionary_data.reset(new CDictionaryData());
+	dictionary_data.reset(new DictionaryData());
 	create_dictionary_data();
 }
 

@@ -8,7 +8,7 @@
 #define WINDOWS_EOF_2CHAR '\n'
 #define LINUX_EOF_CHAR '\n'
 
-dictionary_file_memory_map::dictionary_file_memory_map(CDictionaryData * ptrPublic)
+dictionary_file_memory_map::dictionary_file_memory_map(DictionaryData * ptrPublic)
 {
 	m_ptrPublic = ptrPublic;
 }

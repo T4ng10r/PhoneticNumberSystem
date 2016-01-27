@@ -55,7 +55,7 @@ std::string base_dictionary_warehouse::get_file_codepage(std::string file_path )
 	if (!ifs.good())
 	{
 		printLog(eDebug, eWarningLogLevel,
-		    str(boost::format("CDictionaryData, can't open dictionary aff file %1%") % file_path));
+		    str(boost::format("DictionaryData, can't open dictionary aff file %1%") % file_path));
 		return std::string();
 	}
 	std::getline(ifs, fileCodepage);

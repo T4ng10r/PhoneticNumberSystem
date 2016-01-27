@@ -4,14 +4,14 @@
 #include <boost/interprocess/mapped_region.hpp>
 #include <vector>
 
-class CDictionaryData;
+class DictionaryData;
 
 class dictionary_file_memory_map : public base_dictionary_warehouse
 {
 public:
-	CDictionaryData * m_ptrPublic;
+	DictionaryData * m_ptrPublic;
 public:
-	dictionary_file_memory_map(CDictionaryData * ptrPublic);
+	dictionary_file_memory_map(DictionaryData * ptrPublic);
 	~dictionary_file_memory_map();
 	bool openFile(const std::string & filePath);
 	void close_file();

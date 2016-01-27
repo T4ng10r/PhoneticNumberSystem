@@ -1,17 +1,20 @@
 #pragma once
 
 #include <boost/scoped_ptr.hpp>
+#include <boost/shared_ptr.hpp>
 #include <string>
 
 class base_dictionary_warehouse;
 
 // slownik
-class CDictionaryData
+class DictionaryData
 {
 	friend class CDictionaryDataPrivate;
 public:
-	CDictionaryData(void);
-	~CDictionaryData(void);
+  typedef boost::shared_ptr<DictionaryData> ptr;
+
+	DictionaryData(void);
+	~DictionaryData(void);
 	bool loadDictionary(const std::string & filePath);
 	unsigned int getWordsCount();
 	std::string get_word_by_index(unsigned int index);
