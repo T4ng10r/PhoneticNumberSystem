@@ -12,7 +12,7 @@
 const QSize ciSize(700,450);
 
 CMainWindow::CMainWindow() : QMainWindow(),
-m_ptrPriv(new CMainWindowPrivate(this))
+m_ptrPriv(new MainWindowPrivate(this))
 {
 	resize(ciSize);
 }
@@ -26,5 +26,5 @@ void CMainWindow::closeEvent(QCloseEvent *)
 }
 void CMainWindow::onShowSettingsConfigureDialog(bool)
 {
-	m_ptrPriv->appSettingsDlg->show();
+	m_ptrPriv->settings_dialog->show();
 }

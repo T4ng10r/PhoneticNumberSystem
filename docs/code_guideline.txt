@@ -1,9 +1,12 @@
 
 
+https://google.github.io/styleguide/cppguide.html
+
 2. Naming convention
 2.1 Names for classes
 - do not use C prefix
 - names should be selfexplaining
+- 
 - for smart pointers -> add typedef inside class definition
 
 

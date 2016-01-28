@@ -5,7 +5,7 @@
 #include <QMainWindow>
 #include <boost/scoped_ptr.hpp>
 
-class CMainWindowPrivate;
+class MainWindowPrivate;
 
 class CMainWindow : public QMainWindow
 {
@@ -19,6 +19,6 @@ protected:
 	void closeEvent(QCloseEvent *);
 	QString strippedName(const QString &fullFileName);
 protected:
-	boost::scoped_ptr<CMainWindowPrivate> m_ptrPriv;
+	boost::scoped_ptr<MainWindowPrivate> m_ptrPriv;
 };
 #endif //_CAF_WINDOW_INCLUDE_ 

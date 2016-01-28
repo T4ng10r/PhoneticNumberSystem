@@ -1,57 +1,54 @@
 #ifndef _CAF_WINDOW_PRIVATE_INCLUDE_
 #define _CAF_WINDOW_PRIVATE_INCLUDE_
 
-#include <QBoxLayout>
+#include <GUI/SearchPhoneticRepresentationsDlg.h>
 #include <QAction>
-#include <QToolBar>
-#include <QMenuBar>
+#include <QBoxLayout>
 #include <QLabel>
-#include <QTableView>
+#include <QMenuBar>
 #include <QPushButton>
-#include <QTabWidget>
-#include <QTreeView>
 #include <QSignalMapper>
+#include <QTabWidget>
+#include <QTableView>
+#include <QToolBar>
+#include <QTreeView>
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
-#include <GUI/SearchPhoneticRepresentationsDlg.h>
 
 enum { MaxRecentFiles = 5 };
 
 class CMainWindow;
 class CSettingsDlg;
 
-class CMainWindowPrivate
+class MainWindowPrivate
 {
-public:
-	CMainWindowPrivate(CMainWindow * ptrPublic);
-	~CMainWindowPrivate();
-public:
-	void createConnectionsCatalog();
-	void setupUI();
-	void setupActions();
-	void setConnections();
-public:
-	//wallaroo::Catalog			m_catalog;
-	QWidget *					m_ptCentralWidget;
-	QVBoxLayout *				mainLayout;
-	QToolBar *					m_ptToolBar;
+  public:
+    MainWindowPrivate(CMainWindow* ptrPublic);
+    ~MainWindowPrivate();
 
-	//////////////////////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////////
-	QAction *					m_actionNewConf;
-	QAction *					m_actionOpenConf;
-	QAction *					m_actionSaveConf;
-	QAction *					m_actionSaveAsConf;
-	QAction *					m_actionConfiguration;
-	//////////////////////////////////////////////////////////////////////////
-	QMenu *						m_recentFilesMenu;
-	QAction *					m_separatorAct;
-	QAction *					m_aRecentFileActs[MaxRecentFiles];
-	//////////////////////////////////////////////////////////////////////////
-	QMutex						m_DataThreadTerminatedMutex;
-	void *						ptrDataThread;
-	CMainWindow *				m_ptrPublic;
-	boost::shared_ptr<CSettingsDlg>	appSettingsDlg;
-	boost::shared_ptr<CSearchPhoneticRepresentationsDlg>	searchPhoneticRepresentations;
+  public:
+    void createConnectionsCatalog();
+    void setupUI();
+    void setupActions();
+    void setConnections();
+
+  public:
+    QWidget*     central_widget_;
+
+    //////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////
+    QAction* action_new_configuration;
+    QAction* action_open_configuration;
+    QAction* action_save_configuration;
+    QAction* action_save_configuration_as;
+    QAction* action_open_settings;
+    //////////////////////////////////////////////////////////////////////////
+    QMenu*   recent_files_menu;
+    //QAction* m_separatorAct;
+    QAction* actions_recent_file[MaxRecentFiles];
+    //////////////////////////////////////////////////////////////////////////
+    CMainWindow*                                         public_ptr;
+    boost::shared_ptr<CSettingsDlg>                      settings_dialog;
+    boost::shared_ptr<CSearchPhoneticRepresentationsDlg> search_phonetic_representations_dialog;
 };
-#endif //_CAF_WINDOW_PRIVATE_INCLUDE_ 
+#endif //_CAF_WINDOW_PRIVATE_INCLUDE_
