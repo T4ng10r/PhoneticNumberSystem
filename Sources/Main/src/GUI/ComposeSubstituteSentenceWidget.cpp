@@ -32,6 +32,7 @@ public:
 	void reset(std::size_t starting_index = 1);
 	void set_connections();
 	QString process_word(MatchingWord word, QTextCodec * codec);
+  std::size_t which_combobox_selected(QComboBox * sender);
 
 public:
 	ComposeSubstituteSentenceWidget * public_part;
@@ -122,6 +123,18 @@ QString ComposeSubstituteSentenceWidgetPrivate::process_word(MatchingWord word, 
 		style_word = word.getWord().c_str();
 	return style_word;
 }
+std::size_t ComposeSubstituteSentenceWidgetPrivate::which_combobox_selected(QComboBox * sender)
+{
+	std::size_t combo_box_starting_index=1;
+	for(QComboBox * combo_box : combo_box_container)
+	{
+		if (combo_box != sender)
+			combo_box_starting_index++;
+		else
+			break;
+	}
+  return combo_box_starting_index;
+}
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 ComposeSubstituteSentenceWidget::ComposeSubstituteSentenceWidget(QWidget * parent):QWidget(parent),
@@ -138,21 +151,13 @@ void ComposeSubstituteSentenceWidget::initialize_after_success_search()
 void ComposeSubstituteSentenceWidget::on_word_selected(int selected_index)
 {
 	QComboBox * sender_ = dynamic_cast<QComboBox*>(sender());
-	std::size_t combo_box_starting_index=1;
-	for(QComboBox * combo_box : priv_part->combo_box_container)
-	{
-		if (combo_box != sender_)
-			combo_box_starting_index++;
-		else
-			break;
-	}
+  std:size_t combo_box_starting_index = priv_part->which_combobox_selected(sender_);
     printLog(eDebug, eDebugLogLevel, str(boost::format("'%1%' results word has been changed") % combo_box_starting_index));
 	priv_part->reset(combo_box_starting_index);
 	MatchingWord matching_word = sender_->itemData(selected_index).value<MatchingWord>();
     printLog(eDebug, eDebugLogLevel, str(boost::format("User has choose '%1%' result word") % matching_word.words.front()));
 	std::size_t node_id = matching_word.coveredDigitsIndices.front().endIndex+2;
     printLog(eDebug, eDebugLogLevel, str(boost::format("Next word should start from '%1%' digit of searched number") % node_id));
-	//printLog(eDebug, eDebugLogLevel, str(boost::format("node id %1%") % node_id));
 	MatchingWordsList result = gDataThread->getSearchResult(node_id);
 	if (result.size())
 	{

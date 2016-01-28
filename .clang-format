@@ -8,7 +8,7 @@ AlignConsecutiveDeclarations : true
 AlwaysBreakTemplateDeclarations : true
 BreakConstructorInitializersBeforeComma : true
 # doesn't work with clang 3.7
-BreakBeforeBraces : Linux
+BreakBeforeBraces :  Linux
 BraceWrapping :
     AfterClass : true
     AfterControlStatement : true
