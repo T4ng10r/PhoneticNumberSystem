@@ -20,7 +20,7 @@ public:
     void setSubstituteDigitsConfiguration(CSingleSubstituteDigitsConfiguration conf);
     void setDictionaryWords(DictionaryData::ptr);
     void startSearchForNumber(const std::string & number);
-    WordsList getSearchResult(StartingIndex start_index = 0);
+    MatchingWordsList getSearchResult(StartingIndex start_index = 0);
 Q_SIGNALS:
     void searchProgress(int current, int max);
     void searchFinished(bool);

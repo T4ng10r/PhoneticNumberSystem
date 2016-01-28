@@ -97,7 +97,7 @@ void CSearchPhoneticRepresentationsDlgPrivate::moveSearchResultIntoModel()
 {
 	searchResultsModel.clear();
 	searchResultsModel.setColumnCount(1);
-	const WordsList & result = gDataThread->getSearchResult(0);
+	const MatchingWordsList & result = gDataThread->getSearchResult(0);
 	QTextCodec * codec = gDataThread->get_current_codepage();
 	for(MatchingWord success_word : result)
 	{
@@ -114,7 +114,7 @@ void CSearchPhoneticRepresentationsDlgPrivate::moveSearchResultIntoModel()
 void CSearchPhoneticRepresentationsDlgPrivate::moveSearchResultIntoSubstituteComposer()
 {
 	composeSubstituteSentenceWidget->initialize_after_success_search();
-	WordsList result = gDataThread->getSearchResult(0);
+	MatchingWordsList result = gDataThread->getSearchResult(0);
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////

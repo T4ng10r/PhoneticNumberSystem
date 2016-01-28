@@ -38,6 +38,7 @@ void prepare_aff_file_path(std::string & file_path)
 			return;
 		}
 	}
+  printLog(eDebug, eWarningLogLevel, str(boost::format("Lack of affinity file with dictionary file (%1%)") % file_path));
 	file_path.clear();
 }
 base_dictionary_warehouse::base_dictionary_warehouse() :words_count_(0)

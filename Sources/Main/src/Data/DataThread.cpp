@@ -138,7 +138,7 @@ void DataThread::loadCurrentlySetDictionary()
 		return;
 	}
 }
-WordsList DataThread::getSearchResult(StartingIndex start_index)
+MatchingWordsList DataThread::getSearchResult(StartingIndex start_index)
 {
 	return _pimpl->substituteSearch->getSearchResult(start_index);
 }
@@ -187,5 +187,7 @@ QTextCodec * DataThread::get_current_codepage()
 {
 	std::string codepage = _pimpl->dictionaryData->get_file_codepage();
 	QTextCodec * codec = QTextCodec::codecForName(codepage.c_str());
+  if (!codec)
+  	printLog(eDebug, eWarningLogLevel, str(boost::format("Couldn't get Text Codec for' %1%' codepage") % codepage));
 	return codec;
 }

@@ -19,7 +19,7 @@ public:
 	static ptr instance();
   //currently not used
 	void loadCurrentlySetDictionary();
-	WordsList getSearchResult(StartingIndex start_index);
+	MatchingWordsList getSearchResult(StartingIndex start_index);
   QTextCodec * get_current_codepage();
   
 public Q_SLOTS:

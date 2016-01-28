@@ -66,8 +66,8 @@ void mt_substitute_search_test::test_SubstituteSearch_WholeCorrectWord_01()
 	QList<QVariant> signal_resp = search_finished_spy.takeFirst();
 	QCOMPARE(signal_resp.at(0).toBool(), true);
 
-	WordsList search_result = substitute_search->getSearchResult(0);
-	WordsList::const_iterator iter = search_result.begin();
+	MatchingWordsList search_result = substitute_search->getSearchResult(0);
+	MatchingWordsList::const_iterator iter = search_result.begin();
 	QVERIFY(search_result.size()>0);
 	QCOMPARE(iter->getWord(),std::string("AAP"));
 	QCOMPARE(iter->bFullCoverage,false);

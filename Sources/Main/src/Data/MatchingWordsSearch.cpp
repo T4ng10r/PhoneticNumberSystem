@@ -1,5 +1,4 @@
 #include <Data/MatchingWordsSearch.h>
-#include <Data/SearchResultTreeNode.h>
 #include <Data/Settings.h>
 #include <Tools/loggers.h>
 #include <boost/algorithm/string.hpp> //boost::to_upper_copy
@@ -179,10 +178,10 @@ void MatchingWordsSearch::startSearchForNumber(const std::string& number)
     Q_EMIT searchFinished(true);
 }
 
-WordsList MatchingWordsSearch::getSearchResult(StartingIndex start_index)
+MatchingWordsList MatchingWordsSearch::getSearchResult(StartingIndex start_index)
 {
     WordSearchResultMap::iterator iter = privPart->searchResult.find(start_index);
     if (iter != privPart->searchResult.end())
         return iter->second;
-    return WordsList();
+    return MatchingWordsList();
 }

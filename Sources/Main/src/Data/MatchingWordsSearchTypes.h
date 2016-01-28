@@ -31,10 +31,10 @@ struct MatchingPair {
 };
 
 struct MatchingWord;
-// typedef std::list< MatchingWord >				WordsList;
-typedef std::list<MatchingWord> WordsList;
+// typedef std::list< MatchingWord >				MatchingWordsList;
+typedef std::list<MatchingWord> MatchingWordsList;
 
-typedef std::map<StartingIndex, WordsList> WordSearchResultMap;
+typedef std::map<StartingIndex, MatchingWordsList> WordSearchResultMap;
 
 struct MatchingWord {
   public:
@@ -67,6 +67,6 @@ struct MatchingWord {
     std::list<std::string>  words;
 };
 
-typedef std::map<MatchingPair, WordsList> FittingWordsMap;
+typedef std::map<MatchingPair, MatchingWordsList> FittingWordsMap;
 
 #endif //_CSUBSTITUTESEARCHTYPE_INCLUDE_
