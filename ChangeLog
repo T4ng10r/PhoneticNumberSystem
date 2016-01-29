@@ -1,0 +1,3 @@
+log4cplus 2.0-RC1
+
+  - Implementation language is now C++11.
