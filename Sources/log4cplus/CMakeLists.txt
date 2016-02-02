@@ -70,7 +70,7 @@ option(ENABLE_SYMBOLS_VISIBILITY
   "Enable compiler and platform specific options for symbols visibility"
   ON)
 
-option(WITH_UNIT_TESTS "Enable unit tests" ON)
+option(WITH_UNIT_TESTS "Enable unit tests" OFF)
 if (WITH_UNIT_TESTS)
   set (LOG4CPLUS_WITH_UNIT_TESTS 1)
   add_definitions (-DCATCH_CONFIG_PREFIX_ALL=1)

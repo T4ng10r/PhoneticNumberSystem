@@ -1,4 +1,4 @@
-#include "ut_matching_words_search.h"
+#include "matching_words_search.h"
 #include <Data/MatchingWordsSearch.cpp>
 #include <vector>
 #include <boost/assign/list_of.hpp>

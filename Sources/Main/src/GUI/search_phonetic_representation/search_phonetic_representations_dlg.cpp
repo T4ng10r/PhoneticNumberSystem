@@ -1,7 +1,7 @@
 #include <Data/DataThread.h>
-#include <GUI/SearchPhoneticRepresentationsDlg.h>
-#include <GUI/ComposeSubstituteSentenceWidget.h>
-#include <GUI/SearchNumberLineEdit.h>
+#include <GUI/search_phonetic_representation/search_phonetic_representations_dlg.h>
+#include <GUI/search_phonetic_representation/compose_substitute_sentence_widget.h>
+#include <GUI/search_phonetic_representation/search_number_lineedit.h>
 #include <Tools/loggers.h>
 #include <QtCore/QTextCodec>
 #include <QLineEdit>

@@ -11,7 +11,7 @@ find_package(Qt5Core REQUIRED)
 find_package(Qt5Xml REQUIRED)
 include_directories($ENV{QTDIR} ${Qt5Widgets_INCLUDE_DIRS} ${Qt5Core_INCLUDE_DIRS})
 
-include_directories(${Boost_INCLUDE_DIR} )
+include_directories(${Boost_INCLUDE_DIR}  ${log4cplus_SOURCE_DIR} )
 ADD_DEFINITIONS( "-DHAS_BOOST" )
 ADD_DEFINITIONS( "-DQT_NO_KEYWORDS" )
 

@@ -1,4 +1,4 @@
-#include <TestCases/CSettingsTest.h>
+#include "settings_test.h"
 #include <Data/Settings.h>
 #include <iterator>	 //for distance
 #include <set>

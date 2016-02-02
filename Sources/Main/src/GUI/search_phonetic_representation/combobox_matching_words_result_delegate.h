@@ -7,9 +7,9 @@
 #include <Tools/loggers.h>
 #include <Data/MatchingWordsSearchTypes.h>
 Q_DECLARE_METATYPE(MatchingWord);
-#include <GUI/CustomComboBox_tools.h>
+#include <GUI/search_phonetic_representation/custom_combobox_tools.h>
 
-class SubstituteSearchResultComboDelegate : public QItemDelegate
+class ComboBoxMatchingWordsResultDelegate : public QItemDelegate
 {
 public:
 
@@ -17,7 +17,7 @@ public:
 		const QModelIndex &index ) const
 	{
 		QString text = index.model()->data(index).toString();
-		MatchingWord success_word = index.model()->data(index,Qt::UserRole).value<MatchingWord>();
+		MatchingWord matching_word = index.model()->data(index,Qt::UserRole).value<MatchingWord>();
 		QStyleOptionViewItemV4 myOption = option;
 		QFontMetrics font_metric(myOption.font);
 
@@ -35,7 +35,7 @@ public:
 		special_pen.setColor(QColor(Qt::red));
 		special_pen.setWidth(special_pen.width()+1);
 
-		for(char letter : success_word.matchingLetters)
+		for(char letter : matching_word.matchingLetters)
 		{
 			start_pos = text.indexOf(letter, prev_pos, Qt::CaseInsensitive);
 			if (start_pos<0)

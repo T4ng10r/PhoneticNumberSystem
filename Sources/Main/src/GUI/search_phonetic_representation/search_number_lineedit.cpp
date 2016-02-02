@@ -1,4 +1,4 @@
-#include <GUI/SearchNumberLineEdit.h>
+#include <GUI/search_phonetic_representation/search_number_lineedit.h>
 #include <QtGui/QValidator>
 #include <Tools/loggers.h>
 

@@ -1,6 +1,7 @@
 #include <GUI/MainWindow.h>
 #include <GUI/MainWindow_p.h>
 #include <GUI/Settings/SettingsDlg.h>
+#include <GUI/search_phonetic_representation/search_phonetic_representations_dlg.h>
 #include <Data/DataThread.h>
 #include <QStatusBar>
 #include <QMenuBar>

@@ -15,7 +15,7 @@ public:
 	~ComposeSubstituteSentenceWidget(void);
 	void initialize_after_success_search();
 protected Q_SLOTS:
-	void on_word_selected(int);
+  void on_word_selected(int end_index);
 protected:
 	boost::scoped_ptr<ComposeSubstituteSentenceWidgetPrivate> priv_part;
 };

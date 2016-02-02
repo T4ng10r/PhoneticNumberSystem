@@ -5,7 +5,7 @@
 #include <Data/DictionaryData.h>
 #include <memory>
 
-class CDictionaryDataTest : public QObject
+class ut_dictionary_data : public QObject
 {
     Q_OBJECT
 public:
@@ -18,4 +18,4 @@ private Q_SLOTS:
 	void test_load_dictionary();
 };
 
-DECLARE_TEST(CDictionaryDataTest)
+DECLARE_TEST(ut_dictionary_data)
