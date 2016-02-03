@@ -17,7 +17,6 @@ SET(LOG4CPLUS_QT5 ON)
 SET(WITH_UNIT_TESTS OFF)
 find_package(Boost REQUIRED COMPONENTS date_time system filesystem unit_test_framework) #thread system date_time chrono)
 
-set_property(CACHE Logger PROPERTY STRINGS ${LoggersNames})
 SET ( LOG4CPLUS_LIBRARY_NAME "log4cplus" )
 
 add_definitions(-DUSE_LOG4CPLUS)
