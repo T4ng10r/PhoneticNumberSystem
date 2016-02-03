@@ -1,0 +1,3 @@
+[submodule "Sources/log4cplus"]
+	path = Sources/log4cplus
+	url = git@github.com:log4cplus/log4cplus.git

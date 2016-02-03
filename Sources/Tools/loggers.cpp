@@ -1,27 +1,13 @@
 #include <Tools/loggers.h>
-//#include <io.h>
+#include <iostream>
 #include <boost/filesystem.hpp>
 #include <boost/format.hpp>
-#ifdef USE_LOG4QT
-
-#include <log4qt/logmanager.h>
-#include <log4qt/consoleappender.h>
-#include <log4qt/fileappender.h>
-#include <log4qt/logger.h>
-#include <log4qt/ttcclayout.h>
-#include <log4qt/patternlayout.h>
-using namespace Log4Qt;
-
-#elif USE_LOG4CPP
-#include	<log4cpp/Category.hh>
-#include	<log4cpp/FileAppender.hh>
-#include	<log4cpp/PatternLayout.hh>
-#include	<log4cpp/Category.hh>
-#include	<log4cpp/PropertyConfigurator.hh>
-
-using namespace log4cpp;
-
-#endif
+//#include	<log4cplus/Category.hh>
+//#include	<log4cplus/FileAppender.hh>
+//#include	<log4cplus/PatternLayout.hh>
+//#include	<log4cplus/Category.hh>
+#include	<log4cplus/configurator.h>
+using namespace log4cplus;
 bool bLoggersCreated(false);
 
 #ifdef WIN32
@@ -30,18 +16,18 @@ bool bLoggersCreated(false);
 #define SEPARATOR "\\"
 #endif
 
+#define LOG_DIR				"logs"
 #define DEBUG_LOGGER		"debug"
 #define SLOTS_LOGGER		"slots"
 #define GUI_LOGGER			"gui"
-#define LOG_DIR				"logs"
 #define LOG_FILE(X)		str(boost::format("%1%%2%%3%.log") % LOG_DIR % SEPARATOR % X)
-#define LOG4CPP_PROPERTIES_FILE "logs/log4cpp.properties"
-
+#define LOG4CPLUS_PROPERTIES_FILE LOG_DIR"/log4cplus.properties"
 
 void deleteFileIfExist(const std::string & filePath)
 {
-	struct stat   buffer;
-	if (stat(filePath.c_str(), &buffer) == 0)
+	//struct stat   buffer={0};
+  if (boost::filesystem::exists(filePath.c_str()))
+	//if (stat(filePath.c_str(), &buffer) == 0)
 		remove(filePath.c_str());
 }
 void cleanupLogsDir()
@@ -54,55 +40,14 @@ void cleanupLogsDir()
 	deleteFileIfExist(LOG_FILE(SLOTS_LOGGER));
 }
 
-void createLoggers_log4cpp()
-{
-	if (!boost::filesystem::exists(LOG4CPP_PROPERTIES_FILE))
-	{
-		std::cout<<"Not existing log4cpp properties file"<<std::endl;
-	}
-	log4cpp::PropertyConfigurator::configure(std::string(LOG4CPP_PROPERTIES_FILE));
-}
-
 void createLoggers(const std::string &strPluginLogName)
 {
 	cleanupLogsDir();
-
-#ifdef USE_LOG4QT
-	PatternLayout *		p_PatternLayout(NULL);
-	p_PatternLayout = new PatternLayout;
-	//need timestamp, Level, potential Network/debug/Q_SLOTS
-	p_PatternLayout->setConversionPattern("%-8r %-5p %c %m%n");
-	p_PatternLayout->activateOptions();
-
-	// Create an appender
-	if (strPluginLogName.isEmpty())
+	if (!boost::filesystem::exists(LOG4CPLUS_PROPERTIES_FILE))
 	{
-		ConsoleAppender * p_ConsoleAppender = new ConsoleAppender(p_PatternLayout, ConsoleAppender::STDOUT_TARGET);
-		p_ConsoleAppender->setName(QLatin1String("Console Appender"));
-		p_ConsoleAppender->activateOptions();
-		FileAppender * p_FileDebugAppender = new FileAppender(p_PatternLayout, LOG_FILE(DEBUG_LOGGER));
-		p_FileDebugAppender->setName(QLatin1String("Debug Appender"));
-		p_FileDebugAppender->activateOptions();
-		//////////////////////////////////////////////////////////////////////////
-		FileAppender * p_FileSlotConnAppender = new FileAppender(p_PatternLayout, LOG_FILE(SLOTS_LOGGER));
-		p_FileSlotConnAppender->setName(QLatin1String("Slots Appender"));
-		p_FileSlotConnAppender->activateOptions();
-		//////////////////////////////////////////////////////////////////////////
-		LogManager::logger(DEBUG_LOGGER)->addAppender(p_ConsoleAppender);
-		LogManager::logger(DEBUG_LOGGER)->addAppender(p_FileDebugAppender);
-		LogManager::logger(SLOTS_LOGGER)->addAppender(p_FileSlotConnAppender);
+		std::cout<<"Not existing log4cpp properties file"<<std::endl;
 	}
-	else
-	{
-		FileAppender * p_FileNetworkAppender = new FileAppender(p_PatternLayout, LOG_FILE(strPluginLogName));
-		p_FileNetworkAppender->setName(QLatin1String("Debug Appender"));
-		p_FileNetworkAppender->activateOptions();
-		//////////////////////////////////////////////////////////////////////////
-		LogManager::logger(DEBUG_LOGGER)->addAppender(p_FileNetworkAppender);
-	}
-#elif USE_LOG4CPP
-	createLoggers_log4cpp();
-#endif
+  log4cplus::PropertyConfigurator::doConfigure(LOG4CPLUS_PROPERTIES_FILE);
 	bLoggersCreated=true;
 	//
 	printLog(eDebug, eInfoLogLevel, "Log created");
@@ -134,25 +79,6 @@ boost::optional<std::string> get_logger_name(eLoggerType loggerType)
 	return logger_name;
 }
 
-#ifdef USE_LOG4QT
-void printLog_log4qt(boost::optional<std::string> logger_name, eLogLevel debugLevel, const std::string &strMsg)
-{
-	Log4Qt::LogError  stLogError(strMsg);
-	Log4Qt::Logger * ptrLogger(Log4Qt::LogManager::logger(logger_name));
-	switch(debugLevel)
-	{
-		case eInfoLogLevel:
-			ptrLogger->info(stLogError); 	break;
-		case eWarningLogLevel:	
-			ptrLogger->warn(stLogError);	break;
-		case eDebugLogLevel:	
-			ptrLogger->debug(stLogError);	break;
-		case eErrorLogLevel:
-			ptrLogger->error(stLogError);	break;
-	}
-}
-#endif
-
 #ifdef USE_LOG4CPP
 void printLog_log4cpp(boost::optional<std::string> logger_name, eLogLevel debugLevel, const std::string &strMsg)
 {
@@ -181,9 +107,7 @@ void printLog(eLoggerType loggerType, eLogLevel debugLevel, const std::string &s
 	if (!logger_name)
 		return;
 
-#ifdef USE_LOG4QT
-	printLog_log4qt(logger_name, debugLevel, strMsg);
-#elif defined(USE_LOG4CPP)
+#if defined(USE_LOG4CPP)
 	printLog_log4cpp(logger_name, debugLevel, strMsg);
 #endif
 

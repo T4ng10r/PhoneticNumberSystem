@@ -18,11 +18,11 @@ ADD_DEFINITIONS( "-DQT_NO_KEYWORDS" )
 GatheringFiles(${CMAKE_CURRENT_SOURCE_DIR} "cpp;h;;c;cc")
 CreateProjectStructure(${CMAKE_CURRENT_SOURCE_DIR} )
 
-SET(TMP_FILES ${TMP_FILES} log4cpp.properties 
+SET(TMP_FILES ${TMP_FILES}
 		Requirements.txt 
 		TODO.txt
 		PhoneticNumberSystem.xml
-		log4cpp.properties
+		log4cplus.properties
 		${SOURCES_TOOLS} )
 		  
 add_executable(PhoneticNumberSystem ${TMP_FILES} main.cpp  )
@@ -40,7 +40,7 @@ add_library(PhoneticNumberSystem_lib STATIC ${TMP_FILES} )
 		 COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/dictionaries/pl_PL.aff ${CMAKE_CURRENT_BINARY_DIR}/dict/pl_PL.aff
 		 )
 	add_custom_command(TARGET PhoneticNumberSystem POST_BUILD 
-		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/log4cpp.properties ${CMAKE_CURRENT_BINARY_DIR}/logs/log4cpp.properties
+		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/log4cplus.properties ${CMAKE_CURRENT_BINARY_DIR}/logs/log4cplus.properties
 		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/PhoneticNumberSystem.xml ${CMAKE_CURRENT_BINARY_DIR}/PhoneticNumberSystem.xml)
 
 	INSTALL(TARGETS PhoneticNumberSystem 

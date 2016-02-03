@@ -17,6 +17,6 @@ public:
 protected Q_SLOTS:
   void on_word_selected(int end_index);
 protected:
-	boost::scoped_ptr<ComposeSubstituteSentenceWidgetPrivate> priv_part;
+	boost::scoped_ptr<ComposeSubstituteSentenceWidgetPrivate> pImpl;
 };
 #endif //_COMPOSESUBSTITUTESENTENCEWIDGET_INCLUDE_

@@ -14,17 +14,11 @@ SET(Boost_USE_STATIC_LIBS ON)
 #SET(Boost_USE_STATIC_RUNTIME OFF)
 find_package(Boost REQUIRED COMPONENTS date_time system filesystem unit_test_framework) #thread system date_time chrono)
 
-set(Logger "log4cpp" CACHE STRING "Logger where to store logs from program executions")
-set(LoggersNames "None;log4cpp")
 set_property(CACHE Logger PROPERTY STRINGS ${LoggersNames})
-SET ( LOG4CPP_LIBRARY_NAME "log4cpp" )
+SET ( LOG4CPLUS_LIBRARY_NAME "log4cplus" )
 
-IF (Logger STREQUAL "log4cpp")
-  add_definitions(-DUSE_LOG4CPP)
-  SET(LOGGER_LIBRARY ${LOG4CPP_LIBRARY_NAME})
-ELSE ()
-  SET(LOGGER_LIBRARY "")
-ENDIF ()
+add_definitions(-DUSE_LOG4CPLUS)
+SET(LOGGER_LIBRARY ${LOG4CPLUS_LIBRARY_NAME})
 
 
 if (MSVC)

@@ -25,7 +25,7 @@ class ComposeSubstituteSentenceWidgetPrivate
   public:
     ComposeSubstituteSentenceWidgetPrivate(ComposeSubstituteSentenceWidget* ptrPublic);
     ~ComposeSubstituteSentenceWidgetPrivate();
-    void setupUI();
+    void setup_ui();
     void add_combo_box();
     void reset(std::size_t starting_index = 1);
     void    set_connections();
@@ -42,7 +42,7 @@ ComposeSubstituteSentenceWidgetPrivate::ComposeSubstituteSentenceWidgetPrivate(
     ComposeSubstituteSentenceWidget* ptrPublic)
     : public_part(ptrPublic)
 {
-    setupUI();
+    setup_ui();
     set_connections();
 }
 ComposeSubstituteSentenceWidgetPrivate::~ComposeSubstituteSentenceWidgetPrivate() { reset(); }
@@ -59,7 +59,7 @@ void ComposeSubstituteSentenceWidgetPrivate::add_combo_box()
                   "'result_widget::word_selected' with 'public_part::on_word_selected'", bResult);
 }
 
-void ComposeSubstituteSentenceWidgetPrivate::setupUI()
+void ComposeSubstituteSentenceWidgetPrivate::setup_ui()
 {
     QHBoxLayout* main_layout = new QHBoxLayout;
     delete public_part->layout();
@@ -106,32 +106,32 @@ std::size_t ComposeSubstituteSentenceWidgetPrivate::which_matching_word_selected
 //////////////////////////////////////////////////////////////////////////
 ComposeSubstituteSentenceWidget::ComposeSubstituteSentenceWidget(QWidget* parent)
     : QWidget(parent)
-    , priv_part(new ComposeSubstituteSentenceWidgetPrivate(this))
+    , pImpl(new ComposeSubstituteSentenceWidgetPrivate(this))
 {
 }
 ComposeSubstituteSentenceWidget::~ComposeSubstituteSentenceWidget(void) {}
 void ComposeSubstituteSentenceWidget::initialize_after_success_search()
 {
-    priv_part->reset();
+    pImpl->reset();
     MatchingWordsList result = gDataThread->getSearchResult(0);
     result.sort(cmp_success_words);
-    priv_part->word_results_container[0]->fill_matching_words(result);
+    pImpl->word_results_container[0]->fill_matching_words(result);
 }
 void ComposeSubstituteSentenceWidget::on_word_selected(int end_index)
 {
-    size_t combo_box_starting_index = priv_part->which_matching_word_selected();
+    size_t combo_box_starting_index = pImpl->which_matching_word_selected();
     printLog(eDebug, eDebugLogLevel,
              str(boost::format("'%1%' results word has been changed") % combo_box_starting_index));
-    priv_part->reset(combo_box_starting_index);
+    pImpl->reset(combo_box_starting_index);
     printLog(eDebug, eDebugLogLevel,
              str(boost::format("Next word should start from '%1%' digit of searched number") % end_index));
     MatchingWordsList result = gDataThread->getSearchResult(end_index);
     if (result.size()) {
         result.sort(cmp_success_words);
-        priv_part->add_combo_box();
+        pImpl->add_combo_box();
         MatchingWordsList::iterator it = std::unique(result.begin(), result.end());
-        priv_part->word_results_container[combo_box_starting_index]->fill_matching_words(
+        pImpl->word_results_container[combo_box_starting_index]->fill_matching_words(
             MatchingWordsList(result.begin(), it));
-        // priv_part->fill_combo_box(MatchingWordsList(result.begin(), it), combo_box_starting_index);
+        // pImpl->fill_combo_box(MatchingWordsList(result.begin(), it), combo_box_starting_index);
     }
 }
