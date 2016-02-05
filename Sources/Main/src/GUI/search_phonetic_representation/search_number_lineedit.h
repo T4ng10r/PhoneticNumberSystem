@@ -14,6 +14,6 @@ public:
       SearchNumberLineEdit(QWidget* parent=0);
      ~SearchNumberLineEdit(void);
 protected:
-     boost::scoped_ptr<SearchNumberLineEditPrivate> m_ptrPriv;
+     boost::scoped_ptr<SearchNumberLineEditPrivate> _pimpl;
 };
 #endif //_SEARCHNUMBERLINEEDIT_INCLUDE_

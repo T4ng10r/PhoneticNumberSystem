@@ -4,7 +4,7 @@
 #include <boost/scoped_ptr.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <vector>
-#include <Data/CSystemDigitsConfiguration.h>
+#include <data/CSystemDigitsConfiguration.h>
 
 class CSubstituteValuesConfigurationDlgPrivate;
 
@@ -29,7 +29,7 @@ public Q_SLOTS:
 	void onActionToggled_DeactivateThisConsonantInOtherMenus(bool );
 	void onSystemsActvivated_changeCurrentDigitsSystem(const QString&);
 protected:
-	boost::scoped_ptr<CSubstituteValuesConfigurationDlgPrivate> priv_part;
+	boost::scoped_ptr<CSubstituteValuesConfigurationDlgPrivate> _pimpl;
 };
 #endif //_SUBSTITUTEVALUESCONFIGURATIONDLG_INCLUDE_
 

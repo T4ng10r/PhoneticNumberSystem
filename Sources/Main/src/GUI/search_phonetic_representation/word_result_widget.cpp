@@ -5,7 +5,7 @@
 #include <QBoxLayout>
 #include <Tools/loggers.h>
 #include <Tools/qtTools.h>
-#include <Data/DataThread.h>
+#include <data/DataThread.h>
 
 class WordResultWidgetPrivate
 {
@@ -86,6 +86,6 @@ void WordResultWidget::fill_matching_words(const MatchingWordsList& list)
 void WordResultWidget::on_activated(int index)
 {
     const MatchingWord& matching_word = ptr_priv->combo_box->itemData(index).value<MatchingWord>();
-    Q_EMIT word_selected(matching_word.coveredDigitsIndices.front().endIndex+1);
+    Q_EMIT word_selected(matching_word.coveredDigitsIndices.front().end_index+1);
 }
 

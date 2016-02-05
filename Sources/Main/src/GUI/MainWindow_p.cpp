@@ -2,13 +2,13 @@
 #include <GUI/MainWindow_p.h>
 #include <GUI/Settings/SettingsDlg.h>
 #include <GUI/search_phonetic_representation/search_phonetic_representations_dlg.h>
-#include <Data/DataThread.h>
+#include <data/DataThread.h>
 #include <QStatusBar>
 #include <QMenuBar>
 #include <QFileInfo>
 #include <Tools/loggers.h>
 #include <Tools/qtTools.h>
-#include <Data/Settings.h>
+#include <data/Settings.h>
 #include <boost/scoped_ptr.hpp>
 
 const QSize ciSize(700,450);

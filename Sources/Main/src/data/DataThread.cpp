@@ -1,10 +1,10 @@
-#include <Data/DataThread.h>
+#include <data/DataThread.h>
 #include <QString>
 #include <QApplication>
-#include <Data/Settings.h>
-#include <Data/CSettingsKeywords.h>
-#include <Data/DictionaryData.h>
-#include <Data/MatchingWordsSearch.h>
+#include <data/Settings.h>
+#include <data/CSettingsKeywords.h>
+#include <data/DictionaryData.h>
+#include <data/MatchingWordsSearch.h>
 #include <QtCore/QDir>
 #include <QtCore/QThread>
 

@@ -3,7 +3,7 @@
 #include <QtWidgets/QStylePainter>
 #include <Tools/loggers.h>
 #include <QtWidgets/QApplication>
-#include <Data/MatchingWordsSearchTypes.h>
+#include <data/MatchingWordsSearchTypes.h>
 #include <QtWidgets/QStyle>
 Q_DECLARE_METATYPE(MatchingWord);
 #include <GUI/search_phonetic_representation/custom_combobox_tools.h>

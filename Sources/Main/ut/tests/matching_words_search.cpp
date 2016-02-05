@@ -1,5 +1,5 @@
 #include "matching_words_search.h"
-#include <Data/MatchingWordsSearch.cpp>
+#include <data/MatchingWordsSearch.cpp>
 #include <vector>
 #include <boost/assign/list_of.hpp>
 
@@ -101,8 +101,8 @@ void ut_matching_words_search::test_test_word()
     std::list<MatchingPair>::const_iterator iter = result->coveredDigitsIndices.begin();
     for(int i=0;i<indices.size();i++)
     {
-      QCOMPARE(iter->startIndex, indices[i].first);
-      QCOMPARE(iter->endIndex, indices[i].second);
+      QCOMPARE(iter->start_index, indices[i].first);
+      QCOMPARE(iter->end_index, indices[i].second);
       iter++;
     }
 }

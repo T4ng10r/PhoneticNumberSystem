@@ -1,7 +1,7 @@
-#include <Data/DataThread.h>
-#include <TestCases/CDataThreadTest.h>
-#include <Data/Settings.h>
-#include <Data/CSettingsKeywords.h>
+#include <data/DataThread.h>
+#include <tests/data_thread.h>
+#include <data/Settings.h>
+#include <data/CSettingsKeywords.h>
 #include <string>
 
 const std::string short_dict("pl_PL_short");
@@ -11,14 +11,14 @@ const std::string dict_directory("dict");
 const unsigned int single_timeout(1000); //in s
 const unsigned int timeouts_count(5); //in s
 
-void CDataThreadTest::initTestCase()
+void DataThreadTest::initTestCase()
 {
 	gDataThread;
 	gSettings->put(SELECTED_DICTIONARY,"");
 	gSettings->put(DICTIONARIES_DIRECTORY,"");
 }
 
-void CDataThreadTest::test_serching_short_dict()
+void DataThreadTest::test_serching_short_dict()
 {
 	int iCount =0;
 	gSettings->put(SELECTED_DICTIONARY,short_dict);

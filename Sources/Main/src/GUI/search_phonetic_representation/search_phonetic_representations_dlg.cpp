@@ -1,4 +1,4 @@
-#include <Data/DataThread.h>
+#include <data/DataThread.h>
 #include <GUI/search_phonetic_representation/search_phonetic_representations_dlg.h>
 #include <GUI/search_phonetic_representation/compose_substitute_sentence_widget.h>
 #include <GUI/search_phonetic_representation/search_number_lineedit.h>
@@ -118,40 +118,40 @@ void CSearchPhoneticRepresentationsDlgPrivate::moveSearchResultIntoSubstituteCom
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
-CSearchPhoneticRepresentationsDlg::CSearchPhoneticRepresentationsDlg(QWidget * parent):QWidget(parent),m_ptrPriv(new CSearchPhoneticRepresentationsDlgPrivate(this))
+CSearchPhoneticRepresentationsDlg::CSearchPhoneticRepresentationsDlg(QWidget * parent):QWidget(parent),_pimpl(new CSearchPhoneticRepresentationsDlgPrivate(this))
 {}
 CSearchPhoneticRepresentationsDlg::~CSearchPhoneticRepresentationsDlg(void){}
 void CSearchPhoneticRepresentationsDlg::onPerformSearch()
 {
-	m_ptrPriv->searchProgressBar->show();
-	std::string searchNumber = m_ptrPriv->searchedNumber->text().toStdString();
+	_pimpl->searchProgressBar->show();
+	std::string searchNumber = _pimpl->searchedNumber->text().toStdString();
 	qRegisterMetaType<std::string>("std::string");
 	disableSearchButton();
 	Q_EMIT performSearch(searchNumber);
 }
 void CSearchPhoneticRepresentationsDlg::onSearchProgress(int current, int max)
 {
-	if (m_ptrPriv->searchProgressBar->maximum()!=max)
-		m_ptrPriv->searchProgressBar->setMaximum(max);
-	m_ptrPriv->searchProgressBar->setValue(current);
+	if (_pimpl->searchProgressBar->maximum()!=max)
+		_pimpl->searchProgressBar->setMaximum(max);
+	_pimpl->searchProgressBar->setValue(current);
 }
 void CSearchPhoneticRepresentationsDlg::disableSearchButton()
 {
-	m_ptrPriv->performSearchButton->setDisabled(true);
+	_pimpl->performSearchButton->setDisabled(true);
 }
 void CSearchPhoneticRepresentationsDlg::enableSearchButton()
 {
-	m_ptrPriv->performSearchButton->setEnabled(true);
+	_pimpl->performSearchButton->setEnabled(true);
 }
 void CSearchPhoneticRepresentationsDlg::searchFinished(bool)
 {
-	m_ptrPriv->searchProgressBar->hide();
+	_pimpl->searchProgressBar->hide();
 	enableSearchButton();
-	m_ptrPriv->moveSearchResultIntoModel();
-	m_ptrPriv->moveSearchResultIntoSubstituteComposer();
+	_pimpl->moveSearchResultIntoModel();
+	_pimpl->moveSearchResultIntoSubstituteComposer();
 }
 void CSearchPhoneticRepresentationsDlg::on_return_pressed()
 {
-	if (m_ptrPriv->performSearchButton->isEnabled())
+	if (_pimpl->performSearchButton->isEnabled())
 		onPerformSearch();
 }

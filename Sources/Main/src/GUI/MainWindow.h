@@ -19,6 +19,6 @@ protected:
 	void closeEvent(QCloseEvent *);
 	QString strippedName(const QString &fullFileName);
 protected:
-	boost::scoped_ptr<MainWindowPrivate> m_ptrPriv;
+	boost::scoped_ptr<MainWindowPrivate> _pimpl;
 };
 #endif //_CAF_WINDOW_INCLUDE_ 

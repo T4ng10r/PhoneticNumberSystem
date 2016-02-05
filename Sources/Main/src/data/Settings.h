@@ -2,7 +2,7 @@
 #define _SETTINGS_INCLUDE_
 
 #include <QtCore/QObject>
-#include <Data/CSystemDigitsConfiguration.h>
+#include <data/CSystemDigitsConfiguration.h>
 #include <vector>
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
@@ -35,7 +35,7 @@ public Q_SLOTS:
   void on_set_selected_consonant_system(const QString &);
 protected:
 	Settings();
-	boost::scoped_ptr<SettingsPrivate> pimpl;
+	boost::scoped_ptr<SettingsPrivate> _pimpl;
 	static ptr _instance;
 };
 #define gSettings Settings::instance() 

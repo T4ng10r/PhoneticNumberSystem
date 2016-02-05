@@ -1,5 +1,5 @@
 #include <boost/test/unit_test.hpp>
-#include <Data/dictionaries/base_dictionary_warehouse.cpp>
+#include <data/dictionaries/base_dictionary_warehouse.cpp>
 
 namespace constants
 {

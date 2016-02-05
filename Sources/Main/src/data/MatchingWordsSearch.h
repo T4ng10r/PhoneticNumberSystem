@@ -4,9 +4,9 @@
 #include <QtCore/QObject>
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
-#include <Data/DictionaryData.h>
-#include <Data/MatchingWordsSearchTypes.h>
-#include <Data/CSystemDigitsConfiguration.h>
+#include <data/DictionaryData.h>
+#include <data/MatchingWordsSearchTypes.h>
+#include <data/CSystemDigitsConfiguration.h>
 
 class MatchingWordsSearchPrivate;
 
@@ -25,6 +25,6 @@ Q_SIGNALS:
     void searchProgress(int current, int max);
     void searchFinished(bool);
 protected:
-    boost::scoped_ptr<MatchingWordsSearchPrivate> privPart;
+    boost::scoped_ptr<MatchingWordsSearchPrivate> _pimpl;
 };
 #endif //_CSUBSTITUTESEARCH_INCLUDE_

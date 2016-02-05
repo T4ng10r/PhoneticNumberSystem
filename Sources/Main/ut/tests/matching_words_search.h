@@ -1,6 +1,6 @@
 #include <QtTest/QtTest>
 #include <boost/shared_ptr.hpp>
-#include <Data/CSystemDigitsConfiguration.h>
+#include <data/CSystemDigitsConfiguration.h>
 #include <TestRunner.h>
 
 class MatchingWordsSearchPrivate;

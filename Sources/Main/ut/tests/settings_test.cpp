@@ -1,5 +1,5 @@
 #include "settings_test.h"
-#include <Data/Settings.h>
+#include <data/Settings.h>
 #include <iterator>	 //for distance
 #include <set>
 #include <boost/foreach.hpp>

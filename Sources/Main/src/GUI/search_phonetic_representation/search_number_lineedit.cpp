@@ -40,6 +40,6 @@ SearchNumberLineEditPrivate::SearchNumberLineEditPrivate(SearchNumberLineEdit * 
 SearchNumberLineEditPrivate::~SearchNumberLineEditPrivate(){}
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
-SearchNumberLineEdit::SearchNumberLineEdit(QWidget* parent):QLineEdit(parent), m_ptrPriv(new SearchNumberLineEditPrivate(this))
+SearchNumberLineEdit::SearchNumberLineEdit(QWidget* parent):QLineEdit(parent), _pimpl(new SearchNumberLineEditPrivate(this))
 {}
 SearchNumberLineEdit::~SearchNumberLineEdit(void){}

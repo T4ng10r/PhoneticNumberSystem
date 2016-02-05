@@ -1,5 +1,5 @@
-#include <Data/Settings.h>
-#include <Data/CSettingsKeywords.h>
+#include <data/Settings.h>
+#include <data/CSettingsKeywords.h>
 #include <Tools/loggers.h>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/foreach.hpp>
@@ -124,7 +124,7 @@ void SettingsPrivate::defaultValues()
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
-Settings::Settings():pimpl(new SettingsPrivate(this))
+Settings::Settings():_pimpl(new SettingsPrivate(this))
 {
 	printLog(eDebug, eDebugLogLevel, "Settings created");
 }
@@ -132,7 +132,7 @@ Settings::~Settings(){}
 const boost::property_tree::ptree &Settings::getSubstituteValuesConfiguration()
 {
 	printLog(eDebug, eDebugLogLevel, "SubstituteValuesConfiguration provided");
-	return pimpl->m_ptrSubstValConf;
+	return _pimpl->m_ptrSubstValConf;
 }
 Settings::ptr Settings::instance()
 {
@@ -147,11 +147,11 @@ Settings::ptr Settings::instance()
 }
 void Settings::saveSettings()
 {
-	pimpl->saveSettings();
+	_pimpl->saveSettings();
 }
 const std::vector<CSingleSubstituteDigitsConfiguration> & Settings::getDigitsConfiguraions()
 {
-	return pimpl->m_vDigitsConfiguration;
+	return _pimpl->m_vDigitsConfiguration;
 }
 //std::string Settings::getCurrentDictPath()
 //{

@@ -1,8 +1,8 @@
 #include <GUI/Settings/SettingsDlg.h>
 #include <GUI/Settings/SubstituteValuesConfigurationDlg.h>
 #include <GUI/Settings/DictionariesConfigurationDlg.h>
-#include <Data/Settings.h>
-#include <Data/CSettingsKeywords.h>
+#include <data/Settings.h>
+#include <data/CSettingsKeywords.h>
 #include <Tools/loggers.h>
 #include <QBoxLayout>
 #include <QTabWidget>
@@ -68,10 +68,10 @@ void CSettingsDlgPrivate::setConnections()
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 CSettingsDlg::CSettingsDlg(QWidget * parent):QWidget(parent),
-	m_ptrPriv(new CSettingsDlgPrivate(this))
+	_pimpl(new CSettingsDlgPrivate(this))
 {}
 CSettingsDlg::~CSettingsDlg(void){}
 void CSettingsDlg::performInitialUpdateAfterAllChildrenUpdate()
 {
-	m_ptrPriv->dictionariesConfiguration->updateInitialData();
+	_pimpl->dictionariesConfiguration->updateInitialData();
 }

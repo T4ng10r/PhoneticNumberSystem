@@ -17,6 +17,6 @@ public:
 Q_SIGNALS:
 	 void dictionarySelected();
 protected:
-     boost::scoped_ptr<CSettingsDlgPrivate> m_ptrPriv;
+     boost::scoped_ptr<CSettingsDlgPrivate> _pimpl;
 };
 #endif //_APPSETTINGSDLG_INCLUDE_

@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <boost/scoped_ptr.hpp>
-#include <Data/MatchingWordsSearchTypes.h>
+#include <data/MatchingWordsSearchTypes.h>
 
 class WordResultWidgetPrivate;
 

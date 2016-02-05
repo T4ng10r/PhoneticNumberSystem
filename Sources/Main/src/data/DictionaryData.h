@@ -20,6 +20,6 @@ public:
 	std::string get_word_by_index(unsigned int index);
 	std::string get_file_codepage();
 protected:
-	boost::scoped_ptr<base_dictionary_warehouse> privPart;
+	boost::scoped_ptr<base_dictionary_warehouse> _pimpl;
 };
 

@@ -1,4 +1,4 @@
-#include <Data/DataThread.h>
+#include <data/DataThread.h>
 #include <GUI/MainWindow.h>
 #include <GUI/MainWindow_p.h>
 #include <GUI/Settings/SettingsDlg.h>
@@ -12,7 +12,7 @@
 const QSize ciSize(700,450);
 
 CMainWindow::CMainWindow() : QMainWindow(),
-m_ptrPriv(new MainWindowPrivate(this))
+_pimpl(new MainWindowPrivate(this))
 {
 	resize(ciSize);
 }
@@ -26,5 +26,5 @@ void CMainWindow::closeEvent(QCloseEvent *)
 }
 void CMainWindow::onShowSettingsConfigureDialog(bool)
 {
-	m_ptrPriv->settings_dialog->show();
+	_pimpl->settings_dialog->show();
 }

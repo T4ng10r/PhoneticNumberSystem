@@ -1,10 +1,6 @@
 cmake_policy(SET CMP0043 NEW)
 
 #dodajemy dane dotyczace QT - sciezki, biblioteki
-#find_package(Qt5Widgets)
-#find_package(Qt5Core)
-#find_package(Qt5Xml)
-#find_package(Qt5Test)
 set(CMAKE_AUTOMOC ON)
 include_directories($ENV{QTDIR})
 
@@ -21,7 +17,7 @@ include_directories(${Boost_INCLUDE_DIR}
 ####################
 
 ####################
-FILE(GLOB_RECURSE SOURCES_TEST_DATA "TestCases/*")
+FILE(GLOB_RECURSE SOURCES_TEST_DATA "tests/*")
 
 SET ( SOURCES_MAIN
       main.cpp

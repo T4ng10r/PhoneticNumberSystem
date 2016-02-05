@@ -24,6 +24,6 @@ protected Q_SLOTS:
 	void onPerformSearch();
 	void on_return_pressed();
 protected:
-     boost::scoped_ptr<CSearchPhoneticRepresentationsDlgPrivate> m_ptrPriv;
+     boost::scoped_ptr<CSearchPhoneticRepresentationsDlgPrivate> _pimpl;
 };
 #endif //_SEARCHPHONETICREPRESENTATIONSDLG_INCLUDE_

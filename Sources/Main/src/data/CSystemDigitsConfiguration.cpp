@@ -1,4 +1,4 @@
-#include <Data/CSystemDigitsConfiguration.h>
+#include <data/CSystemDigitsConfiguration.h>
 #include <algorithm>
 
 void CSingleSubstituteDigitsConfiguration::createConsonantsDigitsMap()

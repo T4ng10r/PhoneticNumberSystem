@@ -23,6 +23,6 @@ Q_SIGNALS:
 protected Q_SLOTS:
 	void onSelectDictionaryDirectory();
 protected:
-     boost::scoped_ptr<CDictionariesConfigurationDlgPrivate> m_ptrPriv;
+     boost::scoped_ptr<CDictionariesConfigurationDlgPrivate> _pimpl;
 };
 #endif //_DICTIONARIESCONFIGURATIONDLG_INCLUDE_

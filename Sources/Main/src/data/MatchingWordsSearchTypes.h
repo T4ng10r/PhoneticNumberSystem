@@ -9,25 +9,31 @@ typedef std::size_t StartingIndex;
 
 struct MatchingPair {
     MatchingPair()
-        : startIndex(std::string::npos)
-        , endIndex(std::string::npos)
+        : start_index(std::string::npos)
+        , end_index(std::string::npos)
     {
     }
     MatchingPair(StartingIndex _start, StartingIndex _end)
-        : startIndex(_start)
-        , endIndex(_end)
+        : start_index(_start)
+        , end_index(_end)
     {
     }
     bool operator<(const MatchingPair& _other) const
     {
-        if (startIndex < _other.startIndex)
+        if (start_index < _other.start_index)
             return true;
-        if (startIndex == _other.startIndex && endIndex < _other.endIndex)
+        if (start_index == _other.start_index && end_index < _other.end_index)
             return true;
         return false;
     }
-    StartingIndex startIndex;
-    StartingIndex endIndex;
+    bool operator==(const MatchingPair& _other) const
+    {
+      if (start_index == _other.start_index && end_index == _other.end_index)
+        return true;
+      return false;
+    }
+    StartingIndex start_index;
+    StartingIndex end_index;
 };
 
 struct MatchingWord;

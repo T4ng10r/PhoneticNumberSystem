@@ -1,7 +1,7 @@
 #include <GUI/Settings/SubstituteValuesConfigurationDlg.h>
-#include <Data/Settings.h>
-#include <Data/CSettingsKeywords.h>
-#include <Data/CSettings_XMLKeywords.h>
+#include <data/Settings.h>
+#include <data/CSettingsKeywords.h>
+#include <data/CSettings_XMLKeywords.h>
 #include <QString>
 #include <QMenu>
 #include <QAction>
@@ -249,12 +249,12 @@ void CSubstituteValuesConfigurationDlgPrivate::selectDigitsSystemByName(QString 
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 CSubstituteValuesConfigurationDlg::CSubstituteValuesConfigurationDlg(CSubstituteValuesConfigurationDlgInit init_data)
-:QWidget(NULL), priv_part(new CSubstituteValuesConfigurationDlgPrivate(this))
+:QWidget(NULL), _pimpl(new CSubstituteValuesConfigurationDlgPrivate(this))
 {
-  priv_part->consonants_values_set=init_data.consonants_values_set;
-	priv_part->digits_substistute_configuration=init_data.digits_substistute_configuration;
-	priv_part->setupUI();
-  priv_part->selectDigitsSystemByName(init_data.selected_system_name);
+  _pimpl->consonants_values_set=init_data.consonants_values_set;
+	_pimpl->digits_substistute_configuration=init_data.digits_substistute_configuration;
+	_pimpl->setupUI();
+  _pimpl->selectDigitsSystemByName(init_data.selected_system_name);
 }
 CSubstituteValuesConfigurationDlg::~CSubstituteValuesConfigurationDlg(void){}
 void CSubstituteValuesConfigurationDlg::onMenuTriggered_SetButtonTextWithSelectedConsonant(QAction * pAction )
@@ -265,7 +265,7 @@ void CSubstituteValuesConfigurationDlg::onMenuTriggered_SetButtonTextWithSelecte
 	char cConsonant(pAction->text().at(iIndex).toLatin1());
 
 	//check to which Digit Entry belongs this action
-	BOOST_FOREACH(EntryLine & stEntry, priv_part->m_ptrDigitsEntries)
+	BOOST_FOREACH(EntryLine & stEntry, _pimpl->m_ptrDigitsEntries)
 		if (stEntry.m_ptrConsonantsMenu1==ptrMenu)
 		{
 			stEntry.m_ptrConsonantButton1->setText(QString(cConsonant));
@@ -286,7 +286,7 @@ void CSubstituteValuesConfigurationDlg::onActionToggled_DeactivateThisConsonantI
 	char cConsonant;
 	iIndex = pAction->text().length()>1?1:0;
 	cConsonant = pAction->text().at(iIndex).toLatin1();
-	BOOST_FOREACH(QAction * pConsonantAction, priv_part->m_mActionsList[cConsonant])
+	BOOST_FOREACH(QAction * pConsonantAction, _pimpl->m_mActionsList[cConsonant])
 		if (pConsonantAction!=pAction && cConsonant!=' ')
 		{
 			pConsonantAction->setDisabled(bState);
@@ -298,14 +298,14 @@ void CSubstituteValuesConfigurationDlg::onSystemsActvivated_changeCurrentDigitsS
 	{
 		CSingleSubstituteDigitsConfiguration digitsConf;
 		digitsConf.create_empty_system();
-		priv_part->fillGUIWithDigitsSystem(digitsConf);
+		_pimpl->fillGUIWithDigitsSystem(digitsConf);
 		Q_EMIT set_selected_consonant_system(selectedSystemName);
 		return;
 	}
-	BOOST_FOREACH(const CSingleSubstituteDigitsConfiguration & digitsConf, priv_part->digits_substistute_configuration)
+	BOOST_FOREACH(const CSingleSubstituteDigitsConfiguration & digitsConf, _pimpl->digits_substistute_configuration)
 		if (digitsConf.strName.c_str()==selectedSystemName)
 		{
-			priv_part->fillGUIWithDigitsSystem(digitsConf);
+			_pimpl->fillGUIWithDigitsSystem(digitsConf);
 			Q_EMIT set_selected_consonant_system(selectedSystemName);
 			return;
 		}
