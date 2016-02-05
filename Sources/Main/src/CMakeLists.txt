@@ -11,7 +11,7 @@ find_package(Qt5Core REQUIRED)
 find_package(Qt5Xml REQUIRED)
 include_directories($ENV{QTDIR} ${Qt5Widgets_INCLUDE_DIRS} ${Qt5Core_INCLUDE_DIRS})
 
-include_directories(${Boost_INCLUDE_DIR}  ${log4cplus_SOURCE_DIR} )
+include_directories(${Boost_INCLUDE_DIR}  ${log4cplus_SOURCE_DIR}/include )
 ADD_DEFINITIONS( "-DHAS_BOOST" )
 ADD_DEFINITIONS( "-DQT_NO_KEYWORDS" )
 
@@ -29,9 +29,9 @@ add_executable(PhoneticNumberSystem ${TMP_FILES} main.cpp  )
 
 add_library(PhoneticNumberSystem_lib STATIC ${TMP_FILES} )
 
-  target_link_libraries(PhoneticNumberSystem ${Boost_LIBRARIES} tools_lib log4cpp 
+  target_link_libraries(PhoneticNumberSystem ${Boost_LIBRARIES} tools_lib log4cplus 
                         Qt5::Widgets Qt5::Core Qt5::Xml)
-  target_link_libraries(PhoneticNumberSystem_lib ${Boost_LIBRARIES} tools_lib log4cpp 
+  target_link_libraries(PhoneticNumberSystem_lib ${Boost_LIBRARIES} tools_lib log4cplus 
                         Qt5::Widgets Qt5::Core Qt5::Xml)
 	
 	add_custom_command(TARGET PhoneticNumberSystem POST_BUILD 

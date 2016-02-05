@@ -13,10 +13,12 @@
 #include <Tools/qtTools.h>
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
+#include <log4cplus/logger.h>
 
 DataThread::ptr DataThread::_instance;
 enum { MaxRecentFiles = 5 };
 
+using namespace log4cplus;
 class DataThreadPrivate
 {
 public:
@@ -32,11 +34,13 @@ public:
 	DataThread * publicPart;
 	boost::shared_ptr<DictionaryData> dictionaryData;
 	boost::shared_ptr<MatchingWordsSearch> substituteSearch;
+  log4cplus::Logger  logger;
 };
 
 DataThreadPrivate::DataThreadPrivate(DataThread * ptrPublic):publicPart(ptrPublic), 
 	dictionaryData(new DictionaryData()), substituteSearch(new MatchingWordsSearch())
 {
+  logger = log4cplus::Logger::getInstance("DEBUG");
 	setConnections();
 	prepareDirectories();
 }
@@ -188,6 +192,8 @@ QTextCodec * DataThread::get_current_codepage()
 	std::string codepage = _pimpl->dictionaryData->get_file_codepage();
 	QTextCodec * codec = QTextCodec::codecForName(codepage.c_str());
   if (!codec)
-  	printLog(eDebug, eWarningLogLevel, str(boost::format("Couldn't get Text Codec for' %1%' codepage") % codepage));
+  {
+    _pimpl->logger.log(WARN_LOG_LEVEL,str(boost::format("Couldn't get Text Codec for' %1%' codepage") % codepage));
+  }
 	return codec;
 }
