@@ -2,7 +2,7 @@
 #include <boost/format.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/lexical_cast.hpp>
-#include <Tools/loggers.h>
+#include <tools/loggers.h>
 
 #define WINDOWS_EOF_1CHAR '\r'
 #define WINDOWS_EOF_2CHAR '\n'

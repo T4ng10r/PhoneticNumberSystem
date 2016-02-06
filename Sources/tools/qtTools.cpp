@@ -1,5 +1,5 @@
-#include <Tools/qtTools.h>
-#include <Tools/loggers.h>
+#include <tools/qtTools.h>
+#include <tools/loggers.h>
 #include <boost/format.hpp>
 
 void logConnection(const QString & strClassName,const QString &strConnDesc,bool bResult)

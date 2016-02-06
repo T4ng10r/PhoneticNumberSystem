@@ -1,6 +1,6 @@
 #include <data/Settings.h>
 #include <data/CSettingsKeywords.h>
-#include <Tools/loggers.h>
+#include <tools/loggers.h>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>

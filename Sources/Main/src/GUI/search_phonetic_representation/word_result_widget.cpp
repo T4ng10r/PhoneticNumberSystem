@@ -3,8 +3,8 @@
 #include <GUI/search_phonetic_representation/combobox_matching_words_result_delegate.h>
 #include <QLabel>
 #include <QBoxLayout>
-#include <Tools/loggers.h>
-#include <Tools/qtTools.h>
+#include <tools/loggers.h>
+#include <tools/qtTools.h>
 #include <data/DataThread.h>
 
 class WordResultWidgetPrivate

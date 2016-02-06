@@ -6,8 +6,8 @@
 #include <QStatusBar>
 #include <QMenuBar>
 #include <QFileInfo>
-#include <Tools/loggers.h>
-#include <Tools/qtTools.h>
+#include <tools/loggers.h>
+#include <tools/qtTools.h>
 #include <data/Settings.h>
 #include <boost/scoped_ptr.hpp>
 

@@ -2,7 +2,7 @@
 #include <GUI/search_phonetic_representation/search_phonetic_representations_dlg.h>
 #include <GUI/search_phonetic_representation/compose_substitute_sentence_widget.h>
 #include <GUI/search_phonetic_representation/search_number_lineedit.h>
-#include <Tools/loggers.h>
+#include <tools/loggers.h>
 #include <QtCore/QTextCodec>
 #include <QLineEdit>
 #include <QLabel>
@@ -11,7 +11,7 @@
 #include <QListView>
 #include <QProgressBar>
 #include <QStandardItemModel>
-#include <Tools/qtTools.h>
+#include <tools/qtTools.h>
 #include <QMetaType>
 #include <boost/foreach.hpp>
 

@@ -1,7 +1,7 @@
 #include <GUI/search_phonetic_representation/substitute_search_result_combobox.h>
 #include <QtGui/QPainter>
 #include <QtWidgets/QStylePainter>
-#include <Tools/loggers.h>
+#include <tools/loggers.h>
 #include <QtWidgets/QApplication>
 #include <data/MatchingWordsSearchTypes.h>
 #include <QtWidgets/QStyle>

@@ -1,6 +1,6 @@
 #include <data/MatchingWordsSearch.h>
 #include <data/Settings.h>
-#include <Tools/loggers.h>
+#include <tools/loggers.h>
 #include <boost/algorithm/string.hpp> //boost::to_upper_copy
 #include <boost/bind.hpp>
 #include <boost/foreach.hpp>

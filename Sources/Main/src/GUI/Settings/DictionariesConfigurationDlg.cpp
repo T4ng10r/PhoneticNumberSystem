@@ -2,8 +2,8 @@
 #include <data/Settings.h>
 #include <data/CSettingsKeywords.h>
 #include <data/DataThread.h>
-#include <Tools/loggers.h>
-#include <Tools/qtTools.h>
+#include <tools/loggers.h>
+#include <tools/qtTools.h>
 #include <boost/foreach.hpp>
 #include <QVariant>
 #include <QAction>

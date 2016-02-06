@@ -2,8 +2,8 @@
 #include <GUI/search_phonetic_representation/compose_substitute_sentence_widget.h>
 #include <GUI/search_phonetic_representation/substitute_search_result_combobox.h>
 #include <GUI/search_phonetic_representation/word_result_widget.h>
-#include <Tools/loggers.h>
-#include <Tools/qtTools.h>
+#include <tools/loggers.h>
+#include <tools/qtTools.h>
 #include <boost/format.hpp>
 
 #include <QBoxLayout>

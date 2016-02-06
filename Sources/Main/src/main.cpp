@@ -1,5 +1,5 @@
 #include <QApplication>
-#include <Tools/loggers.h>
+#include <tools/loggers.h>
 #include <GUI/MainWindow.h>
 #include <memory>
 

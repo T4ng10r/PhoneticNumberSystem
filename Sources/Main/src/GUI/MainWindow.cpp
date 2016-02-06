@@ -6,8 +6,8 @@
 #include <QStatusBar>
 #include <QMenuBar>
 #include <QtCore/QThread>
-#include <Tools/loggers.h>
-#include <Tools/qtTools.h>
+#include <tools/loggers.h>
+#include <tools/qtTools.h>
 
 const QSize ciSize(700,450);
 
