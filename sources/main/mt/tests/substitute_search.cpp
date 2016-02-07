@@ -1,5 +1,5 @@
 #include <tests/substitute_search.h>
-#include <data/DictionaryData.h>
+#include <data/dictionary_data.h>
 #include <data/MatchingWordsSearch.h>
 #include <data/CSettingsKeywords.h>
 //#include <data/MatchingWordsSearch.cpp>

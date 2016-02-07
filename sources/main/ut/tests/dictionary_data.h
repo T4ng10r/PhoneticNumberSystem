@@ -2,7 +2,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <TestRunner.h>
-#include <data/DictionaryData.h>
+#include <data/dictionary_data.h>
 #include <memory>
 
 class ut_dictionary_data : public QObject

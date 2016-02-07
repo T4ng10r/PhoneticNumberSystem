@@ -1,9 +1,9 @@
-#include <data/DataThread.h>
+#include <data/data_thread.h>
 #include <QString>
 #include <QApplication>
 #include <data/settings.h>
 #include <data/CSettingsKeywords.h>
-#include <data/DictionaryData.h>
+#include <data/dictionary_data.h>
 #include <data/MatchingWordsSearch.h>
 #include <QtCore/QDir>
 #include <QtCore/QThread>

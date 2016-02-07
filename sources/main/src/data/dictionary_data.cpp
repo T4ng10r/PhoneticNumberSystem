@@ -1,4 +1,4 @@
-#include <data/DictionaryData.h>
+#include <data/dictionary_data.h>
 #include <tools/loggers.h>
 #include <vector>
 #include <stdio.h>

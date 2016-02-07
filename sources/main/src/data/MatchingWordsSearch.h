@@ -4,7 +4,7 @@
 #include <QtCore/QObject>
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
-#include <data/DictionaryData.h>
+#include <data/dictionary_data.h>
 #include <data/MatchingWordsSearchTypes.h>
 #include <data/CSystemDigitsConfiguration.h>
 

@@ -1,4 +1,4 @@
-#include <data/DataThread.h>
+#include <data/data_thread.h>
 #include <tests/data_thread.h>
 #include <data/settings.h>
 #include <data/CSettingsKeywords.h>

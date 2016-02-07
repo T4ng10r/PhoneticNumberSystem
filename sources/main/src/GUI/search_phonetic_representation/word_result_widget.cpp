@@ -5,7 +5,7 @@
 #include <QBoxLayout>
 #include <tools/loggers.h>
 #include <tools/qtTools.h>
-#include <data/DataThread.h>
+#include <data/data_thread.h>
 
 class WordResultWidgetPrivate
 {
