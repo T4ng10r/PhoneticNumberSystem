@@ -8,7 +8,7 @@
 #include <QFileInfo>
 #include <tools/loggers.h>
 #include <tools/qtTools.h>
-#include <data/Settings.h>
+#include <data/settings.h>
 #include <boost/scoped_ptr.hpp>
 
 const QSize ciSize(700,450);

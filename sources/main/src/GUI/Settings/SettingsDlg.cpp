@@ -1,7 +1,7 @@
 #include <GUI/Settings/SettingsDlg.h>
 #include <GUI/Settings/SubstituteValuesConfigurationDlg.h>
 #include <GUI/Settings/DictionariesConfigurationDlg.h>
-#include <data/Settings.h>
+#include <data/settings.h>
 #include <data/CSettingsKeywords.h>
 #include <tools/loggers.h>
 #include <QBoxLayout>

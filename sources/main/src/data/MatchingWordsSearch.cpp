@@ -1,5 +1,5 @@
 #include <data/MatchingWordsSearch.h>
-#include <data/Settings.h>
+#include <data/settings.h>
 #include <tools/loggers.h>
 #include <boost/algorithm/string.hpp> //boost::to_upper_copy
 #include <boost/bind.hpp>

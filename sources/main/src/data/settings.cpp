@@ -1,4 +1,4 @@
-#include <data/Settings.h>
+#include <data/settings.h>
 #include <data/CSettingsKeywords.h>
 #include <tools/loggers.h>
 #include <boost/property_tree/xml_parser.hpp>

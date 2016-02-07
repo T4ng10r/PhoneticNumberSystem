@@ -1,7 +1,7 @@
 #include <data/DataThread.h>
 #include <QString>
 #include <QApplication>
-#include <data/Settings.h>
+#include <data/settings.h>
 #include <data/CSettingsKeywords.h>
 #include <data/DictionaryData.h>
 #include <data/MatchingWordsSearch.h>

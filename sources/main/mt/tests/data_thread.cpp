@@ -1,6 +1,6 @@
 #include <data/DataThread.h>
 #include <tests/data_thread.h>
-#include <data/Settings.h>
+#include <data/settings.h>
 #include <data/CSettingsKeywords.h>
 #include <string>
 
