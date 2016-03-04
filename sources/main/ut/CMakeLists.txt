@@ -9,6 +9,8 @@ include_directories(${Boost_INCLUDE_DIR}
                     ${PhoneticNumberSystem_Sources_SOURCE_DIR}
                     ${CMAKE_CURRENT_SOURCE_DIR}
                     ${PhoneticNumberSystem_SOURCE_DIR}/Sources/Main
+                    ${log4cplus_SOURCE_DIR}/include 
+                    ${log4cplus_BINARY_DIR}/include
 										)
 
 ####################

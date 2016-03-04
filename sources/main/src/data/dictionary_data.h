@@ -1,13 +1,13 @@
 #pragma once
-
+#include <string>
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
-#include <string>
+#include <data/logging_base.h>
 
 class base_dictionary_warehouse;
 
 // slownik
-class DictionaryData
+class DictionaryData : public LoggingBase
 {
 	friend class CDictionaryDataPrivate;
 public:
