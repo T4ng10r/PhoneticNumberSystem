@@ -1,4 +1,5 @@
 #include <data/data_thread.h>
+#include <data/logging_base.h>
 #include <GUI/search_phonetic_representation/compose_substitute_sentence_widget.h>
 #include <GUI/search_phonetic_representation/substitute_search_result_combobox.h>
 #include <GUI/search_phonetic_representation/word_result_widget.h>
@@ -20,7 +21,7 @@ bool cmp_success_words(const MatchingWord& first, const MatchingWord& second)
     return false;
 }
 
-class ComposeSubstituteSentenceWidgetPrivate
+class ComposeSubstituteSentenceWidgetPrivate : public LoggingBase
 {
   public:
     ComposeSubstituteSentenceWidgetPrivate(ComposeSubstituteSentenceWidget* ptrPublic);
@@ -106,32 +107,32 @@ std::size_t ComposeSubstituteSentenceWidgetPrivate::which_matching_word_selected
 //////////////////////////////////////////////////////////////////////////
 ComposeSubstituteSentenceWidget::ComposeSubstituteSentenceWidget(QWidget* parent)
     : QWidget(parent)
-    , pImpl(new ComposeSubstituteSentenceWidgetPrivate(this))
+    , _pimpl(new ComposeSubstituteSentenceWidgetPrivate(this))
 {
 }
 ComposeSubstituteSentenceWidget::~ComposeSubstituteSentenceWidget(void) {}
 void ComposeSubstituteSentenceWidget::initialize_after_success_search()
 {
-    pImpl->reset();
+    _pimpl->reset();
     MatchingWordsList result = gDataThread->getSearchResult(0);
     result.sort(cmp_success_words);
-    pImpl->word_results_container[0]->fill_matching_words(result);
+    _pimpl->word_results_container[0]->fill_matching_words(result);
 }
 void ComposeSubstituteSentenceWidget::on_word_selected(int end_index)
 {
-    size_t combo_box_starting_index = pImpl->which_matching_word_selected();
-    printLog(eDebug, eDebugLogLevel,
+    size_t combo_box_starting_index = _pimpl->which_matching_word_selected();
+    _pimpl->logger.log(log4cplus::DEBUG_LOG_LEVEL, 
              str(boost::format("'%1%' results word has been changed") % combo_box_starting_index));
-    pImpl->reset(combo_box_starting_index);
-    printLog(eDebug, eDebugLogLevel,
+    _pimpl->reset(combo_box_starting_index);
+    _pimpl->logger.log(log4cplus::DEBUG_LOG_LEVEL,
              str(boost::format("Next word should start from '%1%' digit of searched number") % end_index));
     MatchingWordsList result = gDataThread->getSearchResult(end_index);
     if (result.size()) {
         result.sort(cmp_success_words);
-        pImpl->add_combo_box();
+        _pimpl->add_combo_box();
         MatchingWordsList::iterator it = std::unique(result.begin(), result.end());
-        pImpl->word_results_container[combo_box_starting_index]->fill_matching_words(
+        _pimpl->word_results_container[combo_box_starting_index]->fill_matching_words(
             MatchingWordsList(result.begin(), it));
-        // pImpl->fill_combo_box(MatchingWordsList(result.begin(), it), combo_box_starting_index);
+        // _pimpl->fill_combo_box(MatchingWordsList(result.begin(), it), combo_box_starting_index);
     }
 }

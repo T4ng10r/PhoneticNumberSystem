@@ -1,5 +1,6 @@
 #include <GUI/Settings/SubstituteValuesConfigurationDlg.h>
 #include <data/settings.h>
+#include <data/logging_base.h>
 #include <data/CSettingsKeywords.h>
 #include <data/CSettings_XMLKeywords.h>
 #include <QString>
@@ -36,7 +37,7 @@ struct EntryLine
 	std::vector<QAction *>	m_ptrConsonantsActions2;	//actions-consonants under second button
 };
 
-class CSubstituteValuesConfigurationDlgPrivate
+class CSubstituteValuesConfigurationDlgPrivate : public LoggingBase
 {	
 public:
 	CSubstituteValuesConfigurationDlgPrivate(CSubstituteValuesConfigurationDlg * ptrPublic);
@@ -310,6 +311,6 @@ void CSubstituteValuesConfigurationDlg::onSystemsActvivated_changeCurrentDigitsS
 			return;
 		}
 	Q_EMIT set_selected_consonant_system(empty_system_name);
-	printLog(eDebug, eErrorLogLevel, str(boost::format("Couldn't find '%1%' consonants configuration in SelectionList") % 
+  _pimpl->logger.log(log4cplus::ERROR_LOG_LEVEL, str(boost::format("Couldn't find '%1%' consonants configuration in SelectionList") % 
 	    selectedSystemName.toStdString()));
 }

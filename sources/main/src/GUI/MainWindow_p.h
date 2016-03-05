@@ -14,13 +14,14 @@
 #include <QTreeView>
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
+#include <data/logging_base.h>
 
 enum { MaxRecentFiles = 5 };
 
 class CMainWindow;
 class CSettingsDlg;
 
-class MainWindowPrivate
+class MainWindowPrivate : public LoggingBase
 {
   public:
     MainWindowPrivate(CMainWindow* ptrPublic);

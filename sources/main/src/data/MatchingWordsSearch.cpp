@@ -1,13 +1,14 @@
-#include <data/MatchingWordsSearch.h>
-#include <data/settings.h>
-#include <tools/loggers.h>
 #include <boost/algorithm/string.hpp> //boost::to_upper_copy
 #include <boost/bind.hpp>
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
 #include <boost/optional.hpp>
+#include <data/MatchingWordsSearch.h>
+#include <data/logging_base.h>
+#include <data/settings.h>
+#include <tools/loggers.h>
 
-class MatchingWordsSearchPrivate
+class MatchingWordsSearchPrivate : public LoggingBase
 {
     struct ConsonantsPos {
         size_t acceptable;
@@ -36,6 +37,7 @@ class MatchingWordsSearchPrivate
 
 MatchingWordsSearchPrivate::MatchingWordsSearchPrivate(MatchingWordsSearch* ptrPublic)
     : m_ptrPublic(ptrPublic)
+    , LoggingBase()
 {
 }
 
@@ -52,15 +54,14 @@ MatchingWordsSearchPrivate::ConsonantsPos MatchingWordsSearchPrivate::getConsona
 }
 std::list<char> MatchingWordsSearchPrivate::getConsonatsPos(const std::string& word)
 {
-  StartingIndex pos(0);
-  std::list<char> result;
-  pos = word.find_first_of(digits_conf.allConsonants,pos);
-  while (pos!=std::string::npos)
-  {
-    result.push_back(word.at(pos));
-    pos = word.find_first_of(digits_conf.allConsonants,pos+1);
-  }
-  return result;
+    StartingIndex   pos(0);
+    std::list<char> result;
+    pos = word.find_first_of(digits_conf.allConsonants, pos);
+    while (pos != std::string::npos) {
+        result.push_back(word.at(pos));
+        pos = word.find_first_of(digits_conf.allConsonants, pos + 1);
+    }
+    return result;
 }
 
 void MatchingWordsSearchPrivate::setStartDigitIndex(MatchingWord& result, size_t digitIndex)
@@ -91,32 +92,28 @@ boost::optional<MatchingWord> MatchingWordsSearchPrivate::testWord(const std::st
     result.coveredDigitsIndices.push_back(MatchingPair());
     result.words.push_back(tested_word);
 
-    std::list<char> consonantsIndices = getConsonatsPos(word);
-    std::list<char>::const_iterator iter = consonantsIndices.begin();
-    for(;digitIndex<word.size();digitIndex++)
-    {
-      unsigned int digit = searched_number[digitIndex] - '0';
-      ConsonantsForDigit consonantsSets = digits_conf.digitsConsonantsSetMap[digit];
+    std::list<char>                 consonantsIndices = getConsonatsPos(word);
+    std::list<char>::const_iterator iter              = consonantsIndices.begin();
+    for (; digitIndex < word.size(); digitIndex++) {
+        unsigned int       digit          = searched_number[digitIndex] - '0';
+        ConsonantsForDigit consonantsSets = digits_conf.digitsConsonantsSetMap[digit];
 
-      if (consonantsSets.acceptable.find_first_of(*iter)!=std::string::npos)
-      {
-         setStartDigitIndex(result, digitIndex);
-         addMatchingLetter(result, *iter);
-         iter++;
-         if (iter==consonantsIndices.end())
-         {
-           setEndDigitIndex(result, digitIndex);
-           iter = consonantsIndices.begin();
-           result.coveredDigitsIndices.push_back(MatchingPair());
-         }
-      }
-      //this means that we're in the middle of tested_word
-      else if (iter!=consonantsIndices.begin())
-      {
-        return boost::optional<MatchingWord>();
-      }
+        if (consonantsSets.acceptable.find_first_of(*iter) != std::string::npos) {
+            setStartDigitIndex(result, digitIndex);
+            addMatchingLetter(result, *iter);
+            iter++;
+            if (iter == consonantsIndices.end()) {
+                setEndDigitIndex(result, digitIndex);
+                iter = consonantsIndices.begin();
+                result.coveredDigitsIndices.push_back(MatchingPair());
+            }
+        }
+        // this means that we're in the middle of tested_word
+        else if (iter != consonantsIndices.begin()) {
+            return boost::optional<MatchingWord>();
+        }
     }
-    setEndDigitIndex(result, digitIndex-1);
+    setEndDigitIndex(result, digitIndex - 1);
     result.bFullCoverage = (result.matchingLetters.size() == searched_number.size());
     return boost::optional<MatchingWord>(result);
 }
@@ -153,9 +150,9 @@ void MatchingWordsSearch::setDictionaryWords(boost::shared_ptr<DictionaryData> d
 
 void MatchingWordsSearch::startSearchForNumber(const std::string& number)
 {
-    printLog(eDebug, eInfoLogLevel, str(boost::format("Searching substitute for number '%1%' started") % number));
+    _pimpl->logger.log(log4cplus::INFO_LOG_LEVEL, str(boost::format("Searching substitute for number '%1%' started") % number));
     _pimpl->searchResult.clear();
-    _pimpl->number             = number;
+    _pimpl->number               = number;
     unsigned int words_count     = _pimpl->dictionary->getWordsCount();
     unsigned int notifyStepCount = words_count / 100;
     unsigned int notifyStep      = 0;
@@ -174,7 +171,7 @@ void MatchingWordsSearch::startSearchForNumber(const std::string& number)
         }
     }
     Q_EMIT searchProgress(words_count, words_count);
-    printLog(eDebug, eInfoLogLevel, str(boost::format("Searching substitute for number '%1%' finished") % number));
+    _pimpl->logger.log(log4cplus::INFO_LOG_LEVEL, str(boost::format("Searching substitute for number '%1%' finished") % number));
     Q_EMIT searchFinished(true);
 }
 

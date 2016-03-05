@@ -5,6 +5,7 @@
 #include <vector>
 
 class DictionaryData;
+class dictionary_file_memory_map_private;
 
 class dictionary_file_memory_map : public base_dictionary_warehouse
 {
@@ -28,6 +29,8 @@ public:
 	boost::interprocess::mapped_region  fileMappedRegion;
 	//vector of pairs - offset and length of each word
 	std::vector< std::pair<const char *, long long int> >  dictionaryWords;
+protected:
+  boost::scoped_ptr<dictionary_file_memory_map_private> _pimpl;
 };
 
 

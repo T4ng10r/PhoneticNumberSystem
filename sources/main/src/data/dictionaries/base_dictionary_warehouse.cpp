@@ -4,7 +4,6 @@
 #include <data/dictionaries/base_dictionary_warehouse.h>
 #include <data/logging_base.h>
 #include <string>
-#include <tools/loggers.h>
 
 namespace constants
 {
@@ -15,6 +14,7 @@ const std::string file_codepage_keyword("SET ");
 
 void prepare_aff_file_path(std::string& file_path)
 {
+  log4cplus::Logger logger = log4cplus::Logger::getInstance("DEBUG");
     boost::filesystem::path file(file_path);
     if (file.extension() == constants::aff_ext && boost::filesystem::exists(file_path)) {
         return;
@@ -34,7 +34,7 @@ void prepare_aff_file_path(std::string& file_path)
             return;
         }
     }
-    printLog(eDebug, eWarningLogLevel,
+    logger.log(log4cplus::WARN_LOG_LEVEL,
              str(boost::format("Lack of affinity file with dictionary file (%1%)") % file_path));
     file_path.clear();
 }
