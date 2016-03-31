@@ -20,6 +20,6 @@ void LoggingBase::logConnection(const QString& strClassName, const QString& strC
         strDebug += " --FAIL--";
         level = log4cplus::WARN_LOG_LEVEL;
     }
-    logger.log(level, strDebug);
+    slot_logger.log(level, strDebug);
     Q_ASSERT_X(bResult == true, strClassName.toLatin1(), strDebug.c_str());
 }

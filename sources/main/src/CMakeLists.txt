@@ -35,15 +35,18 @@ add_library(PhoneticNumberSystem_lib STATIC ${TMP_FILES} )
                         Qt5::Widgets Qt5::Core Qt5::Xml)
   target_link_libraries(PhoneticNumberSystem_lib ${Boost_LIBRARIES} tools_lib log4cplus 
                         Qt5::Widgets Qt5::Core Qt5::Xml)
+
+  add_dependencies(PhoneticNumberSystem Phonetic_data)
 	
-	add_custom_command(TARGET PhoneticNumberSystem POST_BUILD 
+                      #	add_custom_command(TARGET PhoneticNumberSystem POST_BUILD 
+
+   add_custom_target(Phonetic_data 
 		 COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/dict
 		 COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/dictionaries/pl_PL.dic ${CMAKE_CURRENT_BINARY_DIR}/dict/pl_PL.dic
 		 COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/dictionaries/pl_PL.aff ${CMAKE_CURRENT_BINARY_DIR}/dict/pl_PL.aff
-		 )
-	add_custom_command(TARGET PhoneticNumberSystem POST_BUILD 
-		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/log4cplus.properties ${CMAKE_CURRENT_BINARY_DIR}/logs/log4cplus.properties
-		COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/PhoneticNumberSystem.xml ${CMAKE_CURRENT_BINARY_DIR}/PhoneticNumberSystem.xml)
+     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/log4cplus.properties ${CMAKE_CURRENT_BINARY_DIR}/logs/log4cplus.properties
+     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/PhoneticNumberSystem.xml ${CMAKE_CURRENT_BINARY_DIR}/PhoneticNumberSystem.xml)
+
 
 	INSTALL(TARGETS PhoneticNumberSystem 
 		DESTINATION PhoneticNumberSystem
