@@ -12,9 +12,6 @@
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
 #include <data/logging_base.h>
-//#include <log4cplus/logger.h>
-//#include <tools/loggers.h>
-//#include <tools/qtTools.h>
 
 DataThread::ptr DataThread::_instance;
 enum { MaxRecentFiles = 5 };
@@ -41,7 +38,6 @@ DataThreadPrivate::DataThreadPrivate(DataThread* ptrPublic)
     : LoggingBase()
     , publicPart(ptrPublic)
     , dictionaryData(new DictionaryData())
-    , substituteSearch(new MatchingWordsSearch())
 {
     setConnections();
     prepareDirectories();
@@ -169,8 +165,9 @@ void DataThread::onNumberSearchStarted(const std::string& number)
         Q_EMIT searchFinished(false);
         return;
     }
-    _pimpl->substituteSearch->setSubstituteDigitsConfiguration(gSettings->getDigitsConfiguraions()[0]);
-    _pimpl->substituteSearch->setDictionaryWords(_pimpl->dictionaryData);
+
+    _pimpl->substituteSearch.reset(new MatchingWordsSearch(gSettings->getDigitsConfiguraions()[0], _pimpl->dictionaryData));
+    _pimpl->setConnections();
     _pimpl->substituteSearch->startSearchForNumber(number);
 }
 QTextCodec* DataThread::get_current_codepage()

@@ -2,7 +2,6 @@
 #include <data/dictionary_data.h>
 #include <data/MatchingWordsSearch.h>
 #include <data/CSettingsKeywords.h>
-//#include <data/MatchingWordsSearch.cpp>
 #include <set>
 #include <boost/foreach.hpp>
 Q_DECLARE_METATYPE(std::string);
@@ -42,9 +41,9 @@ void mt_substitute_search::initTestCase()
 
 void mt_substitute_search::init()
 {
-	substitute_search.reset(new MatchingWordsSearch());
-	substitute_search->setSubstituteDigitsConfiguration(single_substitute_digits_configuration);
-	substitute_search->setDictionaryWords(dictionary_data);
+	substitute_search.reset(new MatchingWordsSearch(single_substitute_digits_configuration, dictionary_data));
+	//substitute_search->setSubstituteDigitsConfiguration(single_substitute_digits_configuration);
+	//substitute_search->setDictionaryWords(dictionary_data);
 }
 
 void mt_substitute_search::test_SubstituteSearch_WholeCorrectWord_01()

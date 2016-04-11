@@ -1,4 +1,5 @@
 #include "matching_words_search.h"
+#include <data/MatchingWordsSearch.h>
 #include <data/MatchingWordsSearch.cpp>
 #include <vector>
 #include <boost/assign/list_of.hpp>
@@ -139,3 +140,4 @@ void ut_matching_words_search::test_add_matching_word_2()
   QCOMPARE(substituteSearchPrivate->searchResult.count(startIdx1),(size_t)1);
   QCOMPARE(substituteSearchPrivate->searchResult.count(startIdx2),(size_t)1);
 }
+

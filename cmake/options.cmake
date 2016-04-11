@@ -37,4 +37,5 @@ function(GetLogingLibrary )
 
 endfunction(GetLogingLibrary)
 
-
+SET(GCC_COVERAGE_COMPILE_FLAGS "-fprofile-arcs -ftest-coverage")
+SET(GCC_COVERAGE_LINK_FLAGS    "-lgcov")

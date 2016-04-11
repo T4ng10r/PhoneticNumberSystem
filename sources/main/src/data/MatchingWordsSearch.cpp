@@ -20,7 +20,6 @@ class MatchingWordsSearchPrivate : public LoggingBase
     ~MatchingWordsSearchPrivate();
     boost::optional<MatchingWord> testWord(const std::string& tested_word, const std::string& searched_number);
 
-    ConsonantsPos getConsonatsPos(const std::string& word, unsigned int digit, size_t start);
     std::list<char> getConsonatsPos(const std::string& word);
     void setStartDigitIndex(MatchingWord& result, size_t digitIndex);
     void setEndDigitIndex(MatchingWord& result, size_t digitIndex);
@@ -43,15 +42,6 @@ MatchingWordsSearchPrivate::MatchingWordsSearchPrivate(MatchingWordsSearch* ptrP
 
 MatchingWordsSearchPrivate::~MatchingWordsSearchPrivate() {}
 
-MatchingWordsSearchPrivate::ConsonantsPos MatchingWordsSearchPrivate::getConsonatsPos(const std::string& word,
-                                                                                      unsigned int digit, size_t start)
-{
-    ConsonantsPos                         result;
-    OneDigitConsonantsSet::const_iterator iter = digits_conf.digitsConsonantsSetMap.find(digit);
-    result.acceptable                          = word.find_first_of(iter->second.acceptable, start);
-    result.forbiden                            = word.find_first_of(iter->second.forbiden, start);
-    return result;
-}
 std::list<char> MatchingWordsSearchPrivate::getConsonatsPos(const std::string& word)
 {
     StartingIndex   pos(0);
@@ -131,22 +121,14 @@ void MatchingWordsSearchPrivate::addMatchingWord(MatchingWord word)
 
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
-MatchingWordsSearch::MatchingWordsSearch()
-    : _pimpl(new MatchingWordsSearchPrivate(this))
+MatchingWordsSearch::MatchingWordsSearch(CSingleSubstituteDigitsConfiguration conf, DictionaryData::ptr dictionary)
+    : _pimpl(new MatchingWordsSearchPrivate(this)) 
 {
+    _pimpl->digits_conf = conf;
+    _pimpl->dictionary = dictionary;
 }
 
 MatchingWordsSearch::~MatchingWordsSearch(void) {}
-
-void MatchingWordsSearch::setSubstituteDigitsConfiguration(CSingleSubstituteDigitsConfiguration conf)
-{
-    _pimpl->digits_conf = conf;
-}
-
-void MatchingWordsSearch::setDictionaryWords(boost::shared_ptr<DictionaryData> dictionary)
-{
-    _pimpl->dictionary = dictionary;
-}
 
 void MatchingWordsSearch::startSearchForNumber(const std::string& number)
 {

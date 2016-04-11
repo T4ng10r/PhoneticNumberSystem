@@ -48,7 +48,6 @@ add_custom_command(TARGET UnitTest POST_BUILD
 if(CMAKE_COMPILER_IS_GNUCXX)
   SET(CMAKE_CXX_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
   SET(CMAKE_C_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
-  set(CMAKE_MODULE_PATH ${PhoneticNumberSystem_PROJECT_SOURCE_DIR}/cmake)
   include(CodeCoverage)
   setup_target_for_coverage(UnitTest_coverage UnitTest coverage_ut)
 endif()

@@ -15,10 +15,10 @@ class MatchingWordsSearch : public QObject
      Q_OBJECT
      friend class MatchingWordsSearchPrivate;
 public:
-    MatchingWordsSearch();
+    MatchingWordsSearch(CSingleSubstituteDigitsConfiguration conf, DictionaryData::ptr);
     ~MatchingWordsSearch(void);
-    void setSubstituteDigitsConfiguration(CSingleSubstituteDigitsConfiguration conf);
-    void setDictionaryWords(DictionaryData::ptr);
+    //void setSubstituteDigitsConfiguration(CSingleSubstituteDigitsConfiguration conf);
+    //void setDictionaryWords(DictionaryData::ptr);
     void startSearchForNumber(const std::string & number);
     MatchingWordsList getSearchResult(StartingIndex start_index = 0);
 Q_SIGNALS:
