@@ -42,8 +42,6 @@ void mt_substitute_search::initTestCase()
 void mt_substitute_search::init()
 {
 	substitute_search.reset(new MatchingWordsSearch(single_substitute_digits_configuration, dictionary_data));
-	//substitute_search->setSubstituteDigitsConfiguration(single_substitute_digits_configuration);
-	//substitute_search->setDictionaryWords(dictionary_data);
 }
 
 void mt_substitute_search::test_SubstituteSearch_WholeCorrectWord_01()
@@ -81,7 +79,7 @@ void mt_substitute_search::test_SubstituteSearch_WholeCorrectWord_01()
 	QCOMPARE(iter->bFullCoverage,false);
 	QCOMPARE(iter->matchingLetters,std::string("B"));
 	QCOMPARE(*(iter->coveredDigitsIndices.begin()),MatchingPair(0,0));
-	iter++;
+  std::advance(iter, 5);
 	QCOMPARE(iter->getWord(),std::string("abc"));
 	QCOMPARE(iter->bFullCoverage,false);
 	QCOMPARE(iter->matchingLetters,std::string("B"));
@@ -96,7 +94,7 @@ void mt_substitute_search::test_SubstituteSearch_WholeCorrectWord_01()
 	QCOMPARE(iter->bFullCoverage,false);
 	QCOMPARE(iter->matchingLetters,std::string("B"));
 	QCOMPARE(*(iter->coveredDigitsIndices.begin()),MatchingPair(0,0));
-	iter++;
+  std::advance(iter, 2);
 	QCOMPARE(iter->getWord(),std::string("Abihu"));
 	QCOMPARE(iter->bFullCoverage,false);
 	QCOMPARE(iter->matchingLetters,std::string("B"));
@@ -106,7 +104,7 @@ void mt_substitute_search::test_SubstituteSearch_WholeCorrectWord_01()
 	QCOMPARE(iter->bFullCoverage,false);
 	QCOMPARE(iter->matchingLetters,std::string("B"));
 	QCOMPARE(*(iter->coveredDigitsIndices.begin()),MatchingPair(0,0));
-	iter++;
+  std::advance(iter, 2);
 	QCOMPARE(iter->getWord(),std::string("Abu"));
 	QCOMPARE(iter->bFullCoverage,false);
 	QCOMPARE(iter->matchingLetters,std::string("B"));
