@@ -3,7 +3,7 @@
 #include <QtCore/QDir>
 #include <QtCore/QThread>
 #include <data/CSettingsKeywords.h>
-#include <data/MatchingWordsSearch.h>
+#include <data/matching_words_search.h>
 #include <data/data_thread.h>
 #include <data/dictionary_data.h>
 #include <data/settings.h>

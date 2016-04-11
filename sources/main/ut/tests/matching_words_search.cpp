@@ -1,6 +1,6 @@
 #include "matching_words_search.h"
-#include <data/MatchingWordsSearch.h>
-#include <data/MatchingWordsSearch.cpp>
+#include <data/matching_words_search.h>
+#include <data/matching_words_search.cpp>
 #include <vector>
 #include <boost/assign/list_of.hpp>
 

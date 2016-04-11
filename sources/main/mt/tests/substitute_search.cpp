@@ -1,6 +1,6 @@
 #include <tests/substitute_search.h>
 #include <data/dictionary_data.h>
-#include <data/MatchingWordsSearch.h>
+#include <data/matching_words_search.h>
 #include <data/CSettingsKeywords.h>
 #include <set>
 #include <boost/foreach.hpp>

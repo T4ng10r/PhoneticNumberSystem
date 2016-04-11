@@ -5,7 +5,7 @@
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 #include <data/dictionary_data.h>
-#include <data/MatchingWordsSearchTypes.h>
+#include <data/matching_words_search_types.h>
 #include <data/CSystemDigitsConfiguration.h>
 
 class MatchingWordsSearchPrivate;
@@ -17,8 +17,6 @@ class MatchingWordsSearch : public QObject
 public:
     MatchingWordsSearch(CSingleSubstituteDigitsConfiguration conf, DictionaryData::ptr);
     ~MatchingWordsSearch(void);
-    //void setSubstituteDigitsConfiguration(CSingleSubstituteDigitsConfiguration conf);
-    //void setDictionaryWords(DictionaryData::ptr);
     void startSearchForNumber(const std::string & number);
     MatchingWordsList getSearchResult(StartingIndex start_index = 0);
 Q_SIGNALS:

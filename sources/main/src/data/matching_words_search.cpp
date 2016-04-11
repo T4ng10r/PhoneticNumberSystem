@@ -3,7 +3,7 @@
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
 #include <boost/optional.hpp>
-#include <data/MatchingWordsSearch.h>
+#include <data/matching_words_search.h>
 #include <data/logging_base.h>
 #include <data/settings.h>
 #include <tools/loggers.h>

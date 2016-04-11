@@ -1,7 +1,7 @@
 #ifndef _CAF_DATA_THREAD_INCLUDE_
 #define _CAF_DATA_THREAD_INCLUDE_
 #include <QtCore/QObject>
-#include <data/MatchingWordsSearchTypes.h>
+#include <data/matching_words_search_types.h>
 #include <QtCore/QTextCodec>
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
