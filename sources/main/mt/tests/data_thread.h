@@ -3,7 +3,7 @@
 
 class DataThread;
 
-class DataThreadTest : public QObject
+class mt_data_thread : public QObject
 {
 	Q_OBJECT
 private Q_SLOTS:
@@ -11,4 +11,4 @@ private Q_SLOTS:
 	void test_serching_short_dict();
 };
 
-DECLARE_TEST(DataThreadTest)
+DECLARE_TEST(mt_data_thread)

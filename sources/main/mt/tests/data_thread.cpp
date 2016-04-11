@@ -11,14 +11,14 @@ const std::string dict_directory("dict");
 const unsigned int single_timeout(1000); //in s
 const unsigned int timeouts_count(5); //in s
 
-void DataThreadTest::initTestCase()
+void mt_data_thread::initTestCase()
 {
 	gDataThread;
 	gSettings->put(SELECTED_DICTIONARY,"");
 	gSettings->put(DICTIONARIES_DIRECTORY,"");
 }
 
-void DataThreadTest::test_serching_short_dict()
+void mt_data_thread::test_serching_short_dict()
 {
 	int iCount =0;
 	gSettings->put(SELECTED_DICTIONARY,short_dict);

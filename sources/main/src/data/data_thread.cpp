@@ -39,7 +39,6 @@ DataThreadPrivate::DataThreadPrivate(DataThread* ptrPublic)
     , publicPart(ptrPublic)
     , dictionaryData(new DictionaryData())
 {
-    setConnections();
     prepareDirectories();
 }
 DataThreadPrivate::~DataThreadPrivate() {}
