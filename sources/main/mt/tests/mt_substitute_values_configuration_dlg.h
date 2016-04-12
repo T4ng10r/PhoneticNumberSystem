@@ -24,6 +24,7 @@ private Q_SLOTS:
 	void test_OtherMenusEntriesDisabled();
 	void test_SecondMenusDisabled();
 	void test_SelectNoneConfiguration();
+	void test_select_none_existing_system();
 protected:
   void createProperiestConfiguration();
   void createDigitsConfiguration();

@@ -144,3 +144,21 @@ void mt_substitute_values_configuration_dlg::test_SelectNoneConfiguration()
 		QVERIFY2(entry.m_ptrConsonantButton2->isEnabled()==false,QString("Entry line for %1 row").arg(index).toLatin1());
 	}
 }
+void mt_substitute_values_configuration_dlg::test_select_none_existing_system()
+{
+	int iCount =0;
+	QSignalSpy spy(dialog.get(), SIGNAL(set_selected_consonant_system(const QString &)));
+  dialog->onSystemsActvivated_changeCurrentDigitsSystem("wieloryb");
+	while (spy.count() == 0)
+	{
+		QTest::qWait(single_timeout);
+		++iCount;
+		if (iCount>timeouts_count)
+		{
+			QVERIFY2(false,"Timeout waiting for set_selected_consonant_system signal");
+			return;
+		}
+	}
+	QList<QVariant> firstSignal = spy.takeFirst();
+	QCOMPARE(firstSignal.at(0).toString(), QString(""));
+}
