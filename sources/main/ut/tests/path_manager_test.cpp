@@ -1,5 +1,4 @@
-//#include <gtest/gtest.h>
-#include <Data/path_manager.h>
+#include <data/path_manager.h>
 #include <boost/filesystem.hpp>
 
 namespace constants

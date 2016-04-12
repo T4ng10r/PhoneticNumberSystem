@@ -1,16 +1,16 @@
 #include <QtTest/QtTest>
 #include <boost/shared_ptr.hpp>
 #include <boost/property_tree/ptree.hpp>
-#include <Data/CSystemDigitsConfiguration.h>
+#include <data/CSystemDigitsConfiguration.h>
 #include <TestRunner.h>
 
 class CSubstituteValuesConfigurationDlgTemp;
 
-class CSubstituteValuesConfigurationDlgTest : public QObject
+class mt_substitute_values_configuration_dlg  : public QObject
 {
     Q_OBJECT
 public:
-	CSubstituteValuesConfigurationDlgTest();
+	mt_substitute_values_configuration_dlg ();
 public:
 	boost::shared_ptr<CSubstituteValuesConfigurationDlgTemp>  dialog;
   boost::property_tree::ptree  consonants_values_set;
@@ -28,4 +28,4 @@ protected:
   void createProperiestConfiguration();
   void createDigitsConfiguration();
 };
-DECLARE_TEST(CSubstituteValuesConfigurationDlgTest)
+DECLARE_TEST(mt_substitute_values_configuration_dlg )

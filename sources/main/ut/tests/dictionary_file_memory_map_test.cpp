@@ -1,5 +1,5 @@
 #include <memory>
-#include <Data/dictionaries/dictionary_file_memory_map.cpp>
+#include <data/dictionaries/dictionary_file_memory_map.cpp>
 #include <boost/filesystem.hpp>
 /*
 namespace constants

@@ -1,9 +1,9 @@
-#include <TestCases/CSystemDigitsConfigurationTest.h>
+#include <tests/ut_system_digits_configuration.h>
 #include <map>
 #include <boost/foreach.hpp>
 Q_DECLARE_METATYPE(std::string);
 
-void CSystemDigitsConfigurationTest::init()
+void ut_system_digits_configuration::init()
 {
 	systemDigitsConfiguration.reset();
 	systemDigitsConfiguration.mSystem[0] = std::make_pair('Z','S');
@@ -24,11 +24,11 @@ void CSystemDigitsConfigurationTest::init()
 		systemDigitsConfiguration.allConsonants.push_back(iter->second);
 	}
 }
-void CSystemDigitsConfigurationTest::cleanup()
+void ut_system_digits_configuration::cleanup()
 {
 	//m_ptrSettings.reset();
 }
-void CSystemDigitsConfigurationTest::test_CreateConsonantsDigits_data()
+void ut_system_digits_configuration::test_CreateConsonantsDigits_data()
 {
 	QTest::addColumn<int>("consonant_index");
 	QTest::addColumn<std::string>("expected_acceptableConsonants");
@@ -47,15 +47,37 @@ void CSystemDigitsConfigurationTest::test_CreateConsonantsDigits_data()
 	QTest::newRow("digit_10") << 9 << std::string("PB") << std::string("ZSTDN M R L J KGFW");
 }
 
-void CSystemDigitsConfigurationTest::test_CreateConsonantsDigits()
+void ut_system_digits_configuration::test_CreateConsonantsDigits()
 {
 	QFETCH(int, consonant_index);
 	QFETCH(std::string, expected_acceptableConsonants);
 	QFETCH(std::string, expected_forbidenConsonants);
 
 	systemDigitsConfiguration.createConsonantsDigitsMap();
-	AcceptableConsonants acceptableConsonants = systemDigitsConfiguration.digitsConsonantsSetMap[consonant_index].first;
-	ForbidenConsonants forbidenConsonants = systemDigitsConfiguration.digitsConsonantsSetMap[consonant_index].second;
+	AcceptableConsonants acceptableConsonants = systemDigitsConfiguration.digitsConsonantsSetMap[consonant_index].acceptable;
+	ForbidenConsonants forbidenConsonants = systemDigitsConfiguration.digitsConsonantsSetMap[consonant_index].forbiden;
 	QCOMPARE(acceptableConsonants.c_str(), expected_acceptableConsonants.c_str());
 	QCOMPARE(forbidenConsonants.c_str(), expected_forbidenConsonants.c_str());
+}
+
+void ut_system_digits_configuration::test_create_empty_system()
+{
+  //GIVEN
+	systemDigitsConfiguration.reset();
+  systemDigitsConfiguration.mSystem.resize(1);
+  //WHEN
+  systemDigitsConfiguration.create_empty_system();
+  //THEN
+  std::pair<char, char> stPair(' ', ' ');
+  QCOMPARE(systemDigitsConfiguration.mSystem.size(), (size_t)10);
+  QCOMPARE(systemDigitsConfiguration.mSystem[0], stPair);
+  QCOMPARE(systemDigitsConfiguration.mSystem[1], stPair);
+  QCOMPARE(systemDigitsConfiguration.mSystem[2], stPair);
+  QCOMPARE(systemDigitsConfiguration.mSystem[3], stPair);
+  QCOMPARE(systemDigitsConfiguration.mSystem[4], stPair);
+  QCOMPARE(systemDigitsConfiguration.mSystem[5], stPair);
+  QCOMPARE(systemDigitsConfiguration.mSystem[6], stPair);
+  QCOMPARE(systemDigitsConfiguration.mSystem[7], stPair);
+  QCOMPARE(systemDigitsConfiguration.mSystem[8], stPair);
+  QCOMPARE(systemDigitsConfiguration.mSystem[9], stPair);
 }

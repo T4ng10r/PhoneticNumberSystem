@@ -1,9 +1,9 @@
 #include <QtTest/QtTest>
-#include <Data/CSystemDigitsConfiguration.h>
+#include <data/CSystemDigitsConfiguration.h>
 #include <boost/shared_ptr.hpp>
 #include <TestRunner.h>
 
-class CSystemDigitsConfigurationTest : public QObject
+class ut_system_digits_configuration   : public QObject
 {
 	Q_OBJECT
 public:
@@ -13,5 +13,6 @@ public:
 		void cleanup();
 		void test_CreateConsonantsDigits_data();
 		void test_CreateConsonantsDigits();
+    void test_create_empty_system();
 };
-DECLARE_TEST(CSystemDigitsConfigurationTest)
+DECLARE_TEST(ut_system_digits_configuration  )

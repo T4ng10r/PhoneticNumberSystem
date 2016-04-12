@@ -1,6 +1,6 @@
-#include "TestCases/CSubstituteValuesConfigurationDlgTest.h" 
+#include "tests/mt_substitute_values_configuration_dlg.h" 
 #include <GUI/Settings/SubstituteValuesConfigurationDlg.cpp> 
-#include <Data/CSettings_XMLKeywords.h>
+#include <data/CSettings_XMLKeywords.h>
 //#include <QMetaType>
 #include <string>
 
@@ -9,16 +9,15 @@ const unsigned int timeouts_count(5); //in s
 //Q_DECLARE_METATYPE(Qt::Orientation)
 //Q_DECLARE_METATYPE(QModelIndex)
 
-class CSubstituteValuesConfigurationDlgTemp : public CSubstituteValuesConfigurationDlg
+class CSubstituteValuesConfigurationDlgTemp: public CSubstituteValuesConfigurationDlg
 {
-	friend class CSubstituteValuesConfigurationDlgTest;
+	friend class mt_substitute_values_configuration_dlg;
 public:
 	CSubstituteValuesConfigurationDlgTemp(CSubstituteValuesConfigurationDlgInit init_data)
 		: CSubstituteValuesConfigurationDlg(init_data){}
 };
 
-
-void CSubstituteValuesConfigurationDlgTest::createProperiestConfiguration()
+void mt_substitute_values_configuration_dlg::createProperiestConfiguration()
 {
   char tabConsonants[] = {'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 
     'S', 'T', 'V', 'X', 'Z', 'W'};
@@ -29,7 +28,7 @@ void CSubstituteValuesConfigurationDlgTest::createProperiestConfiguration()
     consonants_values_set.add(CONSONANTS_KEYWORD,tabConsonants[i]);
   }
 }
-void CSubstituteValuesConfigurationDlgTest::createDigitsConfiguration()
+void mt_substitute_values_configuration_dlg::createDigitsConfiguration()
 {
   systemDigitsConfiguration.reset();
   configurations.clear();
@@ -55,32 +54,32 @@ void CSubstituteValuesConfigurationDlgTest::createDigitsConfiguration()
   configurations.push_back(systemDigitsConfiguration);
 }
 
-CSubstituteValuesConfigurationDlgTest::CSubstituteValuesConfigurationDlgTest()
+mt_substitute_values_configuration_dlg::mt_substitute_values_configuration_dlg()
 {
   createProperiestConfiguration();
   createDigitsConfiguration();
 }
-void CSubstituteValuesConfigurationDlgTest::init()
+void mt_substitute_values_configuration_dlg::init()
 {
   CSubstituteValuesConfigurationDlgInit init_data = 
   { consonants_values_set, configurations, "basic" };
 
   dialog.reset(new CSubstituteValuesConfigurationDlgTemp(init_data));
 }
-void CSubstituteValuesConfigurationDlgTest::cleanup()
+void mt_substitute_values_configuration_dlg::cleanup()
 {
 	dialog.reset();  
 }
-void CSubstituteValuesConfigurationDlgTest::test_NoneInFirstMenusColumnSelected()
+void mt_substitute_values_configuration_dlg::test_NoneInFirstMenusColumnSelected()
 {
   CSubstituteValuesConfigurationDlgInit init_data = 
   { consonants_values_set, configurations, "" };
 
   dialog.reset(new CSubstituteValuesConfigurationDlgTemp(init_data));
 	//check if in all FIRST Menus None is selected
-	for(unsigned int index=0;index<dialog->priv_part->m_ptrDigitsEntries.size();index++)
+	for(unsigned int index=0;index<dialog->_pimpl->m_ptrDigitsEntries.size();index++)
 	{
-		EntryLine & entry = dialog->priv_part->m_ptrDigitsEntries[index];
+		EntryLine & entry = dialog->_pimpl->m_ptrDigitsEntries[index];
 		QVERIFY2(entry.m_ptrConsonantsActions1[0]->isChecked()==true,QString("Entry line for %1 row").arg(index).toLatin1());
 		//QCOMPARE(entry.m_ptrConsonantsActions1[0]->isChecked(),true);
 		QVERIFY2(entry.m_ptrConsonantButton1->isEnabled()==true,QString("Entry line for %1 row").arg(index).toLatin1());
@@ -88,43 +87,43 @@ void CSubstituteValuesConfigurationDlgTest::test_NoneInFirstMenusColumnSelected(
 	}
 
 }
-void CSubstituteValuesConfigurationDlgTest::test_OtherMenusEntriesDisabled()
+void mt_substitute_values_configuration_dlg::test_OtherMenusEntriesDisabled()
 {
 	unsigned int iDigitEntry(1);
 	unsigned int iConsonantEntry(2);
 	//choose one of consonants for digit '1' 
-	EntryLine & entry = dialog->priv_part->m_ptrDigitsEntries[iDigitEntry];
+	EntryLine & entry = dialog->_pimpl->m_ptrDigitsEntries[iDigitEntry];
 	//choose C (3rd after None and B
 	entry.m_ptrConsonantsActions1[iConsonantEntry]->trigger();
 	//wait till all signal/Q_SLOTS are triggered
 
 	//check if in others digits this Action is deactivated
-	for(unsigned int index=0;index<dialog->priv_part->m_ptrDigitsEntries.size();index++)
+	for(unsigned int index=0;index<dialog->_pimpl->m_ptrDigitsEntries.size();index++)
 	{
 		if (index==iDigitEntry)
 			continue;
-		EntryLine & entry = dialog->priv_part->m_ptrDigitsEntries[index];
+		EntryLine & entry = dialog->_pimpl->m_ptrDigitsEntries[index];
 		QCOMPARE(entry.m_ptrConsonantsActions1[iConsonantEntry]->isEnabled(),false);
 		QCOMPARE(entry.m_ptrConsonantsActions2[iConsonantEntry]->isEnabled(),false);
 	}
 }
-void CSubstituteValuesConfigurationDlgTest::test_SecondMenusDisabled()
+void mt_substitute_values_configuration_dlg::test_SecondMenusDisabled()
 {
 	unsigned int iDigitEntry(1);
 	unsigned int iConsonantEntry(2);
 	//choose one of consonants for digit '1'
-	EntryLine & entry = dialog->priv_part->m_ptrDigitsEntries[iDigitEntry];
+	EntryLine & entry = dialog->_pimpl->m_ptrDigitsEntries[iDigitEntry];
 	//choose C (3rd after None and B
 	entry.m_ptrConsonantsActions1[iConsonantEntry]->trigger();
 	QCOMPARE(entry.m_ptrConsonantButton2->isEnabled(),true);
 	entry.m_ptrConsonantsActions1[0]->trigger();
 	QCOMPARE(entry.m_ptrConsonantButton2->isEnabled(),false);
 }
-void CSubstituteValuesConfigurationDlgTest::test_SelectNoneConfiguration()
+void mt_substitute_values_configuration_dlg::test_SelectNoneConfiguration()
 {
 	int iCount =0;
 	QSignalSpy spy(dialog.get(), SIGNAL(set_selected_consonant_system(const QString &)));
-	dialog->priv_part->m_ptrSystemsCombo->setCurrentIndex(0);
+	dialog->_pimpl->m_ptrSystemsCombo->setCurrentIndex(0);
 	while (spy.count() == 0)
 	{
 		QTest::qWait(single_timeout);
@@ -137,9 +136,9 @@ void CSubstituteValuesConfigurationDlgTest::test_SelectNoneConfiguration()
 	}
 	QList<QVariant> firstSignal = spy.takeFirst();
 	QCOMPARE(firstSignal.at(0).toString(), QString(""));
-	for(unsigned int index=0;index<dialog->priv_part->m_ptrDigitsEntries.size();index++)
+	for(unsigned int index=0;index<dialog->_pimpl->m_ptrDigitsEntries.size();index++)
 	{
-		EntryLine & entry = dialog->priv_part->m_ptrDigitsEntries[index];
+		EntryLine & entry = dialog->_pimpl->m_ptrDigitsEntries[index];
 		QVERIFY2(entry.m_ptrConsonantsActions1[0]->isChecked()==true,QString("Entry line for %1 row").arg(index).toLatin1());
 		QVERIFY2(entry.m_ptrConsonantButton1->isEnabled()==true,QString("Entry line for %1 row").arg(index).toLatin1());
 		QVERIFY2(entry.m_ptrConsonantButton2->isEnabled()==false,QString("Entry line for %1 row").arg(index).toLatin1());
