@@ -30,6 +30,7 @@ SET(TMP_FILES ${TMP_FILES}
 add_executable(PhoneticNumberSystem ${TMP_FILES} main.cpp  )
 
 add_library(PhoneticNumberSystem_lib STATIC ${TMP_FILES} )
+set(PhoneticNumberSystem_lib_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR} PARENT_SCOPE)
 
   target_link_libraries(PhoneticNumberSystem ${Boost_LIBRARIES} tools_lib log4cplus 
                         Qt5::Widgets Qt5::Core Qt5::Xml)

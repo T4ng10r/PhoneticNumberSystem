@@ -9,7 +9,6 @@ set(ENV{QTEST_COLORED} 1)
 include_directories(${Boost_INCLUDE_DIR}
                     ${PNS_SOURCE_DIR}/include
                     ${PhoneticNumberSystem_SOURCE_DIR}
-                    ${PhoneticNumberSystem_Sources_SOURCE_DIR}
                     ${CMAKE_CURRENT_SOURCE_DIR}
                     ${PhoneticNumberSystem_SOURCE_DIR}/Sources/Main
                     ${log4cplus_SOURCE_DIR}/include 
@@ -55,7 +54,7 @@ if(CMAKE_COMPILER_IS_GNUCXX)
   SET(CMAKE_CXX_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
   SET(CMAKE_C_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
   include(CodeCoverage)
-  setup_target_for_coverage(ModuleTest_coverage ModuleTest coverage_mt)
+  setup_target_for_coverage(ModuleTest_coverage ModuleTest ${PhoneticNumberSystem_BINARY_DIR} coverage_mt)
 endif()
 
 ADD_TEST(MT ModuleTest)
