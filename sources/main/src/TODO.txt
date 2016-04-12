@@ -1,4 +1,11 @@
-﻿x testy dla CAppSettings
+﻿x testy z pokryciem kodu
+xx gcov dla UT/MT
+-- target który wykona wszystkie testy z pokryciem kodu i wyswietli ich wspolne wyniki
+
+- target ktory zapewni, ze UT/MT i runtime binary dirs beda zwieraly data_files (dictionary, log4cplus)
+
+
+x testy dla CAppSettings
 x testy dla SubstituteValuesConfiguration w Qt UT
 xx wybor jednej spolgloski blokuje ja w innych menu
 xx wybor spolgloski w lewym menu odblokowuje menu prawe

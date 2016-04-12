@@ -21,12 +21,12 @@ GatheringFiles(${CMAKE_CURRENT_SOURCE_DIR} "cpp;h;;c;cc")
 CreateProjectStructure(${CMAKE_CURRENT_SOURCE_DIR} )
 
 SET(TMP_FILES ${TMP_FILES}
-		Requirements.txt 
-		TODO.txt
-		PhoneticNumberSystem.xml
-		log4cplus.properties
-		${SOURCES_TOOLS} )
-		  
+    Requirements.txt
+    TODO.txt
+    PhoneticNumberSystem.xml
+    log4cplus.properties
+    ${SOURCES_TOOLS} )
+
 add_executable(PhoneticNumberSystem ${TMP_FILES} main.cpp  )
 
 add_library(PhoneticNumberSystem_lib STATIC ${TMP_FILES} )
@@ -38,37 +38,38 @@ set(PhoneticNumberSystem_lib_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR} PARENT_SCOPE
                         Qt5::Widgets Qt5::Core Qt5::Xml gcov)
 
   add_dependencies(PhoneticNumberSystem Phonetic_data)
-	
+
   set_property(TARGET PhoneticNumberSystem PROPERTY CXX_STANDARD 11)
   set_property(TARGET PhoneticNumberSystem_lib PROPERTY CXX_STANDARD 11)
 
-if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-  SET(CMAKE_CXX_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
-  SET(CMAKE_C_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
+if (CMAKE_BUILD_TYPE STREQUAL "Debug" AND CMAKE_COMPILER_IS_GNUCXX)
+  SET(CMAKE_CXX_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage ")
+  SET(CMAKE_C_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage ")
 endif()
 
    add_custom_target(Phonetic_data 
-		 COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/dict
-		 COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/dictionaries/pl_PL.dic ${CMAKE_CURRENT_BINARY_DIR}/dict/pl_PL.dic
-		 COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/dictionaries/pl_PL.aff ${CMAKE_CURRENT_BINARY_DIR}/dict/pl_PL.aff
+     COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/dict
+     COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/logs
+     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/dictionaries/pl_PL.dic ${CMAKE_CURRENT_BINARY_DIR}/dict/pl_PL.dic
+     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/dictionaries/pl_PL.aff ${CMAKE_CURRENT_BINARY_DIR}/dict/pl_PL.aff
      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/log4cplus.properties ${CMAKE_CURRENT_BINARY_DIR}/logs/log4cplus.properties
      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/PhoneticNumberSystem.xml ${CMAKE_CURRENT_BINARY_DIR}/PhoneticNumberSystem.xml)
 
 
-	INSTALL(TARGETS PhoneticNumberSystem 
-		DESTINATION PhoneticNumberSystem
-		PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ 
-		GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
-	INSTALL(FILES dictionaries/pl_PL.aff dictionaries/pl_PL.dic
-		DESTINATION PhoneticNumberSystem/dict)
-	INSTALL(FILES log4cpp.properties
-		DESTINATION PhoneticNumberSystem/logs
-		PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ 
-		GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
-	INSTALL(FILES PhoneticNumberSystem.xml
-		DESTINATION PhoneticNumberSystem 
-		PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ 
-		GROUP_READ GROUP_EXECUTE GROUP_WRITE 
-		WORLD_READ #WORLD EXECUTE #WORLD_WRITE 
-	)
+  INSTALL(TARGETS PhoneticNumberSystem
+    DESTINATION PhoneticNumberSystem
+    PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
+    GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+  INSTALL(FILES dictionaries/pl_PL.aff dictionaries/pl_PL.dic
+    DESTINATION PhoneticNumberSystem/dict)
+  INSTALL(FILES log4cpp.properties
+    DESTINATION PhoneticNumberSystem/logs
+    PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
+    GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+  INSTALL(FILES PhoneticNumberSystem.xml
+    DESTINATION PhoneticNumberSystem
+    PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ
+    GROUP_READ GROUP_EXECUTE GROUP_WRITE
+    WORLD_READ #WORLD EXECUTE #WORLD_WRITE
+  )
 
