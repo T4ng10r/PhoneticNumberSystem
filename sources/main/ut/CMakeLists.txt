@@ -14,6 +14,7 @@ include_directories(${Boost_INCLUDE_DIR}
 
 ####################
 
+SET(PNS_UT_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR} PARENT_SCOPE)
 
 ####################
 FILE(GLOB_RECURSE SOURCES_TEST_DATA "tests/*")
