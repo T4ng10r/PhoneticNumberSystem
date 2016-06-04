@@ -4,7 +4,7 @@ tags
 /.cproject
 /.project
 /.settings/language.settings.xml
-.ycm_extra_conf.pyc
+*.pyc
 docs/uml/*
 docs/plants/*.png
 cscope*

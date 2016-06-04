@@ -2,7 +2,6 @@ add_subdirectory(src)
 add_subdirectory(ut)
 add_subdirectory(mt)
 
-
   ADD_CUSTOM_TARGET(Coverage
 
     # Run tests
