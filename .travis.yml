@@ -1,12 +1,13 @@
-sudo: required
-dist: precise
 language: cpp
+os:
+    - linux
+
+#dist: trusty
+
+compiler:
+    - clang
+    - gcc
 # Handle git submodules yourself
-addons:
-  apt:
-    sources:
-      - deadsnakes
-      - sourceline: 'ppa:beineri/opt-qt541'
 git:
   submodules: false
 # Use sed to replace the SSH URL with the public URL, then initialize submodules
