@@ -10,5 +10,6 @@ install:
   - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
   - sudo apt-get update -qq
   - sudo apt-get install -y -qq qt5-default cmake lcov curl
+  - sudo apt-get install qtbase5-dev qtdeclarative5-dev libqt5core5 libqt5widgets5 libqt5xml5 libqt5test5
 script:
     - mkdir build && cd build && cmake -DCOVERALLS=ON -DCMAKE_BUILD_TYPE=Debug .. && cmake --build . && cmake --build . --target Coverage
