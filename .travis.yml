@@ -6,6 +6,9 @@ git:
 before_install:
   - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
   - git submodule update --init --recursive  
+  - lsb_release -a
+  - uname -a
+  - apt-cache search qt5 --names-only
 install:
   - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
   - sudo apt-get update -qq
