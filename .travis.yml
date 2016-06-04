@@ -17,6 +17,7 @@ before_install:
   - sudo apt-get update -qq
 install:
   - sudo apt-get install -y -qq cmake lcov qt56base
+    apt-cache search boost --names-only
   - source /opt/qt56/bin/qt56-env.sh
 script:
     - cd build
