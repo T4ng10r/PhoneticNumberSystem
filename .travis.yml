@@ -15,6 +15,7 @@ before_install:
   - git submodule update --init --recursive  
   - sudo add-apt-repository --yes ppa:beineri/opt-qt56-trusty
   - sudo add-apt-repository --yes ppa:kojoley/boost
+  - sudo add-apt-repository --yes ppa:kzemek/boost 
   - sudo apt-get update -qq
 install:
   - sudo apt-get install -y -qq cmake lcov qt56base 

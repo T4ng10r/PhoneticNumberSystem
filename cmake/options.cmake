@@ -17,6 +17,10 @@ SET(LOG4CPLUS_QT5 ON)
 SET(WITH_UNIT_TESTS OFF)
 find_package(Boost REQUIRED COMPONENTS date_time system filesystem ) #thread system date_time chrono)
 
+if (NOT Boost_VERSION VERSION_GREATER "1.55.00")
+    message(STATUS "Boost should be at least 1.56")
+endif()
+
 SET ( LOG4CPLUS_LIBRARY_NAME "log4cplus" )
 
 add_definitions(-DUSE_LOG4CPLUS)
