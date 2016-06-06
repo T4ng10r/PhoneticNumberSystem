@@ -14,7 +14,7 @@ before_install:
   - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
   - git submodule update --init --recursive  
   - sudo add-apt-repository --yes ppa:beineri/opt-qt56-trusty
-  - sudo add-apt-repository --yes ppa:kojoley/boost
+  - sudo add-apt-repository --yes ppa:boost-latest/ppa
   - sudo apt-get update -qq
   - apt-cache search libboost --names-only
 install:
