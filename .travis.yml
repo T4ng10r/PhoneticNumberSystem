@@ -20,7 +20,7 @@ before_install:
   - apt-cache search libboost --names-only
 install:
   - sudo apt-get install -y -qq cmake lcov qt56base 
-  - sudo apt-get install -y -qq libboost-dev libboost-date-time-dev libboost-system-dev libboost-filesystem-dev
+  - sudo apt-get install -y -qq libboost-date-time1.58-dev libboost-system1.58-dev libboost-filesystem1.58-dev 
   - apt-cache search boost --names-only
   - source /opt/qt56/bin/qt56-env.sh
 script:
