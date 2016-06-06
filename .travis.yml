@@ -2,7 +2,7 @@ language: cpp
 os:
     - linux
 
-#dist: trusty
+dist: trusty
 
 compiler:
     - gcc
@@ -10,16 +10,11 @@ compiler:
 git:
   submodules: false
 
-addons:
-  apt:
-    sources:
-      - boost-latest
 # Use sed to replace the SSH URL with the public URL, then initialize submodules
 before_install:
   - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
   - git submodule update --init --recursive  
-    #  - sudo add-apt-repository --yes ppa:beineri/opt-qt56-trusty
-  - sudo add-apt-repository --yes ppa:beineri/opt-qt56
+  - sudo add-apt-repository --yes ppa:beineri/opt-qt56-trusty
   - sudo apt-get update -qq
   - apt-cache search libboost --names-only
 install:
