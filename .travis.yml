@@ -10,18 +10,24 @@ compiler:
 git:
   submodules: false
 # Use sed to replace the SSH URL with the public URL, then initialize submodules
+addons:
+    apt:
+        sources:
+          - sourceline: 'ppa:beineri/opt-qt56-trusty'
+          - sourceline: 'ppa:kojoley/boost'
+        packages:
+          - cmake
+          - lcov
+          - qt56base
+          - libbost-dev
+          - libboost-date-time-dev
+          - libboost-system-dev
+          - libboost-filesystem-dev
 before_install:
   - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
   - git submodule update --init --recursive  
-  - sudo add-apt-repository --yes ppa:beineri/opt-qt56-trusty
-  - sudo apt-get update -qq
-  - apt-cache search libboost --names-only
-  - sudo add-apt-repository --yes ppa:kojoley/boost
-  - sudo apt-get update -qq
   - apt-cache search libboost --names-only
 install:
-  - sudo apt-get install -y -qq cmake lcov qt56base 
-  - sudo apt-get install -y -qq libboost-dev libboost-date-time-dev libboost-system-dev libboost-filesystem-dev
   - apt-cache search boost --names-only
   - source /opt/qt56/bin/qt56-env.sh
 script:
