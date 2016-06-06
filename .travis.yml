@@ -7,10 +7,6 @@ dist: trusty
 compiler:
     - gcc
 # Handle git submodules yourself
-addons:
-   apt:
-       sources:
-         - boost-latest
 git:
   submodules: false
 # Use sed to replace the SSH URL with the public URL, then initialize submodules
