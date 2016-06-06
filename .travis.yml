@@ -10,17 +10,30 @@ compiler:
 git:
   submodules: false
 
+
 # Use sed to replace the SSH URL with the public URL, then initialize submodules
 before_install:
   - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
   - git submodule update --init --recursive  
-  - sudo add-apt-repository --yes ppa:beineri/opt-qt56-trusty
-  - sudo add-apt-repository -y "deb http://ppa.launchpad.net/kzemek/boost/ubuntu utopic main"
   - sudo apt-get update -qq
   - apt-cache search libboost --names-only
+
+addons:
+  apt:
+    sources:
+      #      - sourceline: 'deb http://ppa.launchpad.net/kzemek/boost/ubuntu utopic main'
+      - sourceline: 'ppa:beineri/opt-qt56-trusty'
+      - sourceline: 'ppa:afrank/boost'
+    packages:
+      - cmake
+      - qt56base
+      - lcov
+      - libboost1.57-all
+      - libboost1.57-all-dev
+
 install:
-  - sudo apt-get install -y -qq cmake lcov qt56base 
-  - sudo apt-get install -y -qq libboost-date-time1.58-dev libboost-system1.58-dev libboost-filesystem1.58-dev 
+  #- sudo apt-get install -y -qq cmake lcov qt56base 
+    #  - sudo apt-get install -y -qq libboost-date-time1.58-dev libboost-system1.58-dev libboost-filesystem1.58-dev 
   - apt-cache search boost --names-only
   - source /opt/qt56/bin/qt56-env.sh
 script:
