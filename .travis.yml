@@ -17,19 +17,35 @@ before_install:
   - git submodule update --init --recursive  
   - sudo apt-get update -qq
   - apt-cache search libboost --names-only
+  - PROJECT_DIR=`pwd`
+  - BOOST=$HOME/boost-local
+  - git init $BOOST
+  - cd $BOOST
+  - git remote add --no-tags -t $BOOST_BRANCH_TO_TEST origin https://github.com/boostorg/boost.git
+  - git fetch --depth=1
+  - git checkout $BOOST_BRANCH_TO_TEST
+  - git submodule update --init --merge
+  - git remote set-branches --add origin $BOOST_BRANCH_TO_TEST
+  - git pull --recurse-submodules
+  - git submodule update --init
+  - git checkout $BOOST_BRANCH_TO_TEST
+  - git submodule foreach "git reset --quiet --hard; git clean -fxd"
+  - git reset --hard; git clean -fxd
+  - git status
+  - rm -rf $BOOST/libs/$PROJECT_TO_TEST
+  - mv $PROJECT_DIR/../Boost.Application/ $BOOST/libs/$PROJECT_TO_TEST
+  - PROJECT_DIR=$BOOST/libs/$PROJECT_TO_TEST
+  - ./bootstrap.sh
+  - ./b2 headers
 
 addons:
   apt:
     sources:
-      #      - sourceline: 'deb http://ppa.launchpad.net/kzemek/boost/ubuntu utopic main'
       - sourceline: 'ppa:beineri/opt-qt56-trusty'
-      - sourceline: 'ppa:afrank/boost'
     packages:
       - cmake
       - qt56base
       - lcov
-      - libboost1.57-all
-      - libboost1.57-all-dev
 
 install:
   #- sudo apt-get install -y -qq cmake lcov qt56base 
