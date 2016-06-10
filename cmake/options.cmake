@@ -15,7 +15,7 @@ SET(Boost_USE_STATIC_LIBS ON)
 SET(LOG4CPLUS_BUILD_TESTING OFF)
 SET(LOG4CPLUS_QT5 ON)
 SET(WITH_UNIT_TESTS OFF)
-find_package(Boost REQUIRED COMPONENTS date_time system filesystem ) #thread system date_time chrono)
+find_package(Boost REQUIRED COMPONENTS date_time system filesystem unit_test_framework)
 
 if (NOT Boost_VERSION VERSION_GREATER "1.55.00")
     message(STATUS "Boost should be at least 1.56")
