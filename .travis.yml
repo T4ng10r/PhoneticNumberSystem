@@ -17,26 +17,11 @@ before_install:
   - git submodule update --init --recursive  
   - sudo apt-get update -qq
   - apt-cache search libboost --names-only
-  - PROJECT_DIR=`pwd`
-  - BOOST=$HOME/boost-local
-  - git init $BOOST
-  - cd $BOOST
-  - git remote add --no-tags -t $BOOST_BRANCH_TO_TEST origin https://github.com/boostorg/boost.git
-  - git fetch --depth=1
-  - git checkout $BOOST_BRANCH_TO_TEST
-  - git submodule update --init --merge
-  - git remote set-branches --add origin $BOOST_BRANCH_TO_TEST
-  - git pull --recurse-submodules
-  - git submodule update --init
-  - git checkout $BOOST_BRANCH_TO_TEST
-  - git submodule foreach "git reset --quiet --hard; git clean -fxd"
-  - git reset --hard; git clean -fxd
-  - git status
-  - rm -rf $BOOST/libs/$PROJECT_TO_TEST
-  - mv $PROJECT_DIR/../Boost.Application/ $BOOST/libs/$PROJECT_TO_TEST
-  - PROJECT_DIR=$BOOST/libs/$PROJECT_TO_TEST
-  - ./bootstrap.sh
-  - ./b2 headers
+# 
+  - wget https://github.com/Viq111/travis-container-packets/releases/download/boost-1.57.0/boost.tar.bz2
+  - tar -xjf boost.tar.bz2
+  - rm boost.tar.bz2
+  - export BOOST_ROOT=$(pwd)/boost
 
 addons:
   apt:
