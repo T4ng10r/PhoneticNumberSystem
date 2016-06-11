@@ -36,6 +36,11 @@ addons:
 install:
   - apt-cache search boost --names-only
   - source /opt/qt56/bin/qt56-env.sh
+
+before_script:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3 # give xvfb some time to start
 script:
     - cd build
     - cmake -DCMAKE_BUILD_TYPE=Debug .. 
