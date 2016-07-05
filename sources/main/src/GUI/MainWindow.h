@@ -7,12 +7,12 @@
 
 class MainWindowPrivate;
 
-class CMainWindow : public QMainWindow
+class MainWindow : public QMainWindow
 {
 	Q_OBJECT
 public:
-	CMainWindow();
-	~CMainWindow();
+	MainWindow();
+	~MainWindow();
 public Q_SLOTS:
 	void onShowSettingsConfigureDialog(bool);
 protected:

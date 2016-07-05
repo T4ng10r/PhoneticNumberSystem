@@ -126,9 +126,9 @@ void DataThread::loadCurrentlySetDictionary()
         return;
     }
 }
-MatchingWordsList DataThread::getSearchResult(StartingIndex start_index)
+MatchingWordsList DataThread::getSearchResult(StartingIndex start_index, StartingIndex end_index)
 {
-    return _pimpl->substituteSearch->getSearchResult(start_index);
+    return _pimpl->substituteSearch->getSearchResult(start_index, end_index);
 }
 
 void DataThread::onScanDirectoryForDictionaries()

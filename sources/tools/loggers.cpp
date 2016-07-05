@@ -34,7 +34,7 @@ void cleanupLogsDir()
   deleteFileIfExist(LOG_FILE(SLOTS_LOGGER));
 }
 
-void createLoggers(const std::string& strPluginLogName)
+void create_loggers(const std::string& strPluginLogName)
 {
   cleanupLogsDir();
   if (!boost::filesystem::exists(LOG4CPLUS_PROPERTIES_FILE)) {
@@ -90,7 +90,7 @@ void printLog_log4cpp(boost::optional<std::string> logger_name, eLogLevel debugL
 void printLog(eLoggerType loggerType, eLogLevel debugLevel, const std::string& strMsg)
 {
   if (false == bLoggersCreated)
-    createLoggers();
+    create_loggers();
 
   boost::optional<std::string> logger_name = get_logger_name(loggerType);
   if (!logger_name)

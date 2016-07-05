@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 
+#define max_index 1000000
 typedef std::size_t StartingIndex;
 // typedef std::pair<StartingIndex,StartingIndex> UnsignedPair;
 
@@ -62,6 +63,14 @@ struct MatchingWord {
             return true;
         else
             return false;
+    }
+    bool matching_pair(StartingIndex start_index, StartingIndex end_index) const
+    {
+        for (std::list<MatchingPair>::const_iterator it = coveredDigitsIndices.begin();
+                 it != coveredDigitsIndices.end(); it++)
+          if (it->start_index == start_index && it->end_index <= end_index)
+            return true;
+      return false;
     }
 
   public:

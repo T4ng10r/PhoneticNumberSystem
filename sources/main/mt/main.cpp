@@ -4,7 +4,7 @@
 
 int main(int argc, char *argv[]) 
 { 
-  createLoggers();
+  create_loggers();
 	QApplication app(argc, argv);
   return RUN_ALL_QTESTS(argc, argv);
 

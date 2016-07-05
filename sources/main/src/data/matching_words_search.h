@@ -18,7 +18,7 @@ public:
     MatchingWordsSearch(CSingleSubstituteDigitsConfiguration conf, DictionaryData::ptr);
     ~MatchingWordsSearch(void);
     void startSearchForNumber(const std::string & number);
-    MatchingWordsList getSearchResult(StartingIndex start_index = 0);
+    MatchingWordsList getSearchResult(StartingIndex start_index = 0, StartingIndex end_index = max_index);
 Q_SIGNALS:
     void searchProgress(int current, int max);
     void searchFinished(bool);

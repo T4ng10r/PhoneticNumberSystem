@@ -13,7 +13,7 @@ public:
 	DictionaryData * m_ptrPublic;
 public:
 	dictionary_file_memory_map(DictionaryData * ptrPublic);
-	~dictionary_file_memory_map();
+//~dictionary_file_memory_map();
 	bool openFile(const std::string & filePath);
 	void close_file();
 	void parseLineWordCounts(const char ** memAddr, const char * const endMemPos);

@@ -16,7 +16,7 @@ enum eLoggerType
 	eGUI,
 	eSlots
 };
-void createLoggers(const std::string &strPluginLogName = std::string());
+void create_loggers(const std::string &strPluginLogName = std::string());
 void destroyLoggers();
 void printLog(eLoggerType loggerType, eLogLevel debugLevel, const std::string &strMsg);
 #endif //_LOGGERS_INCLUDE_

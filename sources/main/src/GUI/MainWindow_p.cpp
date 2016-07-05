@@ -13,7 +13,7 @@
 
 const QSize ciSize(700,450);
 
-MainWindowPrivate::MainWindowPrivate(CMainWindow * ptrPublic):public_ptr(ptrPublic)
+MainWindowPrivate::MainWindowPrivate(MainWindow * ptrPublic):public_ptr(ptrPublic)
 {
 	setupUI();
 	setupActions();

@@ -18,13 +18,13 @@
 
 enum { MaxRecentFiles = 5 };
 
-class CMainWindow;
+class MainWindow;
 class CSettingsDlg;
 
 class MainWindowPrivate : public LoggingBase
 {
   public:
-    MainWindowPrivate(CMainWindow* ptrPublic);
+    MainWindowPrivate(MainWindow* ptrPublic);
     ~MainWindowPrivate();
 
   public:
@@ -48,7 +48,7 @@ class MainWindowPrivate : public LoggingBase
     //QAction* m_separatorAct;
     QAction* actions_recent_file[MaxRecentFiles];
     //////////////////////////////////////////////////////////////////////////
-    CMainWindow*                                         public_ptr;
+    MainWindow*                                         public_ptr;
     boost::shared_ptr<CSettingsDlg>                      settings_dialog;
     boost::shared_ptr<CSearchPhoneticRepresentationsDlg> search_phonetic_representations_dialog;
 };

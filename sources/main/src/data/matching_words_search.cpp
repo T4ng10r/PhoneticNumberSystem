@@ -3,8 +3,8 @@
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
 #include <boost/optional.hpp>
-#include <data/matching_words_search.h>
 #include <data/logging_base.h>
+#include <data/matching_words_search.h>
 #include <data/settings.h>
 #include <tools/loggers.h>
 
@@ -122,17 +122,18 @@ void MatchingWordsSearchPrivate::addMatchingWord(MatchingWord word)
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 MatchingWordsSearch::MatchingWordsSearch(CSingleSubstituteDigitsConfiguration conf, DictionaryData::ptr dictionary)
-    : _pimpl(new MatchingWordsSearchPrivate(this)) 
+    : _pimpl(new MatchingWordsSearchPrivate(this))
 {
     _pimpl->digits_conf = conf;
-    _pimpl->dictionary = dictionary;
+    _pimpl->dictionary  = dictionary;
 }
 
 MatchingWordsSearch::~MatchingWordsSearch(void) {}
 
 void MatchingWordsSearch::startSearchForNumber(const std::string& number)
 {
-    _pimpl->logger.log(log4cplus::INFO_LOG_LEVEL, str(boost::format("Searching substitute for number '%1%' started") % number));
+    _pimpl->logger.log(log4cplus::INFO_LOG_LEVEL,
+                       str(boost::format("Searching substitute for number '%1%' started") % number));
     _pimpl->searchResult.clear();
     _pimpl->number               = number;
     unsigned int words_count     = _pimpl->dictionary->getWordsCount();
@@ -153,14 +154,23 @@ void MatchingWordsSearch::startSearchForNumber(const std::string& number)
         }
     }
     Q_EMIT searchProgress(words_count, words_count);
-    _pimpl->logger.log(log4cplus::INFO_LOG_LEVEL, str(boost::format("Searching substitute for number '%1%' finished") % number));
+    _pimpl->logger.log(log4cplus::INFO_LOG_LEVEL,
+                       str(boost::format("Searching substitute for number '%1%' finished") % number));
     Q_EMIT searchFinished(true);
 }
 
-MatchingWordsList MatchingWordsSearch::getSearchResult(StartingIndex start_index)
+MatchingWordsList MatchingWordsSearch::getSearchResult(StartingIndex start_index, StartingIndex end_index)
 {
+    MatchingWordsList             result;
     WordSearchResultMap::iterator iter = _pimpl->searchResult.find(start_index);
-    if (iter != _pimpl->searchResult.end())
-        return iter->second;
-    return MatchingWordsList();
+    if (iter != _pimpl->searchResult.end()) {
+        MatchingWordsList matching_words = iter->second;
+        if (end_index == max_index)
+            end_index = _pimpl->number.length();
+        for (MatchingWordsList::const_iterator iter = matching_words.begin(); iter != matching_words.end(); iter++) {
+          if (iter->matching_pair(start_index, end_index))
+            result.push_back(*iter);
+        }
+    }
+    return result;
 }

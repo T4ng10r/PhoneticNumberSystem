@@ -11,20 +11,20 @@
 
 const QSize ciSize(700,450);
 
-CMainWindow::CMainWindow() : QMainWindow(),
+MainWindow::MainWindow() : QMainWindow(),
 _pimpl(new MainWindowPrivate(this))
 {
 	resize(ciSize);
 }
-CMainWindow::~CMainWindow()
+MainWindow::~MainWindow()
 {
 
 }
-void CMainWindow::closeEvent(QCloseEvent *)
+void MainWindow::closeEvent(QCloseEvent *)
 {
 	gDataThread->thread()->quit();
 }
-void CMainWindow::onShowSettingsConfigureDialog(bool)
+void MainWindow::onShowSettingsConfigureDialog(bool)
 {
 	_pimpl->settings_dialog->show();
 }

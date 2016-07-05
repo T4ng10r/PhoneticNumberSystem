@@ -13,7 +13,6 @@ class dictionary_file_memory_map_private : public LoggingBase
 {
   public:
     dictionary_file_memory_map_private();
-    ~dictionary_file_memory_map_private();
 };
 
 dictionary_file_memory_map_private::dictionary_file_memory_map_private()
@@ -21,15 +20,11 @@ dictionary_file_memory_map_private::dictionary_file_memory_map_private()
 {
 }
 
-dictionary_file_memory_map_private::~dictionary_file_memory_map_private() {}
-
 dictionary_file_memory_map::dictionary_file_memory_map(DictionaryData* ptrPublic)
     : _pimpl(new dictionary_file_memory_map_private())
 {
     m_ptrPublic = ptrPublic;
 }
-//--------------------------------------------------------------------------------
-dictionary_file_memory_map::~dictionary_file_memory_map(){};
 //--------------------------------------------------------------------------------
 bool dictionary_file_memory_map::openFile(const std::string& filePath)
 {
@@ -119,9 +114,6 @@ void dictionary_file_memory_map::loadFileContent(const std::string& filePath)
 //--------------------------------------------------------------------------------
 std::string dictionary_file_memory_map::get_word_by_index(unsigned int index)
 {
-    if (index >= words_count_) {
-        return std::string();
-    }
     return std::string(dictionaryWords[index].first, dictionaryWords[index].second);
 }
 //--------------------------------------------------------------------------------
