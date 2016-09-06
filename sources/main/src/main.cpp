@@ -1,4 +1,4 @@
-#include <GUI/MainWindow.h>
+#include <gui/main_window.h>
 #include <QApplication>
 #include <memory>
 #include <tools/loggers.h>

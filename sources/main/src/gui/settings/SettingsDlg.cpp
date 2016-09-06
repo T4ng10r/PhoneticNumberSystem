@@ -1,6 +1,6 @@
-#include <GUI/Settings/SettingsDlg.h>
-#include <GUI/Settings/SubstituteValuesConfigurationDlg.h>
-#include <GUI/Settings/DictionariesConfigurationDlg.h>
+#include <gui/settings/SettingsDlg.h>
+#include <gui/settings/SubstituteValuesConfigurationDlg.h>
+#include <gui/settings/DictionariesConfigurationDlg.h>
 #include <data/settings.h>
 #include <data/CSettingsKeywords.h>
 #include <tools/loggers.h>

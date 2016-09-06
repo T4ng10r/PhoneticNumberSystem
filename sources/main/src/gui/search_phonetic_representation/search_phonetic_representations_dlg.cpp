@@ -1,6 +1,6 @@
-#include <GUI/search_phonetic_representation/compose_substitute_sentence_widget.h>
-#include <GUI/search_phonetic_representation/search_number_lineedit.h>
-#include <GUI/search_phonetic_representation/search_phonetic_representations_dlg.h>
+#include <gui/search_phonetic_representation/compose_substitute_sentence_widget.h>
+#include <gui/search_phonetic_representation/search_number_lineedit.h>
+#include <gui/search_phonetic_representation/search_phonetic_representations_dlg.h>
 #include <QBoxLayout>
 #include <QLabel>
 #include <QLineEdit>

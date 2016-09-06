@@ -1,6 +1,6 @@
 #include "substitute_search_result_combobox.h"
 #include "word_result_widget.h"
-#include <GUI/search_phonetic_representation/combobox_matching_words_result_delegate.h>
+#include <gui/search_phonetic_representation/combobox_matching_words_result_delegate.h>
 #include <QLabel>
 #include <QBoxLayout>
 #include <tools/loggers.h>
@@ -35,6 +35,7 @@ void WordResultWidgetPrivate::setupUI()
     delete ptr_public->layout();
     QVBoxLayout* main_layout = new QVBoxLayout;
     label                    = new QLabel();
+    label->setAlignment(Qt::AlignHCenter);
     main_layout->addWidget(label);
 
     combo_box = new SubstituteSearchResultComboBox();
@@ -75,17 +76,18 @@ QString WordResultWidgetPrivate::process_word(MatchingWord word, QTextCodec* cod
 //--------------------------------------------------------------
 WordResultWidget::WordResultWidget(QWidget* parent)
     : QWidget(parent)
-    , ptr_priv(new WordResultWidgetPrivate(this))
+    , _pimpl(new WordResultWidgetPrivate(this))
 {
 }
 WordResultWidget::~WordResultWidget(){}
 void WordResultWidget::fill_matching_words(const MatchingWordsList& list)
 {
-  ptr_priv->fill(list);
+  _pimpl->fill(list);
 }
 void WordResultWidget::on_activated(int index)
 {
-    const MatchingWord& matching_word = ptr_priv->combo_box->itemData(index).value<MatchingWord>();
+    const MatchingWord& matching_word = _pimpl->combo_box->itemData(index).value<MatchingWord>();
+    _pimpl->label->setText(matching_word.getWord().c_str());
     Q_EMIT word_selected(matching_word.coveredDigitsIndices.front().end_index+1);
 }
 

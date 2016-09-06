@@ -7,7 +7,7 @@
 #include <tools/loggers.h>
 #include <data/matching_words_search_types.h>
 Q_DECLARE_METATYPE(MatchingWord);
-#include <GUI/search_phonetic_representation/custom_combobox_tools.h>
+#include <gui/search_phonetic_representation/custom_combobox_tools.h>
 
 class ComboBoxMatchingWordsResultDelegate : public QItemDelegate
 {

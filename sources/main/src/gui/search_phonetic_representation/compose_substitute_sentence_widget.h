@@ -17,6 +17,7 @@ public:
     void setSearchNumberSize(std::string::size_type searchNumberSize);
 protected Q_SLOTS:
   void on_word_selected(int end_index);
+  void on_save_clicked(bool);
 protected:
 	boost::scoped_ptr<ComposeSubstituteSentenceWidgetPrivate> _pimpl;
 };

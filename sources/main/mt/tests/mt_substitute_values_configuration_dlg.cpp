@@ -1,5 +1,5 @@
 #include "tests/mt_substitute_values_configuration_dlg.h" 
-#include <GUI/Settings/SubstituteValuesConfigurationDlg.cpp> 
+#include <gui/settings/SubstituteValuesConfigurationDlg.cpp>
 #include <data/CSettings_XMLKeywords.h>
 //#include <QMetaType>
 #include <string>

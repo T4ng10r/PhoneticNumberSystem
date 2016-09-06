@@ -1,4 +1,4 @@
-#include <GUI/Settings/SubstituteValuesConfigurationDlg.h>
+#include <gui/settings/SubstituteValuesConfigurationDlg.h>
 #include <data/settings.h>
 #include <data/logging_base.h>
 #include <data/CSettingsKeywords.h>

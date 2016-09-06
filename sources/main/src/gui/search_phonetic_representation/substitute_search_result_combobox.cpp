@@ -1,4 +1,4 @@
-#include <GUI/search_phonetic_representation/substitute_search_result_combobox.h>
+#include <gui/search_phonetic_representation/substitute_search_result_combobox.h>
 #include <QtGui/QPainter>
 #include <QtWidgets/QStylePainter>
 #include <tools/loggers.h>
@@ -6,7 +6,7 @@
 #include <data/matching_words_search_types.h>
 #include <QtWidgets/QStyle>
 Q_DECLARE_METATYPE(MatchingWord);
-#include <GUI/search_phonetic_representation/custom_combobox_tools.h>
+#include <gui/search_phonetic_representation/custom_combobox_tools.h>
 
 void SubstituteSearchResultComboBox::paintEvent(QPaintEvent * event)
 {

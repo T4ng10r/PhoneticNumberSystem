@@ -1,4 +1,4 @@
-#include <GUI/search_phonetic_representation/custom_combobox_tools.h>
+#include <gui/search_phonetic_representation/custom_combobox_tools.h>
 #include <QtGui/QPainter>
 
 const unsigned int correction_sep(1);

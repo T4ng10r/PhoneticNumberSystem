@@ -1,7 +1,7 @@
 #ifndef _CAF_WINDOW_PRIVATE_INCLUDE_
 #define _CAF_WINDOW_PRIVATE_INCLUDE_
 
-#include <GUI/search_phonetic_representation/search_phonetic_representations_dlg.h>
+#include <gui/search_phonetic_representation/search_phonetic_representations_dlg.h>
 #include <QAction>
 #include <QBoxLayout>
 #include <QLabel>

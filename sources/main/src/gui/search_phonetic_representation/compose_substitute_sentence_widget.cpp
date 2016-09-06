@@ -1,6 +1,6 @@
-#include <GUI/search_phonetic_representation/compose_substitute_sentence_widget.h>
-#include <GUI/search_phonetic_representation/substitute_search_result_combobox.h>
-#include <GUI/search_phonetic_representation/word_result_widget.h>
+#include <gui/search_phonetic_representation/compose_substitute_sentence_widget.h>
+#include <gui/search_phonetic_representation/substitute_search_result_combobox.h>
+#include <gui/search_phonetic_representation/word_result_widget.h>
 #include <boost/format.hpp>
 #include <data/data_thread.h>
 #include <data/logging_base.h>
@@ -8,8 +8,11 @@
 #include <tools/qtTools.h>
 
 #include <QBoxLayout>
+#include <QSettings>
 #include <QComboBox>
 #include <algorithm>
+#include <QCoreApplication>
+#include <QPushButton>
 // Q_DECLARE_METATYPE(MatchingWord);
 
 bool cmp_success_words(const MatchingWord& first, const MatchingWord& second)
@@ -32,12 +35,14 @@ class ComposeSubstituteSentenceWidgetPrivate : public LoggingBase
     void    set_connections();
     QString process_word(MatchingWord word, QTextCodec* codec);
     std::size_t which_matching_word_selected();
+    void set_subtitute();
 
   public:
     ComposeSubstituteSentenceWidget* public_part;
     std::vector<WordResultWidget*>   word_results_container;
     QHBoxLayout*                     compose_layout;
     std::string::size_type           searchNumberSize;
+    QPushButton*                     save_subtitution;
 };
 
 ComposeSubstituteSentenceWidgetPrivate::ComposeSubstituteSentenceWidgetPrivate(
@@ -70,6 +75,10 @@ void ComposeSubstituteSentenceWidgetPrivate::setup_ui()
     compose_layout = new QHBoxLayout;
     main_layout->addLayout(compose_layout);
     main_layout->addStretch(5);
+    save_subtitution = new QPushButton();
+    main_layout->addWidget(save_subtitution);
+    save_subtitution->setText("Save");
+    save_subtitution->setEnabled(false);
     add_combo_box();
 }
 void ComposeSubstituteSentenceWidgetPrivate::reset(std::size_t starting_index)
@@ -86,11 +95,12 @@ void ComposeSubstituteSentenceWidgetPrivate::reset(std::size_t starting_index)
 void ComposeSubstituteSentenceWidgetPrivate::set_connections()
 {
     bool bResult = false;
-    // bResult = QObject::connect(m_actionConfiguration, SIGNAL(activated(int)),
-    //	m_ptrPublic, SLOT(on_word_selected(int)));
-    // logConnection("CMainWindowPrivate::setConnections",
-    //	"'CMainWindowPrivate::triggered' with 'CMainWindow::onActionTrigger'",
-    //	bResult);
+    bResult = QObject::connect(save_subtitution, SIGNAL(clicked(bool)),
+        public_part, SLOT(on_save_clicked(bool)));
+//    slot_logger.log(log4cplus::INFO_LOG_LEVEL,
+//     logConnection("CMainWindowPrivate::setConnections",
+//        "'CMainWindowPrivate::triggered' with 'CMainWindow::onActionTrigger'",
+//        bResult);
 }
 std::size_t ComposeSubstituteSentenceWidgetPrivate::which_matching_word_selected()
 {
@@ -104,6 +114,12 @@ std::size_t ComposeSubstituteSentenceWidgetPrivate::which_matching_word_selected
     }
     return combo_box_starting_index;
 }
+void ComposeSubstituteSentenceWidgetPrivate::set_subtitute()
+{
+    QSettings userData(QSettings::UserScope, QCoreApplication::applicationName(), QCoreApplication::organizationName());
+    userData.childKeys();
+}
+
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 ComposeSubstituteSentenceWidget::ComposeSubstituteSentenceWidget(QWidget* parent)
@@ -115,6 +131,7 @@ ComposeSubstituteSentenceWidget::~ComposeSubstituteSentenceWidget(void) {}
 void ComposeSubstituteSentenceWidget::initialize_after_success_search()
 {
     _pimpl->reset();
+    _pimpl->save_subtitution->setEnabled(false);
     MatchingWordsList result = gDataThread->getSearchResult(0, _pimpl->searchNumberSize);
     result.sort(cmp_success_words);
     _pimpl->word_results_container[0]->fill_matching_words(result);
@@ -136,9 +153,17 @@ void ComposeSubstituteSentenceWidget::on_word_selected(int end_index)
             MatchingWordsList(result.begin(), it));
         // _pimpl->fill_combo_box(MatchingWordsList(result.begin(), it), combo_box_starting_index);
     }
+    else {
+        _pimpl->save_subtitution->setEnabled(false);
+        _pimpl->set_subtitute();
+    }
 }
 
 void ComposeSubstituteSentenceWidget::setSearchNumberSize(std::string::size_type searchNumberSize)
 {
     _pimpl->searchNumberSize = searchNumberSize;
+}
+void ComposeSubstituteSentenceWidget::on_save_clicked(bool)
+{
+
 }

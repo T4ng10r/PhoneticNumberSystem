@@ -1,4 +1,4 @@
-#include <GUI/Settings/DictionariesConfigurationDlg.h>
+#include <gui/settings/DictionariesConfigurationDlg.h>
 #include <QAction>
 #include <QAction>
 #include <QApplication>
