@@ -26,13 +26,13 @@ class SettingsPrivate : public LoggingBase
 
   public:
     // boost::shared_ptr<CSubstituteValuesConfiguration>	m_ptrSubstValConf;
-    Settings*                                         m_ptrPublic;
+    Settings*                                         _ppub;
     boost::property_tree::ptree                       m_ptrSubstValConf;
     std::vector<CSingleSubstituteDigitsConfiguration> m_vDigitsConfiguration;
 };
 //////////////////////////////////////////////////////////////////////////
 SettingsPrivate::SettingsPrivate(Settings* ptrPublic)
-    : m_ptrPublic(ptrPublic)
+    : _ppub(ptrPublic)
 {
     loadSettings();
     getDigitsConfiguration();
@@ -43,22 +43,24 @@ void SettingsPrivate::saveSettings()
 {
     boost::property_tree::xml_writer_settings<std::string> settings;
     ("\t", 1);
-    write_xml(CONFIGURATION_FILE, *(static_cast<boost::property_tree::ptree*>(m_ptrPublic)),
+    write_xml(CONFIGURATION_FILE, *(static_cast<boost::property_tree::ptree*>(_ppub)),
               std::locale() /*, settings*/);
 }
+
 void SettingsPrivate::loadSettings()
 {
     logger.log(log4cplus::INFO_LOG_LEVEL, "Loading properties file (" + CONFIGURATION_FILE + ")");
     using boost::property_tree::ptree;
+
     try {
         std::basic_ifstream<char>    stream(CONFIGURATION_FILE);
-        boost::property_tree::ptree& tree = *m_ptrPublic;
+        boost::property_tree::ptree& tree = *_ppub;
         read_xml(stream, tree);
     } catch (boost::property_tree::xml_parser::xml_parser_error const& /*ex*/) {
         logger.log(log4cplus::ERROR_LOG_LEVEL, "Lack of properties file");
     }
     logger.log(log4cplus::INFO_LOG_LEVEL, "Loading properties file finished");
-    m_ptrSubstValConf = m_ptrPublic->get_child(CONSONANTS_SETTINGS);
+    m_ptrSubstValConf = _ppub->get_child(CONSONANTS_SETTINGS);
     logger.log(log4cplus::DEBUG_LOG_LEVEL, "Settings: loading settings from file finished");
 }
 
@@ -103,11 +105,11 @@ void SettingsPrivate::getDigitsConfiguration()
 void SettingsPrivate::defaultValues()
 {
     try {
-        m_ptrPublic->get<std::string>(DICTIONARIES_DIRECTORY);
+        _ppub->get<std::string>(DICTIONARIES_DIRECTORY);
     } catch (boost::property_tree::ptree_bad_path& /*e*/) {
       logger.log(log4cplus::DEBUG_LOG_LEVEL,
                  str(boost::format("Lack of '%1% - adding default value") % DICTIONARIES_DIRECTORY));
-        m_ptrPublic->put<std::string>(DICTIONARIES_DIRECTORY, DICTIONARIES_DIRECTORY_DEFAULT_VALUE);
+        _ppub->put<std::string>(DICTIONARIES_DIRECTORY, DICTIONARIES_DIRECTORY_DEFAULT_VALUE);
     }
 }
 //////////////////////////////////////////////////////////////////////////

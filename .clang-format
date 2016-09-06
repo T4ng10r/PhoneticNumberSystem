@@ -21,7 +21,7 @@ BraceWrapping :
     BeforeElse : true
     IndentBraces : false
 ColumnLimit : 120
-IndentWidth : 4
+IndentWidth : 2
 IndentCaseLabels : false
 PointerAlignment : Left
 Standard : C++11

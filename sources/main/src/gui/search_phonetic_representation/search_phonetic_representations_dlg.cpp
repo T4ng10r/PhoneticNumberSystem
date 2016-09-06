@@ -18,7 +18,7 @@
 class CSearchPhoneticRepresentationsDlgPrivate
 {
   public:
-    CSearchPhoneticRepresentationsDlgPrivate(CSearchPhoneticRepresentationsDlg* ptrPublic);
+    CSearchPhoneticRepresentationsDlgPrivate(SearchPhoneticRepresentationsDlg* ptrPublic);
     ~CSearchPhoneticRepresentationsDlgPrivate();
     void setupUI();
     void retranstaleUI();
@@ -34,12 +34,12 @@ class CSearchPhoneticRepresentationsDlgPrivate
     QListView*            searchResultsView;
     QStandardItemModel    searchResultsModel;
 
-    CSearchPhoneticRepresentationsDlg* publicClass;
+    SearchPhoneticRepresentationsDlg* publicClass;
     ComposeSubstituteSentenceWidget*   composeSubstituteSentenceWidget;
 };
 
 CSearchPhoneticRepresentationsDlgPrivate::CSearchPhoneticRepresentationsDlgPrivate(
-    CSearchPhoneticRepresentationsDlg* ptrPublic)
+    SearchPhoneticRepresentationsDlg* ptrPublic)
     : publicClass(ptrPublic)
 {
     setupUI();
@@ -116,36 +116,37 @@ void CSearchPhoneticRepresentationsDlgPrivate::moveSearchResultIntoSubstituteCom
 }
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
-CSearchPhoneticRepresentationsDlg::CSearchPhoneticRepresentationsDlg(QWidget* parent)
+SearchPhoneticRepresentationsDlg::SearchPhoneticRepresentationsDlg(QWidget* parent)
     : QWidget(parent)
     , _pimpl(new CSearchPhoneticRepresentationsDlgPrivate(this))
 {
 }
-CSearchPhoneticRepresentationsDlg::~CSearchPhoneticRepresentationsDlg(void) {}
-void CSearchPhoneticRepresentationsDlg::onPerformSearch()
+SearchPhoneticRepresentationsDlg::~SearchPhoneticRepresentationsDlg(void) {}
+void SearchPhoneticRepresentationsDlg::onPerformSearch()
 {
     _pimpl->searchProgressBar->show();
     std::string searchNumber = _pimpl->searchedNumber->text().toStdString();
     qRegisterMetaType<std::string>("std::string");
     disableSearchButton();
+    _pimpl->composeSubstituteSentenceWidget->setSearchNumberSize(searchNumber.size());
     Q_EMIT performSearch(searchNumber);
 }
-void CSearchPhoneticRepresentationsDlg::onSearchProgress(int current, int max)
+void SearchPhoneticRepresentationsDlg::onSearchProgress(int current, int max)
 {
     if (_pimpl->searchProgressBar->maximum() != max)
         _pimpl->searchProgressBar->setMaximum(max);
     _pimpl->searchProgressBar->setValue(current);
 }
-void CSearchPhoneticRepresentationsDlg::disableSearchButton() { _pimpl->performSearchButton->setDisabled(true); }
-void CSearchPhoneticRepresentationsDlg::enableSearchButton() { _pimpl->performSearchButton->setEnabled(true); }
-void CSearchPhoneticRepresentationsDlg::searchFinished(bool)
+void SearchPhoneticRepresentationsDlg::disableSearchButton() { _pimpl->performSearchButton->setDisabled(true); }
+void SearchPhoneticRepresentationsDlg::enableSearchButton() { _pimpl->performSearchButton->setEnabled(true); }
+void SearchPhoneticRepresentationsDlg::searchFinished(bool)
 {
     _pimpl->searchProgressBar->hide();
     enableSearchButton();
     _pimpl->moveSearchResultIntoModel();
     _pimpl->moveSearchResultIntoSubstituteComposer();
 }
-void CSearchPhoneticRepresentationsDlg::on_return_pressed()
+void SearchPhoneticRepresentationsDlg::on_return_pressed()
 {
     if (_pimpl->performSearchButton->isEnabled())
         onPerformSearch();

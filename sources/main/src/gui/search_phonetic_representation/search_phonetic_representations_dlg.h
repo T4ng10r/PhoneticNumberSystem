@@ -6,13 +6,13 @@
 
 class CSearchPhoneticRepresentationsDlgPrivate;
 
-class CSearchPhoneticRepresentationsDlg : public QWidget
+class SearchPhoneticRepresentationsDlg : public QWidget
 {
      Q_OBJECT
      friend class SearchPhoneticRepresentationsDlgPrivate;
 public:
-     CSearchPhoneticRepresentationsDlg(QWidget * parent = NULL);
-     ~CSearchPhoneticRepresentationsDlg(void);
+     SearchPhoneticRepresentationsDlg(QWidget * parent = NULL);
+     ~SearchPhoneticRepresentationsDlg(void);
 Q_SIGNALS:
 	 void performSearch(const std::string & );
 public Q_SLOTS:

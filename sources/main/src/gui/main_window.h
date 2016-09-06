@@ -17,7 +17,6 @@ public Q_SLOTS:
 	void onShowSettingsConfigureDialog(bool);
 protected:
 	void closeEvent(QCloseEvent *);
-	QString strippedName(const QString &fullFileName);
 protected:
 	boost::scoped_ptr<MainWindowPrivate> _pimpl;
 };

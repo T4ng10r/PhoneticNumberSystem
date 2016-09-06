@@ -1,11 +1,11 @@
-#include <data/data_thread.h>
-#include <data/logging_base.h>
 #include <GUI/search_phonetic_representation/compose_substitute_sentence_widget.h>
 #include <GUI/search_phonetic_representation/substitute_search_result_combobox.h>
 #include <GUI/search_phonetic_representation/word_result_widget.h>
+#include <boost/format.hpp>
+#include <data/data_thread.h>
+#include <data/logging_base.h>
 #include <tools/loggers.h>
 #include <tools/qtTools.h>
-#include <boost/format.hpp>
 
 #include <QBoxLayout>
 #include <QComboBox>
@@ -35,8 +35,9 @@ class ComposeSubstituteSentenceWidgetPrivate : public LoggingBase
 
   public:
     ComposeSubstituteSentenceWidget* public_part;
-    std::vector<WordResultWidget*> word_results_container;
-    QHBoxLayout*                   compose_layout;
+    std::vector<WordResultWidget*>   word_results_container;
+    QHBoxLayout*                     compose_layout;
+    std::string::size_type           searchNumberSize;
 };
 
 ComposeSubstituteSentenceWidgetPrivate::ComposeSubstituteSentenceWidgetPrivate(
@@ -55,7 +56,7 @@ void ComposeSubstituteSentenceWidgetPrivate::add_combo_box()
     compose_layout->addWidget(result_widget);
 
     bool bResult = false;
-    bResult      = QObject::connect(result_widget, SIGNAL(word_selected(int)), public_part, SLOT(on_word_selected(int)));
+    bResult = QObject::connect(result_widget, SIGNAL(word_selected(int)), public_part, SLOT(on_word_selected(int)));
     logConnection("ComposeSubstituteSentenceWidgetPrivate::add_combo_box",
                   "'result_widget::word_selected' with 'public_part::on_word_selected'", bResult);
 }
@@ -114,19 +115,19 @@ ComposeSubstituteSentenceWidget::~ComposeSubstituteSentenceWidget(void) {}
 void ComposeSubstituteSentenceWidget::initialize_after_success_search()
 {
     _pimpl->reset();
-    MatchingWordsList result = gDataThread->getSearchResult(0);
+    MatchingWordsList result = gDataThread->getSearchResult(0, _pimpl->searchNumberSize);
     result.sort(cmp_success_words);
     _pimpl->word_results_container[0]->fill_matching_words(result);
 }
 void ComposeSubstituteSentenceWidget::on_word_selected(int end_index)
 {
     size_t combo_box_starting_index = _pimpl->which_matching_word_selected();
-    _pimpl->logger.log(log4cplus::DEBUG_LOG_LEVEL, 
-             str(boost::format("'%1%' results word has been changed") % combo_box_starting_index));
+    _pimpl->logger.log(log4cplus::DEBUG_LOG_LEVEL,
+                       str(boost::format("'%1%' results word has been changed") % combo_box_starting_index));
     _pimpl->reset(combo_box_starting_index);
     _pimpl->logger.log(log4cplus::DEBUG_LOG_LEVEL,
-             str(boost::format("Next word should start from '%1%' digit of searched number") % end_index));
-    MatchingWordsList result = gDataThread->getSearchResult(end_index);
+                       str(boost::format("Next word should start from '%1%' digit of searched number") % end_index));
+    MatchingWordsList result = gDataThread->getSearchResult(end_index, _pimpl->searchNumberSize);
     if (result.size()) {
         result.sort(cmp_success_words);
         _pimpl->add_combo_box();
@@ -135,4 +136,9 @@ void ComposeSubstituteSentenceWidget::on_word_selected(int end_index)
             MatchingWordsList(result.begin(), it));
         // _pimpl->fill_combo_box(MatchingWordsList(result.begin(), it), combo_box_starting_index);
     }
+}
+
+void ComposeSubstituteSentenceWidget::setSearchNumberSize(std::string::size_type searchNumberSize)
+{
+    _pimpl->searchNumberSize = searchNumberSize;
 }

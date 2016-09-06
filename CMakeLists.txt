@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 2.8.12)
 ENABLE_TESTING()
+project(phonetic_number_system)
 
 add_subdirectory(docs)
 add_subdirectory(include)  #to add PNS_include identificator

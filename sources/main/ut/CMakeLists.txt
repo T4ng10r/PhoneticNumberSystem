@@ -23,19 +23,19 @@ SET ( SOURCES_MAIN
       main.cpp
       TestRunner.h )
 
-add_executable(UnitTest ${SOURCES_MAIN} ${SOURCES_TEST_DATA} )
+add_executable(unit_test ${SOURCES_MAIN} ${SOURCES_TEST_DATA} )
 
-target_link_libraries(UnitTest ${QT_LIBRARIES} PhoneticNumberSystem_lib
+target_link_libraries(unit_test ${QT_LIBRARIES} PhoneticNumberSystem_lib
                       ${Boost_FILESYSTEM_LIBRARY}
                       ${Boost_SYSTEM_LIBRARY}
                       ${Boost_UNIT_TEST_FRAMEWORK_LIBRARY})
 
-qt5_use_modules(UnitTest Widgets Core Xml Test)
+qt5_use_modules(unit_test Widgets Core Xml Test)
 
-set_property(TARGET UnitTest PROPERTY CXX_STANDARD 11)
-  add_dependencies(UnitTest Phonetic_ut_data)
+set_property(TARGET unit_test PROPERTY CXX_STANDARD 11)
+  add_dependencies(unit_test phonetic_ut_data)
 
-   add_custom_target(Phonetic_ut_data
+   add_custom_target(phonetic_ut_data
      COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/dict
      COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/logs
      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/dictionaries/pl_PL_short.dic ${CMAKE_CURRENT_BINARY_DIR}/dict/pl_PL_short.dic
@@ -48,7 +48,7 @@ if(CMAKE_COMPILER_IS_GNUCXX AND CMAKE_BUILD_TYPE STREQUAL "Debug")
   SET(CMAKE_CXX_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
   SET(CMAKE_C_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
   include(CodeCoverage)
-  setup_target_for_coverage(UnitTest_coverage UnitTest ${PhoneticNumberSystem_BINARY_DIR} coverage_ut)
+  setup_target_for_coverage(UnitTest_coverage unit_test ${PhoneticNumberSystem_BINARY_DIR} coverage_ut)
 endif()
 
-ADD_TEST(UT UnitTest)
+ADD_TEST(UT unit_test)

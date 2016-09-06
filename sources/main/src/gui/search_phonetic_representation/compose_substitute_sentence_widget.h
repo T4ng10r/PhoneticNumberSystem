@@ -13,7 +13,8 @@ class ComposeSubstituteSentenceWidget : public QWidget
 public:
 	ComposeSubstituteSentenceWidget(QWidget * parent = NULL);
 	~ComposeSubstituteSentenceWidget(void);
-	void initialize_after_success_search();
+    void initialize_after_success_search();
+    void setSearchNumberSize(std::string::size_type searchNumberSize);
 protected Q_SLOTS:
   void on_word_selected(int end_index);
 protected:

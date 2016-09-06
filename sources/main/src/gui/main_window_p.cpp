@@ -29,12 +29,12 @@ void MainWindowPrivate::setupUI()
 	central_widget_ = new QWidget;
 	public_ptr->setCentralWidget(central_widget_);
 
-  QVBoxLayout* main_layout = new QVBoxLayout;
+    QVBoxLayout* main_layout = new QVBoxLayout;
 	delete central_widget_->layout();
 	central_widget_->setLayout(main_layout);
 	settings_dialog.reset(new CSettingsDlg);
 
-	search_phonetic_representations_dialog.reset(new CSearchPhoneticRepresentationsDlg);
+	search_phonetic_representations_dialog.reset(new SearchPhoneticRepresentationsDlg);
 	main_layout->addWidget(search_phonetic_representations_dialog.get());
 }
 void MainWindowPrivate::setConnections()

@@ -50,6 +50,6 @@ class MainWindowPrivate : public LoggingBase
     //////////////////////////////////////////////////////////////////////////
     MainWindow*                                         public_ptr;
     boost::shared_ptr<CSettingsDlg>                      settings_dialog;
-    boost::shared_ptr<CSearchPhoneticRepresentationsDlg> search_phonetic_representations_dialog;
+    boost::shared_ptr<SearchPhoneticRepresentationsDlg> search_phonetic_representations_dialog;
 };
 #endif //_CAF_WINDOW_PRIVATE_INCLUDE_

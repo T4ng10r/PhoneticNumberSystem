@@ -37,7 +37,7 @@ set(PhoneticNumberSystem_lib_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR} PARENT_SCOPE
   target_link_libraries(PhoneticNumberSystem_lib ${Boost_LIBRARIES} tools_lib log4cplus 
                         Qt5::Widgets Qt5::Core Qt5::Xml gcov)
 
-  add_dependencies(PhoneticNumberSystem Phonetic_data)
+  add_dependencies(PhoneticNumberSystem phonetic_data)
 
   set_property(TARGET PhoneticNumberSystem PROPERTY CXX_STANDARD 11)
   set_property(TARGET PhoneticNumberSystem_lib PROPERTY CXX_STANDARD 11)
@@ -47,7 +47,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug" AND CMAKE_COMPILER_IS_GNUCXX)
   SET(CMAKE_C_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage ")
 endif()
 
-   add_custom_target(Phonetic_data 
+   add_custom_target(phonetic_data
      COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/dict
      COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/logs
      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/dictionaries/pl_PL.dic ${CMAKE_CURRENT_BINARY_DIR}/dict/pl_PL.dic
