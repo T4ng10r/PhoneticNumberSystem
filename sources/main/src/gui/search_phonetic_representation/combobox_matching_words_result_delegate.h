@@ -6,6 +6,7 @@
 #include <QtWidgets/QApplication>
 #include <tools/loggers.h>
 #include <data/matching_words_search_types.h>
+#include <QtWidgets/QLabel>
 Q_DECLARE_METATYPE(MatchingWord);
 #include <gui/search_phonetic_representation/custom_combobox_tools.h>
 
@@ -53,4 +54,5 @@ public:
 		drawItem(painter, myOption.rect, text_, font_metric.width(text_)+5, standard_pen, current_width);
 	} 
 };
+
 #endif

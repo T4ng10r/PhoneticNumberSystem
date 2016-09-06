@@ -79,6 +79,11 @@ void ut_matching_words_search::test_test_word_data()
     QTest::newRow("partial_two_times") << std::string("99") << std::string("AAP") << true << indices
                                 << std::string("P") << false << (StartingIndex)0;
 
+    indices.clear();
+    indices.push_back(std::make_pair(6,8));
+    QTest::newRow("partial_one_time Radom") << std::string("873536413") << std::string("Radomiowi") << false << indices
+                                << std::string("RDM") << false << (StartingIndex)0;
+
 }
 
 void ut_matching_words_search::test_test_word()

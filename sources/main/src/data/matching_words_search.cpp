@@ -64,6 +64,10 @@ void MatchingWordsSearchPrivate::setEndDigitIndex(MatchingWord& result, size_t d
 {
     if (result.coveredDigitsIndices.back().start_index != std::string::npos) {
         result.coveredDigitsIndices.back().end_index = digitIndex;
+        std::string coveredDigits;
+        for(StartingIndex i = result.coveredDigitsIndices.back().start_index; i<=digitIndex;i++)
+            coveredDigits.push_back(number[i]);
+        result.coveredDigits.push_back(coveredDigits);
     }
 }
 
@@ -84,7 +88,7 @@ boost::optional<MatchingWord> MatchingWordsSearchPrivate::testWord(const std::st
 
     std::list<char>                 consonantsIndices = getConsonatsPos(word);
     std::list<char>::const_iterator iter              = consonantsIndices.begin();
-    for (; digitIndex < word.size(); digitIndex++) {
+    for (; digitIndex < searched_number.size(); digitIndex++) {
         unsigned int       digit          = searched_number[digitIndex] - '0';
         ConsonantsForDigit consonantsSets = digits_conf.digitsConsonantsSetMap[digit];
 
@@ -103,9 +107,15 @@ boost::optional<MatchingWord> MatchingWordsSearchPrivate::testWord(const std::st
             return boost::optional<MatchingWord>();
         }
     }
-    setEndDigitIndex(result, digitIndex - 1);
-    result.bFullCoverage = (result.matchingLetters.size() == searched_number.size());
-    return boost::optional<MatchingWord>(result);
+
+    if (iter == consonantsIndices.begin()) {
+            //setEndDigitIndex(result, digitIndex - 1);
+            result.bFullCoverage = (result.matchingLetters.size() == searched_number.size());
+            return boost::optional<MatchingWord>(result);
+    }
+    if (iter != consonantsIndices.end()) {
+            return boost::optional<MatchingWord>();
+    }
 }
 
 void MatchingWordsSearchPrivate::addMatchingWord(MatchingWord word)

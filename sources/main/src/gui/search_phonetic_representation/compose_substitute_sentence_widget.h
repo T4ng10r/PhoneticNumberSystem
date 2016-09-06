@@ -14,7 +14,7 @@ public:
 	ComposeSubstituteSentenceWidget(QWidget * parent = NULL);
 	~ComposeSubstituteSentenceWidget(void);
     void initialize_after_success_search();
-    void setSearchNumberSize(std::string::size_type searchNumberSize);
+    void setSearchNumber(std::string searchNumber);
 protected Q_SLOTS:
   void on_word_selected(int end_index);
   void on_save_clicked(bool);

@@ -49,6 +49,7 @@ struct MatchingWord {
     MatchingWord(const MatchingWord& copy)
         : bFullCoverage(copy.bFullCoverage)
         , matchingLetters(copy.matchingLetters)
+        , coveredDigits(copy.coveredDigits)
         , coveredDigitsIndices(copy.coveredDigitsIndices)
         , words(copy.words)
     {
@@ -79,6 +80,7 @@ struct MatchingWord {
     // each pair is a start and length value
     std::string             matchingLetters;
     std::list<MatchingPair> coveredDigitsIndices;
+    std::list<std::string > coveredDigits;
     std::list<std::string>  words;
 };
 

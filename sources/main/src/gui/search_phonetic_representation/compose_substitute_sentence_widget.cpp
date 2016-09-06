@@ -41,7 +41,7 @@ class ComposeSubstituteSentenceWidgetPrivate : public LoggingBase
     ComposeSubstituteSentenceWidget* public_part;
     std::vector<WordResultWidget*>   word_results_container;
     QHBoxLayout*                     compose_layout;
-    std::string::size_type           searchNumberSize;
+    std::string                      searchNumber;
     QPushButton*                     save_subtitution;
 };
 
@@ -132,7 +132,7 @@ void ComposeSubstituteSentenceWidget::initialize_after_success_search()
 {
     _pimpl->reset();
     _pimpl->save_subtitution->setEnabled(false);
-    MatchingWordsList result = gDataThread->getSearchResult(0, _pimpl->searchNumberSize);
+    MatchingWordsList result = gDataThread->getSearchResult(0, _pimpl->searchNumber.size());
     result.sort(cmp_success_words);
     _pimpl->word_results_container[0]->fill_matching_words(result);
 }
@@ -143,8 +143,8 @@ void ComposeSubstituteSentenceWidget::on_word_selected(int end_index)
                        str(boost::format("'%1%' results word has been changed") % combo_box_starting_index));
     _pimpl->reset(combo_box_starting_index);
     _pimpl->logger.log(log4cplus::DEBUG_LOG_LEVEL,
-                       str(boost::format("Next word should start from '%1%' digit of searched number") % end_index));
-    MatchingWordsList result = gDataThread->getSearchResult(end_index, _pimpl->searchNumberSize);
+                       str(boost::format("Next word should start from '%1%' digit of searched number ( %2%)") % end_index % _pimpl->searchNumber.substr(end_index-1)));
+    MatchingWordsList result = gDataThread->getSearchResult(end_index, _pimpl->searchNumber.size());
     if (result.size()) {
         result.sort(cmp_success_words);
         _pimpl->add_combo_box();
@@ -159,9 +159,9 @@ void ComposeSubstituteSentenceWidget::on_word_selected(int end_index)
     }
 }
 
-void ComposeSubstituteSentenceWidget::setSearchNumberSize(std::string::size_type searchNumberSize)
+void ComposeSubstituteSentenceWidget::setSearchNumber(std::string searchNumber)
 {
-    _pimpl->searchNumberSize = searchNumberSize;
+    _pimpl->searchNumber = searchNumber;
 }
 void ComposeSubstituteSentenceWidget::on_save_clicked(bool)
 {

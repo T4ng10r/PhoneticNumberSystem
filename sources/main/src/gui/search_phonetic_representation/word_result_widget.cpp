@@ -26,6 +26,7 @@ class WordResultWidgetPrivate
     SubstituteSearchResultComboBox* combo_box;
     QLabel*                         label;
     static ComboBoxMatchingWordsResultDelegate delegate_;
+    void setCoveredDigitsLabel(const MatchingWord &word);
 };
 
 ComboBoxMatchingWordsResultDelegate WordResultWidgetPrivate::delegate_;
@@ -35,7 +36,8 @@ void WordResultWidgetPrivate::setupUI()
     delete ptr_public->layout();
     QVBoxLayout* main_layout = new QVBoxLayout;
     label                    = new QLabel();
-    label->setAlignment(Qt::AlignHCenter);
+    label->setAlignment(Qt::AlignLeft);
+    label->setMargin(5);
     main_layout->addWidget(label);
 
     combo_box = new SubstituteSearchResultComboBox();
@@ -56,6 +58,7 @@ void WordResultWidgetPrivate::fill(const MatchingWordsList& list)
 {
     combo_box->clear();
     combo_box->addItem("");
+    label->setText("");
 
     QTextCodec* codec = gDataThread->get_current_codepage();
     for (const MatchingWord& word : list) {
@@ -73,6 +76,25 @@ QString WordResultWidgetPrivate::process_word(MatchingWord word, QTextCodec* cod
         style_word = word.getWord().c_str();
     return style_word;
 }
+void WordResultWidgetPrivate::setCoveredDigitsLabel(const MatchingWord & matching_word)
+{
+    std::string text;
+    std::string coveredDigits =  matching_word.coveredDigits.front();
+    int matching_letters_idx = 0;
+    std::string word = matching_word.getWord();
+
+    for(int i=0;i<word.size();i++)
+    {
+        if (matching_word.matchingLetters[matching_letters_idx] != toupper(word[i]))
+            text+="  ";
+        else {
+            text+=coveredDigits[matching_letters_idx];
+            matching_letters_idx++;
+        }
+    }
+    label->setText(text.c_str());
+}
+
 //--------------------------------------------------------------
 WordResultWidget::WordResultWidget(QWidget* parent)
     : QWidget(parent)
@@ -84,10 +106,11 @@ void WordResultWidget::fill_matching_words(const MatchingWordsList& list)
 {
   _pimpl->fill(list);
 }
+
 void WordResultWidget::on_activated(int index)
 {
     const MatchingWord& matching_word = _pimpl->combo_box->itemData(index).value<MatchingWord>();
-    _pimpl->label->setText(matching_word.getWord().c_str());
+    _pimpl->setCoveredDigitsLabel(matching_word);
     Q_EMIT word_selected(matching_word.coveredDigitsIndices.front().end_index+1);
 }
 

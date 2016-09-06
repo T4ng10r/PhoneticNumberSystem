@@ -128,7 +128,7 @@ void SearchPhoneticRepresentationsDlg::onPerformSearch()
     std::string searchNumber = _pimpl->searchedNumber->text().toStdString();
     qRegisterMetaType<std::string>("std::string");
     disableSearchButton();
-    _pimpl->composeSubstituteSentenceWidget->setSearchNumberSize(searchNumber.size());
+    _pimpl->composeSubstituteSentenceWidget->setSearchNumber(searchNumber);
     Q_EMIT performSearch(searchNumber);
 }
 void SearchPhoneticRepresentationsDlg::onSearchProgress(int current, int max)
