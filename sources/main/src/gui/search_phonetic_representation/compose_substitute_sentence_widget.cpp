@@ -152,9 +152,10 @@ void ComposeSubstituteSentenceWidget::on_word_selected(int end_index)
         _pimpl->word_results_container[combo_box_starting_index]->fill_matching_words(
             MatchingWordsList(result.begin(), it));
         // _pimpl->fill_combo_box(MatchingWordsList(result.begin(), it), combo_box_starting_index);
+        _pimpl->save_subtitution->setEnabled(false);
     }
     else {
-        _pimpl->save_subtitution->setEnabled(false);
+        _pimpl->save_subtitution->setEnabled(true);
         _pimpl->set_subtitute();
     }
 }
