@@ -5,8 +5,8 @@ add_subdirectory(mt)
   ADD_CUSTOM_TARGET(Coverage
 
     # Run tests
-    DEPENDS UnitTest_coverage
-    DEPENDS ModuleTest_coverage
+    DEPENDS unit_test_coverage
+    DEPENDS module_test_coverage
 
     # Capturing lcov counters and generating report
     COMMAND ${LCOV_PATH} -d ${PNS_MT_BINARY_DIR} -d ${PNS_UT_BINARY_DIR} -d ${PhoneticNumberSystem_BINARY_DIR} --capture --output-file coverage.info

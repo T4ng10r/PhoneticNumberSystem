@@ -48,7 +48,7 @@ if(CMAKE_COMPILER_IS_GNUCXX AND CMAKE_BUILD_TYPE STREQUAL "Debug")
   SET(CMAKE_CXX_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
   SET(CMAKE_C_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
   include(CodeCoverage)
-  setup_target_for_coverage(UnitTest_coverage unit_test ${PhoneticNumberSystem_BINARY_DIR} coverage_ut)
+  setup_target_for_coverage(unit_test_coverage unit_test ${PhoneticNumberSystem_BINARY_DIR} coverage_ut)
 endif()
 
 ADD_TEST(UT unit_test)
