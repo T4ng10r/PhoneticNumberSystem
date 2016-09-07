@@ -28,7 +28,7 @@ before_install:
 addons:
   apt:
     sources:
-      - sourceline: 'ppa:beineri/opt-qt56-trusty'
+      - sourceline: 'ppa:beineri/opt-qt561-trusty'
     packages:
       - cmake
       - qt56base
