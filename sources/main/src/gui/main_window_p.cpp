@@ -20,7 +20,8 @@ MainWindowPrivate::MainWindowPrivate(MainWindow * ptrPublic):public_ptr(ptrPubli
 	gDataThread;
 	setConnections();
 	settings_dialog->performInitialUpdateAfterAllChildrenUpdate();
-	public_ptr->statusBar()->showMessage("Ready");
+    public_ptr->statusBar()->showMessage("Ready");
+    display_user_substitution();
 }
 MainWindowPrivate::~MainWindowPrivate()
 {}
@@ -35,7 +36,11 @@ void MainWindowPrivate::setupUI()
 	settings_dialog.reset(new CSettingsDlg);
 
 	search_phonetic_representations_dialog.reset(new SearchPhoneticRepresentationsDlg);
-	main_layout->addWidget(search_phonetic_representations_dialog.get());
+    main_layout->addWidget(search_phonetic_representations_dialog.get());
+
+    recentSubstitutions =  new QListWidget;
+    recentSubstitutions->setMaximumHeight(250);
+    main_layout->addWidget(recentSubstitutions);
 }
 void MainWindowPrivate::setConnections()
 {
@@ -107,4 +112,22 @@ void MainWindowPrivate::setupActions()
 	public_ptr->menuBar()->addSeparator();
 	action_open_settings= public_ptr->menuBar()->addAction("Configuration");
 	action_open_settings->setToolTip("");
+}
+void MainWindowPrivate::display_user_substitution()
+{
+  std::map<std::string, QStringList> user_substitutions = gDataThread->get_user_substitutions();
+  std::map<std::string, QStringList>::iterator iter = user_substitutions.begin();
+
+  for(;iter!=user_substitutions.end();iter++)
+  {
+    QString text = QString("%1 ->").arg(iter->first.c_str());
+    for(QString word : iter->second)
+    {
+        text += QString(" %1").arg(word);
+    }
+    QListWidgetItem *newItem = new QListWidgetItem;
+    newItem->setText(text);
+    int row = recentSubstitutions->count();
+    recentSubstitutions->insertItem(row, newItem);
+  }
 }

@@ -113,4 +113,7 @@ void WordResultWidget::on_activated(int index)
     _pimpl->setCoveredDigitsLabel(matching_word);
     Q_EMIT word_selected(matching_word.coveredDigitsIndices.front().end_index+1);
 }
+MatchingWord WordResultWidget::get_current_word(){
+    return _pimpl->combo_box->currentData().value<MatchingWord>();
+}
 

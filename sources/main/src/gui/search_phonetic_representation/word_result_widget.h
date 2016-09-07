@@ -16,6 +16,7 @@ class WordResultWidget : public QWidget
     WordResultWidget(QWidget* parent = NULL);
     ~WordResultWidget();
     void fill_matching_words(const MatchingWordsList& list);
+    MatchingWord get_current_word();
 
   protected Q_SLOTS:
     void on_activated(int);

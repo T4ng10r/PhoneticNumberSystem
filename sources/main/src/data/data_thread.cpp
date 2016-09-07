@@ -7,6 +7,8 @@
 #include <data/data_thread.h>
 #include <data/dictionary_data.h>
 #include <data/settings.h>
+#include <QSettings>
+#include <QCoreApplication>
 
 #include <list>
 #include <boost/foreach.hpp>
@@ -27,11 +29,13 @@ class DataThreadPrivate : public LoggingBase
     void                  setConnections();
     void                  prepareDirectories();
     boost::optional<QDir> get_dictionaries_directory();
+    void add_user_substitution(std::string number, QStringList words);
 
   public:
     DataThread*                            publicPart;
     boost::shared_ptr<DictionaryData>      dictionaryData;
     boost::shared_ptr<MatchingWordsSearch> substituteSearch;
+    std::map<std::string, QStringList>     user_substitution;
 };
 
 DataThreadPrivate::DataThreadPrivate(DataThread* ptrPublic)
@@ -100,6 +104,10 @@ void DataThreadPrivate::prepareDirectories()
         dir.mkpath(dictionaryDir.c_str());
     }
 }
+void DataThreadPrivate::add_user_substitution(std::string number, QStringList words)
+{
+  user_substitution[number] = words;
+}
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
@@ -109,6 +117,7 @@ DataThread::DataThread(void)
     QThread* thread = new QThread;
     this->moveToThread(thread);
     thread->start();
+    load_user_substitution();
 }
 DataThread::ptr DataThread::instance()
 {
@@ -179,4 +188,30 @@ QTextCodec* DataThread::get_current_codepage()
         _pimpl->logger.log(log4cplus::DEBUG_LOG_LEVEL, str(boost::format("Text Codec ' %1%' loaded") % codepage));
     }
     return codec;
+}
+void DataThread::save_substitute(QStringList substituteWords, std::string number)
+{
+    QSettings userData(QSettings::UserScope, QCoreApplication::applicationName(), QCoreApplication::organizationName());
+    //test if given string is already present
+    userData.beginGroup("Ssubstitution");
+    userData.setValue(number.c_str(), substituteWords );
+    userData.endGroup();
+    _pimpl->add_user_substitution(number, substituteWords);
+}
+void DataThread::load_user_substitution()
+{
+    QSettings userData(QSettings::UserScope, QCoreApplication::applicationName(), QCoreApplication::organizationName());
+    //test if given string is already present
+    userData.beginGroup("Ssubstitution");
+    QStringList substitutionKeys = userData.childKeys();
+    for(QString key : substitutionKeys)
+    {
+      QStringList val = userData.value(key).toStringList();
+      _pimpl->add_user_substitution(key.toStdString(), val);
+    }
+    userData.endGroup();
+}
+std::map<std::string, QStringList> DataThread::get_user_substitutions()
+{
+  return _pimpl->user_substitution;
 }

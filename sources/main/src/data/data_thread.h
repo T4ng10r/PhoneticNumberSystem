@@ -5,6 +5,7 @@
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 #include <data/matching_words_search_types.h>
+#include <QStringList>
 
 class DataThreadPrivate;
 
@@ -24,6 +25,9 @@ class DataThread : public QObject
     void              loadCurrentlySetDictionary();
     MatchingWordsList getSearchResult(StartingIndex start_index, StartingIndex end_index = c_end_index);
     QTextCodec* get_current_codepage();
+    void save_substitute(QStringList substituteWords, std::string number);
+    void load_user_substitution();
+    std::map<std::string, QStringList> get_user_substitutions();
 
   public Q_SLOTS:
     void onScanDirectoryForDictionaries();

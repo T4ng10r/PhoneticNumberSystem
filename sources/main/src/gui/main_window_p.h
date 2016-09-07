@@ -12,6 +12,7 @@
 #include <QTableView>
 #include <QToolBar>
 #include <QTreeView>
+#include <QListWidget>
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 #include <data/logging_base.h>
@@ -32,6 +33,7 @@ class MainWindowPrivate : public LoggingBase
     void setupUI();
     void setupActions();
     void setConnections();
+    void display_user_substitution();
 
   public:
     QWidget*     central_widget_;
@@ -51,5 +53,6 @@ class MainWindowPrivate : public LoggingBase
     MainWindow*                                         public_ptr;
     boost::shared_ptr<CSettingsDlg>                      settings_dialog;
     boost::shared_ptr<SearchPhoneticRepresentationsDlg> search_phonetic_representations_dialog;
+    QListWidget * recentSubstitutions;
 };
 #endif //_CAF_WINDOW_PRIVATE_INCLUDE_
