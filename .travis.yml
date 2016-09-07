@@ -49,4 +49,4 @@ script:
     - cmake --build . --target Coverage
 
 after_success:
-    - coveralls --exclude lib --exclude tests --exclude ut --eclude mt --gcov-options '\-lp'
+    - coveralls --exclude lib --exclude tests --exclude ut --exclude mt --gcov-options '\-lp'
