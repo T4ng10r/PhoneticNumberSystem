@@ -41,7 +41,11 @@ SettingsPrivate::SettingsPrivate(Settings* ptrPublic)
 SettingsPrivate::~SettingsPrivate() {}
 void SettingsPrivate::saveSettings()
 {
+#if (BOOST_VERSION <= 105500)
+    boost::property_tree::xml_writer_settings<char> settings;
+#else
     boost::property_tree::xml_writer_settings<std::string> settings;
+#endif
     ("\t", 1);
     write_xml(CONFIGURATION_FILE, *(static_cast<boost::property_tree::ptree*>(_ppub)),
               std::locale() /*, settings*/);
