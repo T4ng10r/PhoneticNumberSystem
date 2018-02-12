@@ -5,6 +5,7 @@ tags
 /.project
 /.settings/language.settings.xml
 *.pyc
+.idea
 docs/uml/*
 docs/plants/*.png
 cscope*

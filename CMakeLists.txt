@@ -10,6 +10,7 @@ set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 include(functions)
 include(options)
 include(plugins)
+add_subdirectory(thirdparty/log4cplus)
 
 add_definitions(-D_VARIADIC_MAX=10)
 add_subdirectory(sources)
