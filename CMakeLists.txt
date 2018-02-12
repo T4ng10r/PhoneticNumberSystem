@@ -3,14 +3,16 @@ ENABLE_TESTING()
 project(phonetic_number_system)
 
 add_subdirectory(docs)
-add_subdirectory(include)  #to add PNS_include identificator
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1 ) #generate compile commands for YCM
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 include(functions)
 include(options)
 include(plugins)
-add_subdirectory(thirdparty/log4cplus)
+set_c11_flags()
+
+add_subdirectory(thirdparty)
 
 add_definitions(-D_VARIADIC_MAX=10)
 add_subdirectory(sources)
+add_subdirectory(tests)

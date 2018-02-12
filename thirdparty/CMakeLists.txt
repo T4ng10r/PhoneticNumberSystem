@@ -1,0 +1,2 @@
+add_subdirectory(log4cplus)
+add_subdirectory(tools)
